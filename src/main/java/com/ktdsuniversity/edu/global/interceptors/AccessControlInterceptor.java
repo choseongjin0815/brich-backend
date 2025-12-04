@@ -19,7 +19,7 @@ public class AccessControlInterceptor implements HandlerInterceptor{
         if(loginUser != null) {
         	auth = loginUser.getAutr();
         }
-        if (uri.startsWith("/api/")) {
+        if (uri.startsWith("/api/")|| uri.startsWith("/auth")) {
             return true; // 모든 /api/** 요청은 세션 없이 통과
         }
         
