@@ -24,7 +24,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) throws IOException, ServletException {
 		// 로그인에 성공한 회원의 아이디(이메일)
 		UserVO authMember = (UserVO) authentication.getPrincipal();
-		String email = authMember.getEml();
 		String logId = authMember.getLogId();
 		// 로그인 기록
 		this.userDao.updateLoginSuccessByLogId(logId);

@@ -36,7 +36,7 @@
              , BLG_TITLE
          FROM BRICH.USR
         WHERE LOG_ID = #{logId}
-          AND AUTR IN('1001', '1002', '1003', '1004', '1007')
+          AND AUTR IN('ROLE-20251203-000001', 'ROLE-20251203-000002', 'ROLE-20251203-000003', 'ROLE-20251203-000004')
     </select>
     <insert parameterType="com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO"
             id="insertNewUser">
@@ -249,15 +249,15 @@
 	     WHERE EML = #{email} 
 	</select>
 	
-	<select id="selectRolesByEmail"
+	<select id="selectRolesByLogId"
             parameterType="string"
             resultType="string">
-     SELECT ROLE_NAME
+     SELECT RL_NM
        FROM "ROLE"
-      START WITH ROLE_ID = (SELECT ROLE_ID
-                              FROM USR
-                             WHERE LOGID = #{_parameter})
-    CONNECT BY PRIOR ROLE_ID = TOP_ROLE
+      START WITH RL_ID = (SELECT AUTR
+                            FROM USR
+                           WHERE LOG_ID = #{_parameter})
+    CONNECT BY PRIOR RL_ID = TP_RL
     </select>
 	
 </mapper>
