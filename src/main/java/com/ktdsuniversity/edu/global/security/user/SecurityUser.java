@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.global.security.user;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
@@ -28,8 +29,10 @@ public class SecurityUser implements UserDetails {
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userVO.getRoles()
+				.stream()
+				.map(SimpleGrantedAuthority::new)
+				.toList();
 	}
 
 	@Override

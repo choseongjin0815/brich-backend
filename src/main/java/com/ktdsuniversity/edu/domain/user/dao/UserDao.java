@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.domain.user.dao;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -52,6 +53,8 @@ public interface UserDao {
 	public int updateBlogTitle(RequestBlogTitleVO request);
 
 	public int selectEmailCountByInputEmail(String email);
+
+	public List<String> selectRolesByLogId(String username);
 
 
 

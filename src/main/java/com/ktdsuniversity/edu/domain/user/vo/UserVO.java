@@ -390,14 +390,17 @@ public class UserVO extends BaseVO{
 
 	@Override
 	public String toString() {
-		return "UserVO [usrId=" + usrId + ", logId=" + logId + ", eml=" + eml + ", pswrd=" + pswrd + ", nm=" + nm
-				+ ", salt=" + salt + ", lgnPlCnt=" + lgnPlCnt + ", blckYn=" + blckYn + ", rcntLgnBlckDt="
-				+ rcntLgnBlckDt + ", rcntLgnFlDt=" + rcntLgnFlDt + ", rcntLgnScsDt=" + rcntLgnScsDt + ", autr=" + autr
-				+ ", sbscrptnExprsDt=" + sbscrptnExprsDt + ", pnltCnt=" + pnltCnt + ", rcntBlgCrtfctnDt="
-				+ rcntBlgCrtfctnDt + ", blgAddrs=" + blgAddrs + ", crtfdAdmin=" + crtfdAdmin + ", ttlVstrCnt="
-				+ ttlVstrCnt + ", avrgVstrCnt=" + avrgVstrCnt + ", blgNghbrCnt=" + blgNghbrCnt + ", scrpCnt=" + scrpCnt
-				+ ", cmpny=" + cmpny + ", flGrpId=" + flGrpId + ", toString()=" + super.toString() + "]";
+		return "UserVO [usrId=" + this.usrId + ", logId=" + this.logId + ", eml=" + this.eml + ", pswrd=" + this.pswrd + ", nm=" + this.nm
+				+ ", salt=" + this.salt + ", lgnPlCnt=" + this.lgnPlCnt + ", blckYn=" + this.blckYn + ", rcntLgnBlckDt="
+				+ this.rcntLgnBlckDt + ", rcntLgnFlDt=" + this.rcntLgnFlDt + ", rcntLgnScsDt=" + this.rcntLgnScsDt + ", autr=" + this.autr
+				+ ", sbscrptnExprsDt=" + this.sbscrptnExprsDt + ", pnltCnt=" + this.pnltCnt + ", rcntBlgCrtfctnDt="
+				+ this.rcntBlgCrtfctnDt + ", blgAddrs=" + this.blgAddrs + ", crtfdAdmin=" + this.crtfdAdmin + ", ttlVstrCnt="
+				+ this.ttlVstrCnt + ", avrgVstrCnt=" + this.avrgVstrCnt + ", blgNghbrCnt=" + this.blgNghbrCnt + ", scrpCnt=" + this.scrpCnt
+				+ ", cmpny=" + cmpny + ", flGrpId=" + flGrpId + ", blgTitle=" + blgTitle + ", blogIndexVO="
+				+ this.blogIndexVO + ", roles=" + this.roles + "]";
 	}
+
+
     
    
 }

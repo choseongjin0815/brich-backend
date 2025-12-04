@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.global.security.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +32,9 @@ public class SerucirtyUserDetailsService implements UserDetailsService{
 		}
 		
 		
+		// 권한 조회.
+		List<String> roles = this.userDao.selectRolesByLogId(username);
+		userVO.setRoles(roles);
 		
 		
 		return new SecurityUser(userVO);

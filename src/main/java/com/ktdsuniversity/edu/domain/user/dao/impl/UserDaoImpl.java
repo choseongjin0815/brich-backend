@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.domain.user.dao.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -123,6 +124,11 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
 	@Override
 	public int selectEmailCountByInputEmail(String email) {
 		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectEmailCountByInputEmail", email);
+	}
+
+	@Override
+	public List<String> selectRolesByLogId(String username) {
+		return super.getSqlSession().selectList(this.NAME_SPACE+"selectRolesByLogId", username);
 	}
 
 

@@ -248,4 +248,16 @@
 	      FROM USR
 	     WHERE EML = #{email} 
 	</select>
+	
+	<select id="selectRolesByEmail"
+            parameterType="string"
+            resultType="string">
+     SELECT ROLE_NAME
+       FROM "ROLE"
+      START WITH ROLE_ID = (SELECT ROLE_ID
+                              FROM USR
+                             WHERE LOGID = #{_parameter})
+    CONNECT BY PRIOR ROLE_ID = TOP_ROLE
+    </select>
+	
 </mapper>
