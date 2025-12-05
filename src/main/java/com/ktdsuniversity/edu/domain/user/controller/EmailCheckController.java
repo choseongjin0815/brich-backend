@@ -14,7 +14,7 @@ import com.ktdsuniversity.edu.domain.user.service.UserService;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/api/v1/email")
 public class EmailCheckController {
     @Autowired
     private JavaMailSender mailSender;
@@ -65,8 +65,8 @@ public class EmailCheckController {
     /*
      * 이메일 중복 체크
      */
-    @GetMapping("/duplicate/{email}")
-    public AjaxResponse checkDuplicatedEmail(@PathVariable String email) {
+    @GetMapping("/duplicate")
+    public AjaxResponse checkDuplicatedEmail(@RequestParam String email) {
     	
     	AjaxResponse ajaxResponse = new AjaxResponse();
     	

@@ -43,6 +43,7 @@ public class SecurityConfig {
 		http.cors(cors /*CorsCofigurer*/->{
 			CorsConfigurationSource corsSource = (request) -> {
 				CorsConfiguration corsConfig = new CorsConfiguration();
+				corsConfig.setAllowCredentials(true);
 				corsConfig.setAllowedOrigins(List.of("http://localhost:5173","http://192.168.211.14:5173","http://localhost:8080")); // 누가 우리에게 요청할 것이
 				corsConfig.setAllowedHeaders(List.of("*")); // 요청할 때 어떤 Request Header를 보낼것이냐
 				corsConfig.setAllowedMethods(List.of("POST", "GET","PUT","FETCH", "OPTION","DELETE")); // 요청할 때 어떤 메소드로 요청할 것이냐.
