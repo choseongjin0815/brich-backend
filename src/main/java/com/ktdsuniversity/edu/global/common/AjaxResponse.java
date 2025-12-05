@@ -2,12 +2,10 @@ package com.ktdsuniversity.edu.global.common;
 
 import java.util.Map;
 
-import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestSearchCampaignVO;
-
 public class AjaxResponse {
 
 	private Object body;	// 정상 처리 결과
-	private RequestSearchCampaignVO paginator;
+	private AbstractSearchVO paginator;
 	private Map<String, Object> error;	// 예외가 있을 때
 	
 	private int nowPage;
@@ -20,13 +18,12 @@ public class AjaxResponse {
 	public void setBody(Object body) {
 		this.body = body;
 	}
-	public RequestSearchCampaignVO getPaginator() {
+	public AbstractSearchVO getPaginator() {
 		return this.paginator;
 	}
-	public void setPaginator(RequestSearchCampaignVO paginator) {
+	public void setPaginator(AbstractSearchVO paginator) {
 		this.paginator = paginator;
 	}
-
 	public Map<String, Object> getError() {
 		return this.error;
 	}

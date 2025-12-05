@@ -246,15 +246,15 @@ public class CampaignServiceImpl implements CampaignService {
 		int adoptCount = this.campaignDao.selectAdoptCountByCmpnId(requestApplicantVO.getCmpnId());
 		CampaignVO campaignInfo = this.campaignDao.selectCampaignInfoByCmpnId(requestApplicantVO.getCmpnId());
 		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaignInfo.getUsrId().equals(userId.getUsrId())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
-		
-		String[] banList = {"2007", "2008"};
-		if (Arrays.asList(banList).contains(campaignInfo.getSttsCd())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaignInfo.getUsrId().equals(userId.getUsrId())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
+//		
+//		String[] banList = {"2007", "2008"};
+//		if (Arrays.asList(banList).contains(campaignInfo.getSttsCd())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
 		
 		ResponseApplicantListVO applicantList = new ResponseApplicantListVO();
 		applicantList.setApplicantList(applicant);

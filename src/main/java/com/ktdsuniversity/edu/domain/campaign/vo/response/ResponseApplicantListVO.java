@@ -38,6 +38,7 @@ public class ResponseApplicantListVO {
 
 	@Override
 	public String toString() {
-		return "ApplicantListVO [applicantList=" + this.applicantList + campaignInfo + "]";
+		return "ResponseApplicantListVO [applicantList=" + this.applicantList + ", adoptCount=" + this.adoptCount
+				+ ", campaignInfo=" + this.campaignInfo + "]";
 	}
 }

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.domain.campaign.service.CampaignService;
+import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestApplicantVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestSearchCampaignVO;
+import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseApplicantListVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignListVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
@@ -43,10 +45,30 @@ public class CampaignApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		ajaxResponse.setBody(campaignList);
 		ajaxResponse.setPaginator(requestSearchCampaignVO);
-		ajaxResponse.setNowPage(requestSearchCampaignVO.getPageNo());
-		ajaxResponse.setDone(requestSearchCampaignVO.getPageNo() == requestSearchCampaignVO.getPageCount() - 1);
 		
 		log.info("campaigncheck : " + campaignList);
 		return ajaxResponse;
 	}
+	
+	@GetMapping("/applicant/{cmpnId}")
+    public AjaxResponse readApplicantList(@PathVariable String cmpnId,
+    									  RequestApplicantVO requestApplicantVO,
+    									  Authentication authentication) {
+    	requestApplicantVO.setListSize(10);
+    	requestApplicantVO.setPageCountInGroup(10);
+    	requestApplicantVO.setCmpnId(cmpnId);
+
+    	if (requestApplicantVO.getOrder() != null) {
+    		requestApplicantVO.setOrder(requestApplicantVO.getOrder().toUpperCase());
+    	}
+    	
+    	ResponseApplicantListVO applicantList = this.campaignService.readApplicantListById(requestApplicantVO);
+    	
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(applicantList);
+    	ajaxResponse.setPaginator(requestApplicantVO);
+    	
+    	log.info("applicant : ", applicantList);
+    	return ajaxResponse;
+    }
 }
