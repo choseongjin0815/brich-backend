@@ -54,7 +54,7 @@ public class JwtProvider {
 		// JWT 반환
 		return jwt;
 	}
-	
+	 
 	public UserVO verify(String jwt) throws JsonProcessingException {
 		// JWT 복호화를 위한 키 설정
 		SecretKey jwtKey = Keys.hmacShaKeyFor(secretKey.getBytes());
