@@ -56,6 +56,23 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Autowired
 	private MultipartFileHandler multipartFileHandler;
 	
+	/* ======================================== 2차 ========================================*/
+	@Override
+	public List<AdminUserListVO> readAdminAllUserList() {
+		return this.adminUserDao.selectAdminUserList();
+	}
+	
+	@Override
+	public List<AdminUserListVO> readAdminBloggerList() {
+		return this.adminUserDao.selectAdminBloggerList();
+	}
+	
+	@Override
+	public List<AdminUserListVO> readAdminAdvertiserList() {
+		return this.adminUserDao.selectAdminAdvertiserList();
+	}
+	
+	/* ======================================== 1차 ======================================== */
 	/**
 	 * 회원 관리 목록
 	 * @param tab
@@ -89,7 +106,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 		
 		String userAutr = this.adminUserDao.selectAdminUserAutrById(usrId);
 		
-		if(userAutr.equals("1002") || userAutr.equals("1003")) {
+		if(userAutr.equals("블로거")) {
 			AdminBloggerDetailVO info = this.adminUserDao.selectAdminBloggerDetailById(usrId);
 			
 			List<CampaignVO> progressList = this.adminUserDao.selectBloggerCmpnProgressList(usrId);
@@ -123,7 +140,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	        
 			return info;
 		}
-		else if(userAutr.equals("1004") || userAutr.equals("1007")) {
+		else if(userAutr.equals("광고주")) {
 			AdminAdvertiserDetailVO info = this.adminUserDao.selectAdminAdvertiserDetailById(usrId);
 			
 			List<CampaignVO> progressList = this.adminUserDao.selectAdvertiserCmpnProgressList(usrId);
