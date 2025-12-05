@@ -19,7 +19,7 @@
              , U.BLG_ADDRS
              , U.RCNT_BLG_CRTFCTN_DT
              , CASE
-                   WHEN U.AUTR IN ('1002', '1003')
+                   WHEN U.AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
                    THEN (SELECT COUNT(C_ADPT.BLG_USR_ID)
                           FROM CMPN_PST_ADPT C_ADPT
                          INNER JOIN CMPN C
@@ -29,7 +29,7 @@
                            AND C_ADPT.BLG_USR_ID = U.USR_ID
                            AND C.STTS_CD = '2007'
                            AND C_ADPT.ADPT_YN = 'Y')
-                   WHEN U.AUTR = '1004'
+                   WHEN U.AUTR = 'ROLE-20251203-000004'
                    THEN (SELECT COUNT(C.CMPN_ID)
                           FROM CMPN C
                          WHERE C.DLT_YN = 'N'
@@ -37,7 +37,7 @@
                            AND C.USR_ID = U.USR_ID)
                     END AS CMPN_PRGRSS_CNT
              , CASE 
-                   WHEN U.AUTR IN ('1002', '1003')
+                   WHEN U.AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
                    THEN (SELECT COUNT(C_ADPT.BLG_USR_ID)
                            FROM CMPN_PST_ADPT C_ADPT
                           INNER JOIN CMPN C
@@ -47,7 +47,7 @@
                             AND C_ADPT.BLG_USR_ID = U.USR_ID
                             AND C.STTS_CD = '2007'
                             AND C_ADPT.ADPT_YN = 'Y')
-                   WHEN U.AUTR = '1004'
+                   WHEN U.AUTR = 'ROLE-20251203-000004'
                    THEN (SELECT COUNT(C.CMPN_ID)
                            FROM CMPN C
                           INNER JOIN CMPN_PYMNT CP
@@ -64,9 +64,9 @@
                 END AS RCNT_LGN_SCS_DT
              , U.PNLT_CNT
              , CASE
-                   WHEN U.AUTR = '1007'
+                   WHEN U.ACCNT_BLCK_STTS = 'P'
                    THEN 'N'
-                   WHEN U.AUTR = '1004'
+                   WHEN U.ACCNT_BLCK_STTS = 'N'
                    THEN 'Y'
                    ELSE '-'
                 END AS REGIST_ACPT
@@ -74,10 +74,11 @@
              , U.CRT_DT
           FROM USR U
           WHERE U.DLT_YN = 'N'
-            AND U.AUTR NOT IN ('1001', '1005', '1008')
+            AND U.ACCNT_BLCK_STTS = 'N'
+            AND U.AUTR != 'ROLE-20251203-000001'
           ORDER BY
 				   CASE
-				       WHEN U.AUTR = '1007'
+				       WHEN U.ACCNT_BLCK_STTS = 'P'
 				       THEN 0
 				       ELSE 1
 				   END, 
@@ -122,7 +123,8 @@
              , U.CRT_DT
           FROM USR U
           WHERE U.DLT_YN = 'N'
-            AND U.AUTR IN ('1002', '1003')
+            AND U.AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
+            AND U.ACCNT_BLCK_STTS = 'N'
           ORDER BY U.CRT_DT DESC
     </select>
     
@@ -132,10 +134,11 @@
              , U.LOG_ID
              , U.NM
              , U.AUTR
+             , U.CMPNY
              , CASE
-                   WHEN U.AUTR = '1007'
+                   WHEN U.ACCNT_BLCK_STTS = 'P'
                    THEN 'N'
-                   WHEN U.AUTR = '1004'
+                   WHEN U.ACCNT_BLCK_STTS = 'N'
                    THEN 'Y'
                    ELSE '-'
                 END AS REGIST_ACPT
@@ -161,10 +164,10 @@
              , U.CRT_DT
           FROM USR U
          WHERE U.DLT_YN = 'N'
-           AND U.AUTR IN ('1004', '1007')
+           AND U.AUTR = 'ROLE-20251203-000004'
          ORDER BY
                  CASE
-                     WHEN U.AUTR = '1007'
+                     WHEN U.ACCNT_BLCK_STTS = 'P'
                      THEN 0
                      ELSE 1
                  END, 
@@ -173,9 +176,17 @@
     
     <!-- 분기 처리를 위한 아이디로 권한 찾기 -->
     <select id="selectAdminUserAutrById" parameterType="string">
-        SELECT AUTR
+        SELECT CASE
+                   WHEN AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
+                   THEN '블로거'
+                   WHEN AUTR = 'ROLE-20251203-000004'
+                   THEN '광고주'
+                   ELSE 'none'       
+                END AS AUTR
           FROM USR
-         WHERE USR_ID = #{_parameter}
+         WHERE USR_ID = {_parameter}
+           AND DLT_YN = 'N'
+           AND ACCNT_BLCK_STTS != 'R'
     </select>
     
     <!-- 회원 관리 - 블로거 상세 정보 -->
@@ -226,6 +237,7 @@
              , U.MTTR
           FROM USR U
           WHERE U.DLT_YN = 'N'
+            AND U.ACCNT_BLCK_STTS = 'N'
             AND U.USR_ID = #{_parameter}
     </select>
     
@@ -328,9 +340,9 @@
              , U.AUTR
              , U.CMPNY 
              , CASE
-                   WHEN U.AUTR = '1007'
+                   WHEN U.ACCNT_BLCK_STTS = 'P'
                    THEN 'N'
-                   WHEN U.AUTR = '1004'
+                   WHEN U.ACCNT_BLCK_STTS = 'N'
                    THEN 'Y'
                    ELSE '-'
                 END AS REGIST_ACPT
@@ -373,7 +385,8 @@
                             WHERE F.DLT_YN = 'N') F
             ON U.FL_GRP_ID = F.FL_GRP_ID
          WHERE U.DLT_YN = 'N'
-           AND U.AUTR IN ('1004', '1007')
+           AND U.ACCNT_BLCK_STTS != 'R'
+           AND U.AUTR = 'ROLE-20251203-000004'
            AND U.USR_ID = #{_parameter}
     </select>
     

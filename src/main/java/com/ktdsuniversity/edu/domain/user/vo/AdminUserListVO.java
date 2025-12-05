@@ -12,6 +12,7 @@ public class AdminUserListVO {
 	private String rcntLgnScsDt;	// 최근 로그인 성공 일시
 	private int pnltCnt;			// 징계 횟수
 	
+	private String cmpny;
 	private String blgAddrs;		// 블로그 주소
 	private String rcntBlgCrtfctnDt; // 최근 블로그 인증 일시
 	private String sbscrptnExprsDt;	// 구독 만료일
@@ -57,6 +58,12 @@ public class AdminUserListVO {
 	}
 	public void setPnltCnt(int pnltCnt) {
 		this.pnltCnt = pnltCnt;
+	}
+	public String getCmpny() {
+		return this.cmpny;
+	}
+	public void setCmpny(String cmpny) {
+		this.cmpny = cmpny;
 	}
 	public String getBlgAddrs() {
 		return this.blgAddrs;

@@ -13,7 +13,6 @@ import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
 public interface AdminUserService {
 
-
 	AdminUserBaseInfoVO readAdminUserDetailById(String usrId);
 
 	boolean updateAdvertiserRegistAuthCode(Map<String, String> requestData);
@@ -27,5 +26,13 @@ public interface AdminUserService {
 	boolean updateBlogAddress(AdminUserModifyInfoVO adminUserModifyInfoVO);
 
 	boolean updateUserPenaltyInfo(AdminPenaltyRequestVO adminPanaltyRequestVO);
+
+	// 2차
+	
+	List<AdminUserListVO> readAdminAllUserList();
+
+	List<AdminUserListVO> readAdminBloggerList();
+
+	List<AdminUserListVO> readAdminAdvertiserList();
 
 }
