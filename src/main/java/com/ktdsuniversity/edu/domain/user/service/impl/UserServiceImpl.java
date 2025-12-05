@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 		//1. LOG_ID, autr(1001,1002,1003,1004) 이용해 유저 정보 조회
     	UserVO userVO = this.userDao.selectUserByLogIdAndAutr(requestUserLoginVO);
     	
-    	log.info("loginUser:{}", userVO);
+    	
 		//2. 조회된 유저가 없을 경우
     	if(userVO == null) {
     		throw new BrichException("아이디 또는 비밀번호가 잘못되었습니다.", "/WEB-INF/views/user/login.jsp");
@@ -123,7 +123,9 @@ public class UserServiceImpl implements UserService {
     	//2) 블럭 여부를 "N"으로 변경한다. 
     	//3) 마지막 로그인 성공 날짜를 현재로 변경한다.
     	int updateCount = this.userDao.updateLoginSuccessByLogId(requestUserLoginVO.getLogId());
-    	
+		List<String> roles = this.userDao.selectRolesByLogId(requestUserLoginVO.getLogId());
+		userVO.setRoles(roles);
+		log.info("loginUser:{}", userVO);
 		return userVO;
 		
 	}

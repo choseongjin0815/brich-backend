@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.global.security.jwt.controller;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class JwtAuthenticationController {
 	public AjaxResponse generateToken(@RequestBody RequestUserLoginVO requestUserLoginVO){
 		
 		UserVO userVO = this.userService.readUser(requestUserLoginVO);
-		
+
 		String jwt = this.jwtProvider.generate(Duration.ofDays(30), userVO);
 		
 		AjaxResponse jwtResponse = new AjaxResponse();
