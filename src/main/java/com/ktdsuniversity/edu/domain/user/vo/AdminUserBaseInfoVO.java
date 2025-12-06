@@ -13,6 +13,7 @@ public class AdminUserBaseInfoVO {
 	private String cmpny;
 	private String flGrpId;
 	
+	private String accntBlckStts;
 	private String rcntLgnScsDt;
 	private int pnltCnt;
 	private String crtDt;
@@ -66,6 +67,12 @@ public class AdminUserBaseInfoVO {
 	}
 	public void setFlGrpId(String flGrpId) {
 		this.flGrpId = flGrpId;
+	}
+	public String getAccntBlckStts() {
+		return this.accntBlckStts;
+	}
+	public void setAccntBlckStts(String accntBlckStts) {
+		this.accntBlckStts = accntBlckStts;
 	}
 	public String getRcntLgnScsDt() {
 		return this.rcntLgnScsDt;
