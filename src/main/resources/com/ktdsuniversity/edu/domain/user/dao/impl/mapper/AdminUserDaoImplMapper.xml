@@ -18,6 +18,7 @@
              , U.AUTR
              , U.BLG_ADDRS
              , U.RCNT_BLG_CRTFCTN_DT
+             , U.ACCNT_BLCK_STTS
              , CASE
                    WHEN U.AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
                    THEN (SELECT COUNT(C_ADPT.BLG_USR_ID)
@@ -93,6 +94,7 @@
              , U.NM
              , U.AUTR
              , U.BLG_ADDRS
+             , U.ACCNT_BLCK_STTS
              , U.RCNT_BLG_CRTFCTN_DT
              , (SELECT COUNT(C_ADPT.BLG_USR_ID)
                   FROM CMPN_PST_ADPT C_ADPT
@@ -135,6 +137,7 @@
              , U.NM
              , U.AUTR
              , U.CMPNY
+             , U.ACCNT_BLCK_STTS
              , CASE
                    WHEN U.ACCNT_BLCK_STTS = 'P'
                    THEN 'N'
@@ -204,6 +207,7 @@
              , U.AUTR
              , U.BLG_ADDRS
              , U.RCNT_BLG_CRTFCTN_DT
+             , U.ACCNT_BLCK_STTS
              , CASE 
                    WHEN U.RCNT_LGN_SCS_DT IS NULL
                    THEN '-'

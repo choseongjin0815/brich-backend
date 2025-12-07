@@ -17,6 +17,7 @@ public class AdminUserListVO {
 	private String rcntBlgCrtfctnDt; // 최근 블로그 인증 일시
 	private String sbscrptnExprsDt;	// 구독 만료일
 	
+	private String accntBlckStts;
 	private int cmpnAllCnt;		// 총 캠페인 진행 수
 	private int cmpnPrgrssCnt;	// 진행 중인 캠페인 수
 	private String registAcpt;	// 가입 승인 여부
@@ -82,6 +83,12 @@ public class AdminUserListVO {
 	}
 	public void setSbscrptnExprsDt(String sbscrptnExprsDt) {
 		this.sbscrptnExprsDt = sbscrptnExprsDt;
+	}
+	public String getAccntBlckStts() {
+		return accntBlckStts;
+	}
+	public void setAccntBlckStts(String accntBlckStts) {
+		this.accntBlckStts = accntBlckStts;
 	}
 	public int getCmpnAllCnt() {
 		return this.cmpnAllCnt;
