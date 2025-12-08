@@ -1,3 +1,4 @@
+
 $().ready(function() {
     var category = $("input[name='category']");
     var sortBy = $("select[name='sortBy']");
