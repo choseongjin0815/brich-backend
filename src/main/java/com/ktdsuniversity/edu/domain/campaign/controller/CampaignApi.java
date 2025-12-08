@@ -117,12 +117,12 @@ public class CampaignApi {
 		return response;
 	}
 	
-	@PutMapping("/postapprove/{cmpnPstAdoptId}")
+	@PutMapping("/post-approve/{cmpnPstAdptId}")
     @ResponseBody
-    public boolean doUpdatePstSttsApproveAction(@PathVariable String cmpnPstAdoptId,
+    public boolean doUpdatePstSttsApproveAction(@PathVariable String cmpnPstAdptId,
     											Authentication authentication) {
     	RequestApplicantVO requestApplicantVO = new RequestApplicantVO();
-    	requestApplicantVO.setCmpnPstAdptId(cmpnPstAdoptId);
+    	requestApplicantVO.setCmpnPstAdptId(cmpnPstAdptId);
 //    	requestApplicantVO.setUsrId(loginUser.getUsrId());	authentication.getPrincipal()로 가져올 것
     	requestApplicantVO.setUsrId("USR-20240413-000007");
     	boolean update = this.campaignService.updatePstSttsApproveByCmpnPstAdoptId(requestApplicantVO);

@@ -452,10 +452,10 @@ public class CampaignServiceImpl implements CampaignService {
 			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
 		}
 		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaign.getUsrId().equals(userId.getUsrId())) {
-			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaign.getUsrId().equals(userId.getUsrId())) {
+//			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
+//		}
 		
 		List<FileVO> uploadResult = this.multipartFileHandler.upload(requestDenyVO.getFile());
 		RequestUpdatePstSttsVO requestUpdatePstSttsVO = new RequestUpdatePstSttsVO();
