@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.domain.report.service.ReportService;
@@ -27,7 +26,6 @@ public class ReportApi {
 	private ReportService reportService;
 
 	// 신고글 리스트
-	// TODO pathVariable제거
 	@GetMapping
 	public AjaxResponse getReportList(ReportSearchVO reportSearchVO) {
 		AjaxResponse ajaxResponse = new AjaxResponse();
