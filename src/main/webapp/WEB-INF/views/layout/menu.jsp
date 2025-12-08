@@ -76,10 +76,11 @@ pageEncoding="UTF-8"%>
                   <ul class="menu-content">
                     <li class="menu-dashboard-selected"><a id="menu-image" href="/blog/${sessionScope.__LOGIN_USER__.usrId}/dashboard" class="dashboard-font"> Dashboard</a></li> 
                     <li class="menu-campaignmain-selected"><a href="/campaignmain">캠페인</a></li>
-                    <li class="my-campaign "><div class="flex-row flex-space-between height-center">
-                        MY 캠페인
-                        <div class="caret-down"></div>
-                        <div class="caret-up display-none"></div>
+                    <li class="my-campaign ">
+                        <div class="flex-row flex-space-between height-center">
+	                        MY 캠페인
+	                        <div class="caret-down"></div>
+	                        <div class="caret-up display-none"></div>
                         </div> 
                           <ul class="my-sub-menu display-none">
                             <li class="menu-my-submitted-campaign-selected"><a href="/blgr/submittedmycampaign">신청한 캠페인</a></li>
