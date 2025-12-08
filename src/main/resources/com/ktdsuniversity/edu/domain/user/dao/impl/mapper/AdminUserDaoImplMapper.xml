@@ -421,7 +421,9 @@
     <!-- 상세 정보 - 광고주 가입 승인 -->
     <update id="updateAdvertiserAuthCodeByApprove" parameterType="map">
         UPDATE USR
-		   SET AUTR = #{autr}
+		   SET ACCNT_BLCK_STTS = 'N'
+		     , UPDT_DT = SYSDATE
+		     , MTTR = #{adminId}
 		 WHERE USR_ID = #{usrId}
 		   AND DLT_YN = 'N'
     </update>
@@ -429,8 +431,9 @@
     <!-- 상세 정보 - 광고주 가입 반려 -->
     <update id="updateAdvertiserAuthCodeByReject" parameterType="map">
         UPDATE USR
-           SET AUTR = #{autr}
-             , DLT_YN = 'Y'
+           SET ACCNT_BLCK_STTS = 'R'
+             , UPDT_DT = SYSDATE
+             , MTTR = #{adminId}
          WHERE USR_ID = #{usrId}
            AND DLT_YN = 'N'
     </update>
@@ -648,5 +651,12 @@
                                  , #{updtAdmin}
                                  , 'N')
     </insert>
+    
+    <!-- ======================================== 2차 ======================================== -->
+    <select id="selectCurrentUpdtDt" resultType="String">
+	    SELECT TO_CHAR(UPDT_DT, 'YYYY-MM-DD HH24:MI:SS')
+	     FROM USR
+	    WHERE USR_ID = #{usrId}
+	</select>
     
 </mapper>

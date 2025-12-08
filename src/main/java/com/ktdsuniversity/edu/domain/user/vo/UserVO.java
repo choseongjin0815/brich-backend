@@ -173,11 +173,12 @@ public class UserVO extends BaseVO{
     private String flGrpId;
     
     private String blgTitle;
-
     
     private BlogIndexVO blogIndexVO;
     
     private List<String> roles;
+    
+    private String accntBlckStts;
     
     public BlogIndexVO getBlogIndexVO() {
 		return this.blogIndexVO;
@@ -379,13 +380,20 @@ public class UserVO extends BaseVO{
 		this.blgTitle = blgTitle;
 	}
 	
-	
 	public List<String> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+	
+	public String getAccntBlckStts() {
+		return this.accntBlckStts;
+	}
+
+	public void setAccntBlckStts(String accntBlckStts) {
+		this.accntBlckStts = accntBlckStts;
 	}
 
 	@Override
@@ -397,7 +405,7 @@ public class UserVO extends BaseVO{
 				+ this.rcntBlgCrtfctnDt + ", blgAddrs=" + this.blgAddrs + ", crtfdAdmin=" + this.crtfdAdmin + ", ttlVstrCnt="
 				+ this.ttlVstrCnt + ", avrgVstrCnt=" + this.avrgVstrCnt + ", blgNghbrCnt=" + this.blgNghbrCnt + ", scrpCnt=" + this.scrpCnt
 				+ ", cmpny=" + cmpny + ", flGrpId=" + flGrpId + ", blgTitle=" + blgTitle + ", blogIndexVO="
-				+ this.blogIndexVO + ", roles=" + this.roles + "]";
+				+ this.blogIndexVO + ", roles=" + this.roles + ", accntBlckStts=" + this.accntBlckStts + "]";
 	}
 
 

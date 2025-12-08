@@ -92,10 +92,10 @@ public class AdminUserDaoImpl extends SqlSessionDaoSupport implements AdminUserD
 		return super.getSqlSession().selectList(this.NAME_SPACE + "selectAdvertiserCmpnCompletedList", usrId);
 	}
 
-	@Override
-	public int updateAdvertiserAuthCodeByApprove(Map<String, String> requestData) {
-		return super.getSqlSession().update(this.NAME_SPACE + "updateAdvertiserAuthCodeByApprove", requestData);
-	}
+//	@Override
+//	public int updateAdvertiserAuthCodeByApprove(Map<String, String> requestData) {
+//		return super.getSqlSession().update(this.NAME_SPACE + "updateAdvertiserAuthCodeByApprove", requestData);
+//	}
 
 	@Override
 	public int updateAdvertiserAuthCodeByReject(Map<String, String> requestData) {
@@ -150,6 +150,18 @@ public class AdminUserDaoImpl extends SqlSessionDaoSupport implements AdminUserD
 	@Override
 	public int insertNewHistoryByPenaltyCount(UserUpdateHistoryVO history) {
 		return super.getSqlSession().insert(this.NAME_SPACE + "insertNewHistoryByPenaltyCount", history);
+	}
+	
+	/* ======================================== 2차 ======================================== */
+
+	@Override
+	public int updateAdvertiserAuthCodeByApprove(Map<String, Object> updateParamMap) {
+		return super.getSqlSession().update(this.NAME_SPACE + "updateAdvertiserAuthCodeByApprove", updateParamMap);
+	}
+
+	@Override
+	public String selectCurrentUpdtDt(String usrId) {
+		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectCurrentUpdtDt", usrId);
 	}
 
 }

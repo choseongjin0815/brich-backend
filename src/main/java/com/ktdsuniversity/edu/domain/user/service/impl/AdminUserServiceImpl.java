@@ -56,7 +56,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Autowired
 	private MultipartFileHandler multipartFileHandler;
 	
-	/* ======================================== 2차 ========================================*/
+	/* ======================================== 2차 ======================================== */
 	@Override
 	public List<AdminUserListVO> readAdminAllUserList() {
 		return this.adminUserDao.selectAdminUserList();
@@ -70,6 +70,74 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Override
 	public List<AdminUserListVO> readAdminAdvertiserList() {
 		return this.adminUserDao.selectAdminAdvertiserList();
+	}
+	
+	@Transactional
+	@Override
+	public boolean updateAdvertiserRegistApprove(String usrId, String adminId) {
+		
+		// 모든 과정 처리 전 데이터 받아오기
+		AdminAdvertiserDetailVO beforeInfo = this.adminUserDao.selectAdminAdvertiserDetailById(usrId);
+		
+		Map<String, Object> updateParamMap = new HashMap<>();
+		updateParamMap.put("usrId", usrId);
+		updateParamMap.put("adminId", adminId);
+		
+		// 가입 승인 처리
+		int updateAndInsertResult = this.adminUserDao.updateAdvertiserAuthCodeByApprove(updateParamMap);
+		
+		// SYSDATE 값 대체
+		String afterUpdtDt = this.adminUserDao.selectCurrentUpdtDt(usrId);
+		
+		// 변경 정보 insert
+	    List<UserUpdateHistoryVO> historyList = new ArrayList<>();
+	    
+	    // ACCNT_BLCK_STTS
+	    historyList.add(createHistory(usrId, "ACCNT_BLCK_STTS", "P", "N", adminId, "[광고주 가입 승인]"));
+	    
+	    // UPDT_DT
+	    historyList.add(createHistory(usrId, "UPDT_DT", beforeInfo.getUpdtDt(), afterUpdtDt, adminId, "[광고주 가입 승인]"));
+	    
+	    // MTTR
+	    historyList.add(createHistory(usrId, "MTTR", beforeInfo.getMttr(), adminId, adminId, "[광고주 가입 승인]"));
+
+	    updateAndInsertResult = this.adminUserDao.insertUpdateHistory(historyList);
+		
+		return updateAndInsertResult > 0;
+	}
+	
+	@Transactional
+	@Override
+	public boolean updateAdvertiserRegistReject(String usrId, String adminId) {
+		
+		// 모든 과정 처리 전 데이터 받아오기
+		AdminAdvertiserDetailVO beforeInfo = this.adminUserDao.selectAdminAdvertiserDetailById(usrId);
+		
+		Map<String, Object> updateParamMap = new HashMap<>();
+		updateParamMap.put("usrId", usrId);
+		updateParamMap.put("adminId", adminId);
+		
+		// 가입 승인 처리
+		int updateAndInsertResult = this.adminUserDao.updateAdvertiserAuthCodeByApprove(updateParamMap);
+		
+		// SYSDATE 값 대체
+		String afterUpdtDt = this.adminUserDao.selectCurrentUpdtDt(usrId);
+		
+		// 변경 정보 insert
+		List<UserUpdateHistoryVO> historyList = new ArrayList<>();
+		
+		// ACCNT_BLCK_STTS
+		historyList.add(createHistory(usrId, "ACCNT_BLCK_STTS", "P", "R", adminId, "[광고주 가입 반려]"));
+		
+		// UPDT_DT
+		historyList.add(createHistory(usrId, "UPDT_DT", beforeInfo.getUpdtDt(), afterUpdtDt, adminId, "[광고주 가입 반려]"));
+		
+		// MTTR
+		historyList.add(createHistory(usrId, "MTTR", beforeInfo.getMttr(), adminId, adminId, "[광고주 가입 반려]"));
+	
+		updateAndInsertResult = this.adminUserDao.insertUpdateHistory(historyList);
+		
+		return updateAndInsertResult > 0;
 	}
 	
 	/* ======================================== 1차 ======================================== */
@@ -170,15 +238,17 @@ public class AdminUserServiceImpl implements AdminUserService {
 		String changeAutr = requestData.get("autr");
 		
 		if(changeAutr.equals("1004")) {
-			return this.adminUserDao.updateAdvertiserAuthCodeByApprove(requestData) > 0;
+//			return this.adminUserDao.updateAdvertiserAuthCodeByApprove(requestData) > 0;
 		}
 		else if(changeAutr.equals("1008")) {
-			return this.adminUserDao.updateAdvertiserAuthCodeByReject(requestData) > 0;
+//			return this.adminUserDao.updateAdvertiserAuthCodeByReject(requestData) > 0;
 		}
 		else {
 			// 임시 코드
 			throw new IllegalArgumentException("error");
 		}
+		
+		return false;
 	}
 
 	/**
