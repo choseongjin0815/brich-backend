@@ -326,6 +326,8 @@ public class CampaignServiceImpl implements CampaignService {
 		
 		// 최초 생성인지 확인
 		String favExists = this.campaignDao.selectFavCamapignExists(param);
+		
+		log.info("최초생성인가요00:"+favExists+ "blgId : " + blgId +" campaignId : "+campaignId);
 		if(favExists.equals("0")) { 
 			// 없다면 최초 생성
 			updateCount = this.campaignDao.insertFavCamapign(param);			

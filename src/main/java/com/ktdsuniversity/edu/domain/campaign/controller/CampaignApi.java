@@ -121,9 +121,9 @@ public class CampaignApi {
      */
     @ResponseBody
     @PostMapping("/blgr/dolove")
-    public AjaxResponse favCampaignDo(Authentication authentication, @RequestBody String campaignId,  String UsrId) {
-    	String blgId = UsrId;
-    	int count = campaignService.favCampaignDo(blgId, campaignId);
+    public AjaxResponse favCampaignDo(Authentication authentication, @RequestBody RequestSearchCampaignVO requestSearchCampaignVO) {
+    	String blgId = requestSearchCampaignVO.getLoginId();
+    	int count = campaignService.favCampaignDo(blgId, requestSearchCampaignVO.getCmpnId());
     	System.out.println("doLove 작동!!");
     	
     	
