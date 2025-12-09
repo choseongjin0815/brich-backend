@@ -17,7 +17,6 @@ import com.ktdsuniversity.edu.domain.inqr.vo.InqrSearchVO;
 import com.ktdsuniversity.edu.domain.inqr.vo.InqrVO;
 import com.ktdsuniversity.edu.domain.inqr.vo.request.RequestInqrCreateVO;
 import com.ktdsuniversity.edu.domain.inqr.vo.response.ResponseInqrVO;
-import com.ktdsuniversity.edu.domain.report.controller.ReportController;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 

@@ -75,7 +75,7 @@ public class ChatServiceImpl implements ChatService {
 	    int totalCount = 0;
 	    List<ResponseChatRoomInfoVO> chatRooms = null;
 
-	    if (!auth.equals("1004")) {
+	    if (!auth.equals("ROLE-20251203-000004")) {
 	        totalCount = chatDao.selectUserChatRoomsCount(searchChatVO);
 	        chatRooms = chatDao.selectUserChatRooms(searchChatVO);
 	        log.info("{}", System.currentTimeMillis());
@@ -169,10 +169,12 @@ public class ChatServiceImpl implements ChatService {
 	    tempSearch.setCmpnId(searchChatVO.getCmpnId());
 	    tempSearch.setPageNo(0);
 	    tempSearch.setListSize(Integer.MAX_VALUE);
+	    
+	    log.info("tempSearch{}", tempSearch.getCmpnId());
 
 	    List<ResponseChatRoomInfoVO> allChatRooms = null;
 	    
-	    if (!auth.equals("1004")) {
+	    if (!auth.equals("ROLE-20251203-000004")) {
 	        allChatRooms = chatDao.selectUserChatRooms(tempSearch);
 	    } else {
 	        allChatRooms = chatDao.selectCampaignChatRooms(tempSearch);
@@ -273,55 +275,28 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public SearchChatVO readAllCampaignList(SearchChatVO searchChatVO) {
-		// 1. 총 개수 조회
-		int totalCount = chatDao.selectAllCampaignListCount(searchChatVO);
-
-		// 2. 목록 조회
-		List<ResponseChatCampaignListVO> campaigns = chatDao.selectAllCampaignList(searchChatVO);
-
-		// 3. 페이지 정보 설정
+	public SearchChatVO readCampaignList(SearchChatVO searchChatVO, String status) {
+		int totalCount = 0;
+		List<ResponseChatCampaignListVO> campaigns = null;
+		if(status.equals("all")) {
+			totalCount = chatDao.selectAllCampaignListCount(searchChatVO);
+			campaigns = chatDao.selectAllCampaignList(searchChatVO);
+		}
+		else if (status.equals("end")) {
+			totalCount = chatDao.selectEndedCampaignListCount(searchChatVO);
+			campaigns = chatDao.selectEndedCampaignList(searchChatVO);
+		}
+		else if(status.equals("ongoing")) {
+			totalCount = chatDao.selectOngoingCampaignListCount(searchChatVO);
+			campaigns = chatDao.selectOngoingCampaignList(searchChatVO);
+		}
 		searchChatVO.setPageCount(totalCount);
-
-		// 4. 결과 목록을 SearchChatVO에 설정
 		searchChatVO.setCampaignList(campaigns);
-
+		
 		return searchChatVO;
 	}
-
-	@Override
-	public SearchChatVO readEndedCampaignList(SearchChatVO searchChatVO) {
-		// 1. 총 개수 조회
-		int totalCount = chatDao.selectEndedCampaignListCount(searchChatVO);
-
-		// 2. 목록 조회
-		List<ResponseChatCampaignListVO> campaigns = chatDao.selectEndedCampaignList(searchChatVO);
-
-		// 3. 페이지 정보 설정
-		searchChatVO.setPageCount(totalCount);
-
-		// 4. 결과 목록을 SearchChatVO에 설정
-		searchChatVO.setCampaignList(campaigns);
-
-		return searchChatVO;
-	}
-
-	@Override
-	public SearchChatVO readOngoingCampaignList(SearchChatVO searchChatVO) {
-		// 1. 총 개수 조회
-		int totalCount = chatDao.selectOngoingCampaignListCount(searchChatVO);
-
-		// 2. 목록 조회
-		List<ResponseChatCampaignListVO> campaigns = chatDao.selectOngoingCampaignList(searchChatVO);
-
-		// 3. 페이지 정보 설정
-		searchChatVO.setPageCount(totalCount);
-
-		// 4. 결과 목록을 SearchChatVO에 설정
-		searchChatVO.setCampaignList(campaigns);
-
-		return searchChatVO;
-	}
+	
+	
 
 	@Transactional
 	@Override
@@ -476,6 +451,9 @@ public class ChatServiceImpl implements ChatService {
 		}
 		return chtRmIdList;
 	}
+
+
+	
 
 
 }
