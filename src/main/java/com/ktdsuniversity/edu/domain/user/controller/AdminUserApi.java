@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +20,7 @@ import com.ktdsuniversity.edu.domain.user.vo.AdminUserListVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
-// @PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminUserApi {

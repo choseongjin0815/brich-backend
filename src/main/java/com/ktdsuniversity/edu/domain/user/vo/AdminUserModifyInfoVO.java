@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.domain.user.vo;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class AdminUserModifyInfoVO {
 	
 	// 관리자 아이디
@@ -26,6 +28,7 @@ public class AdminUserModifyInfoVO {
 	private String flGrpId;
 	private List<String> existFileIds;
 	private List<String> deleteFileIds;
+	private List<MultipartFile> newFiles;
 	
 	// 수정 이력 테이블 전용 데이터
 	private String updtRsn;
@@ -122,6 +125,12 @@ public class AdminUserModifyInfoVO {
 	}
 	public void setDeleteFileIds(List<String> deleteFileIds) {
 		this.deleteFileIds = deleteFileIds;
+	}
+	public List<MultipartFile> getNewFiles() {
+		return this.newFiles;
+	}
+	public void setNewFiles(List<MultipartFile> newFiles) {
+		this.newFiles = newFiles;
 	}
 	public String getUpdtRsn() {
 		return this.updtRsn;
