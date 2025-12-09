@@ -28,6 +28,7 @@ import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseAdoptListVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseApplicantListVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignListVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignVO;
+import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignwriteVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseDenyHistoryVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
@@ -207,5 +208,18 @@ public class CampaignApi {
     	else {
     		return false;
     	}
+	}
+	
+	@GetMapping("/write")
+	public AjaxResponse createCampaign(Authentication authentication) {
+//		if (!loginUser.getAutr().equals("1004")) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
+		
+		ResponseCampaignwriteVO common = this.campaignService.createCampaign();
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(common);
+		return ajaxResponse;
 	}
 }
