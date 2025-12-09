@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.domain.blog.service.BlogDataService;
 import com.ktdsuniversity.edu.domain.campaign.service.CampaignService;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestApplicantVO;
+import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestDenyVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestSearchCampaignVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseAdoptListVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseApplicantListVO;
@@ -42,25 +43,6 @@ public class CampaignApi {
 	@Autowired
     private BlogDataService blogDataService;
 
-	// 석진 ===============================================================
-	@GetMapping("list")
-	public AjaxResponse readCampaignList(Authentication authentication,
-										 RequestSearchCampaignVO requestSearchCampaignVO) {
-		requestSearchCampaignVO.setListSize(8);
-		requestSearchCampaignVO.setPageCountInGroup(5);
-		
-		
-		ResponseCampaignListVO campaignList = this.campaignService.readCampaignListByUsrId(requestSearchCampaignVO);
-		
-		AjaxResponse ajaxResponse = new AjaxResponse();
-		ajaxResponse.setBody(campaignList);
-		ajaxResponse.setPaginator(requestSearchCampaignVO);
-		
-		log.info("campaigncheck : " + campaignList);
-		return ajaxResponse;
-	}
-	
-	
 	// Hapa ===============================================================
     
     @PostMapping("/main")
@@ -112,6 +94,27 @@ public class CampaignApi {
     	log.info( "캠페인 상세조회 결과 : " + detail.toString());
     	return ajaxResponse;
     }
+    
+    
+    
+ // 석진 ===============================================================
+ 	@GetMapping("list")
+ 	public AjaxResponse readCampaignList(Authentication authentication,
+ 										 RequestSearchCampaignVO requestSearchCampaignVO) {
+ 		requestSearchCampaignVO.setListSize(8);
+ 		requestSearchCampaignVO.setPageCountInGroup(5);
+ 		
+ 		
+ 		ResponseCampaignListVO campaignList = this.campaignService.readCampaignListByUsrId(requestSearchCampaignVO);
+ 		
+ 		AjaxResponse ajaxResponse = new AjaxResponse();
+ 		ajaxResponse.setBody(campaignList);
+ 		ajaxResponse.setPaginator(requestSearchCampaignVO);
+ 		
+ 		log.info("campaigncheck : " + campaignList);
+ 		return ajaxResponse;
+ 	}
+ 	
 	@GetMapping("/applicant")
     public AjaxResponse readApplicantList(RequestApplicantVO requestApplicantVO,
     									  Authentication authentication) {
@@ -133,7 +136,6 @@ public class CampaignApi {
     }
 	
 	@PutMapping("/adoptChange")
-    @ResponseBody
     public boolean doUpdateAdptYnAction(@RequestBody RequestApplicantVO requestApplicantVO,
     									Authentication authentication) {
 //    	requestApplicantVO.setUsrId(loginUser.getUsrId());
@@ -165,7 +167,6 @@ public class CampaignApi {
     }
 	
 	@GetMapping("/post-deny-history/{cmpnPstAdptId}")
-	@ResponseBody
 	public AjaxResponse doReadDenyHistoryAction(@PathVariable String cmpnPstAdptId) {
 		List<ResponseDenyHistoryVO> history = this.campaignService.readDenyHistoryByCmpnPstAdptId(cmpnPstAdptId);
 
@@ -176,7 +177,6 @@ public class CampaignApi {
 	}
 	
 	@PutMapping("/post-approve/{cmpnPstAdptId}")
-    @ResponseBody
     public boolean doUpdatePstSttsApproveAction(@PathVariable String cmpnPstAdptId,
     											Authentication authentication) {
     	RequestApplicantVO requestApplicantVO = new RequestApplicantVO();
@@ -192,4 +192,20 @@ public class CampaignApi {
     		return false;
     	}
     }
+	
+	@PostMapping("/post-deny")
+	public boolean doCreateDenyAction(RequestDenyVO requestDenyVO,
+									  Authentication authentication) {
+//		requestDenyVO.setAdvId(loginUser.getUsrId());
+		requestDenyVO.setAdvId("USR-20240413-000007");
+		log.info("------ requestDenyVO:" + requestDenyVO.toString());
+		boolean insert = this.campaignService.createDenyByCmpnPstAdoptId(requestDenyVO);
+		
+		if (insert) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+	}
 }
