@@ -1,3 +1,4 @@
+
 $().ready(function() {
     var category = $("input[name='category']");
     var sortBy = $("select[name='sortBy']");
@@ -18,7 +19,7 @@ $().ready(function() {
     if (here.includes('closedcampaign')) {
       $('.campaign-fav').addClass('display-none');
     }
-    
+    // 카테고리 선택
     $('.category-seleted-box').each(function () {
       if($(this).data('category-menu') === hereCategory){
          $(".category-seleted-box-"+hereCategory).removeClass('visibility-hidden');

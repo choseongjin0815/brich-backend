@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.domain.campaign.vo.response;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ktdsuniversity.edu.domain.campaign.vo.CampaignVO;
 import com.ktdsuniversity.edu.domain.file.vo.FileVO;
@@ -71,6 +72,19 @@ public class ResponseCampaignVO extends CampaignVO{
 	  * 공통코드 이름
 	  */
 	 private String SttsCdNm;
+	 
+	 /**
+	  * 캠페인 참여자 통계
+	  */
+	 Map<String, Object> stats;
+
+	 public Map<String, Object> getStats() {
+		return this.stats;
+	}
+
+	 public void setStats(Map<String, Object> stats) {
+		 this.stats = stats;
+	 }
 
 	 public String getSttsCdNm() {
 		return this.SttsCdNm;
@@ -189,6 +203,6 @@ public class ResponseCampaignVO extends CampaignVO{
 				+ ", flGrpId=" + flGrpId + ", fileVoList=" + fileVoList + ", likeCnt=" + likeCnt + ", adptCnt="
 				+ adptCnt + ", area=" + area + ", parentArea=" + parentArea + ", pstSttsCd=" + pstSttsCd
 				+ ", pstSttsCdNm=" + pstSttsCdNm + ", favYn=" + favYn + ", adptYn=" + adptYn + ", SttsCdNm=" + SttsCdNm
-				+ "]";
+				+ ", stats=" + stats + "]";
 	}
 }

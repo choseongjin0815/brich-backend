@@ -141,6 +141,10 @@ public class CampaignServiceImpl implements CampaignService {
 		// Level 2 조회조건 세팅
 		if(requestSearchCampaignVO.getCategory() != null ) {
 			// 부모 카테고리 조회
+			String searchKeyWord = requestSearchCampaignVO.getSearchKeyword();
+			if(searchKeyWord != null) {
+				searchKeyWord = searchKeyWord.substring(0,searchKeyWord.length()-1);
+			}
 			String searchCatagory = campaignDao.selectCategoryParent(requestSearchCampaignVO.getCategory());
 			requestSearchCampaignVO.setCategory(searchCatagory);
 			log.info("조회할 카테고리 번호 : " + searchCatagory);
