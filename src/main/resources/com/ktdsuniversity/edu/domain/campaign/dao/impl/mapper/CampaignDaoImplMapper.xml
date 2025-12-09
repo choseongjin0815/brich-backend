@@ -17,7 +17,8 @@
             resultMap="ResponseApplicantVOMap"
             parameterType="com.ktdsuniversity.edu.domain.campaign.vo.request.RequestApplicantVO">
         <include refid="Common.paginationHeader" />
-        SELECT CPA.CMPN_PST_ADPT_ID
+        SELECT ROW_NUMBER() OVER(ORDER BY AUTR) "NUMBER"
+             , CPA.CMPN_PST_ADPT_ID
 		     , CPA.ADPT_YN
 		     , U.USR_ID
 		     , U.LOG_ID
@@ -53,7 +54,7 @@
 	    ORDER BY NVL(${sortCol}, 0) ${order}
 	       </when>
 	       <otherwise>
-	    ORDER BY AUTR ASC
+	    ORDER BY "NUMBER" ASC
 	       </otherwise>
 	   </choose>
        <include refid="Common.paginationFooter" />
@@ -88,10 +89,10 @@
         UPDATE CMPN_PST_ADPT
            SET UPDT_DT = SYSDATE
              , MTTR = #{usrId}
-        <if test='adptYn == "adopted"'>
+        <if test='adptYn == "Y"'>
              , ADPT_YN = 'N'
         </if>
-        <if test='adptYn == "unadopted"'>
+        <if test='adptYn == "N"'>
              , ADPT_YN = 'Y'
         </if>
          WHERE CMPN_PST_ADPT_ID = #{cmpnPstAdptId}
@@ -169,7 +170,8 @@
             resultMap="ResponseAdoptVOMap"
             parameterType="com.ktdsuniversity.edu.domain.campaign.vo.request.RequestApplicantVO">
         <include refid="Common.paginationHeader" />
-        SELECT CPA.CMPN_PST_ADPT_ID
+        SELECT ROW_NUMBER() OVER(ORDER BY PST_STTS_CD) "NUMBER"
+             , CPA.CMPN_PST_ADPT_ID
 		     , CPA.PST_URL
 		     , CPA.PST_STTS_CD
 		     , CC.CD_NM AS POST_CD_NM
@@ -213,9 +215,14 @@
 		<if test="searchKeyword != null and searchKeyword != ''">
            AND U.LOG_ID LIKE '%' || #{searchKeyword} || '%'
        </if>
-       <if test='sortCol != null and sortCol != ""'>
-          ORDER BY NVL(${sortCol}, 0) ${order}  
-       </if>
+       <choose>
+           <when test='sortCol != null and sortCol != ""'>
+        ORDER BY NVL(${sortCol}, 0) ${order}
+           </when>
+           <otherwise>
+        ORDER BY "NUMBER" ASC
+           </otherwise>
+       </choose>
        <include refid="Common.paginationFooter" />
     </select>
     

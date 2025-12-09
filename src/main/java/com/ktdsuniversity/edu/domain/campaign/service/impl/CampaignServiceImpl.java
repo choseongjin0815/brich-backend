@@ -250,15 +250,15 @@ public class CampaignServiceImpl implements CampaignService {
 		int adoptCount = this.campaignDao.selectAdoptCountByCmpnId(requestApplicantVO.getCmpnId());
 		CampaignVO campaignInfo = this.campaignDao.selectCampaignInfoByCmpnId(requestApplicantVO.getCmpnId());
 		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaignInfo.getUsrId().equals(userId.getUsrId())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
-		
-		String[] banList = {"2007", "2008"};
-		if (Arrays.asList(banList).contains(campaignInfo.getSttsCd())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaignInfo.getUsrId().equals(userId.getUsrId())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
+//		
+//		String[] banList = {"2007", "2008"};
+//		if (Arrays.asList(banList).contains(campaignInfo.getSttsCd())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
 		
 		ResponseApplicantListVO applicantList = new ResponseApplicantListVO();
 		applicantList.setApplicantList(applicant);
@@ -275,10 +275,14 @@ public class CampaignServiceImpl implements CampaignService {
 		if (!campaign.getSttsCd().equals("2006")) {
 			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
 		}
-		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaign.getUsrId().equals(userId.getUsrId())) {
-			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
+//		
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaign.getUsrId().equals(userId.getUsrId())) {
+//			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
+//		}
+		int adoptCount = this.campaignDao.selectAdoptCountByCmpnId(requestApplicantVO.getCmpnId());
+		if (adoptCount == campaign.getRcrtPrsnn()) {
+			throw new AjaxException("채택 인원을 모두 선택했습니다.");
 		}
 		
 		int updateCount = this.campaignDao.updateAdptYnByCmpnPstAdptId(requestApplicantVO);
@@ -293,15 +297,15 @@ public class CampaignServiceImpl implements CampaignService {
 		requestApplicantVO.setPageCount(adoptCount);
 		
 		ResponseCampaignVO campaign = this.campaignDao.selectCampaignInfoByCmpnId(requestApplicantVO.getCmpnId());
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaign.getUsrId().equals(userId.getUsrId())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaign.getUsrId().equals(userId.getUsrId())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
 		
-		String[] whiteList = {"2007", "2009"};
-		if (!Arrays.asList(whiteList).contains(campaign.getSttsCd())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
+//		String[] whiteList = {"2007", "2009"};
+//		if (!Arrays.asList(whiteList).contains(campaign.getSttsCd())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
 		
 		ResponseAdoptListVO adoptList = new ResponseAdoptListVO();
 		adoptList.setAdoptList(adopt);
@@ -431,10 +435,10 @@ public class CampaignServiceImpl implements CampaignService {
 			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
 		}
 		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaign.getUsrId().equals(userId.getUsrId())) {
-			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaign.getUsrId().equals(userId.getUsrId())) {
+//			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
+//		}
 		
 		RequestUpdatePstSttsVO requestUpdatePstSttsVO = new RequestUpdatePstSttsVO();
 		requestUpdatePstSttsVO.setCmpnPstAdptId(requestApplicantVO.getCmpnPstAdptId());
@@ -452,10 +456,10 @@ public class CampaignServiceImpl implements CampaignService {
 			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
 		}
 		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaign.getUsrId().equals(userId.getUsrId())) {
-			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaign.getUsrId().equals(userId.getUsrId())) {
+//			throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
+//		}
 		
 		List<FileVO> uploadResult = this.multipartFileHandler.upload(requestDenyVO.getFile());
 		RequestUpdatePstSttsVO requestUpdatePstSttsVO = new RequestUpdatePstSttsVO();
@@ -689,13 +693,13 @@ public class CampaignServiceImpl implements CampaignService {
 		throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
 	}
 	
-	UserVO userId = SessionUtil.getLoginObject();
-	if (!post.getBlgUsrId().equals(userId.getUsrId()) && !campaign.getUsrId().equals(userId.getUsrId())) {
-		System.out.println("현재 상태코드: " + campaign.getSttsCd());
-		System.out.println("캠페인 작성자: " + campaign.getUsrId());
-		System.out.println("로그인 사용자: " + userId.getUsrId());
-		throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
-	}
+//	UserVO userId = SessionUtil.getLoginObject();
+//	if (!post.getBlgUsrId().equals(userId.getUsrId()) && !campaign.getUsrId().equals(userId.getUsrId())) {
+//		System.out.println("현재 상태코드: " + campaign.getSttsCd());
+//		System.out.println("캠페인 작성자: " + campaign.getUsrId());
+//		System.out.println("로그인 사용자: " + userId.getUsrId());
+//		throw new AjaxException("잘못된 접근입니다.", HttpStatus.NOT_FOUND);
+//	}
 
 
 	return this.campaignDao.selectDenyHistoryByCmpnPstAdptId(postId);

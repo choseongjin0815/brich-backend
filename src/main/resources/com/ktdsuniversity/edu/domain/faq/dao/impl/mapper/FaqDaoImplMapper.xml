@@ -16,6 +16,7 @@
 		 SELECT FAQ_ID
 		      , FAQ_TITLE
 		      , FAQ_CN
+		      , CTG_CD
 		   FROM FAQ
 		  <if test="category != null and category != ''">
 		      WHERE CTG_CD = #{category}
