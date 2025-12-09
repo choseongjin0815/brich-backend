@@ -18,6 +18,7 @@
              , U.AUTR
              , U.BLG_ADDRS
              , U.RCNT_BLG_CRTFCTN_DT
+             , U.ACCNT_BLCK_STTS
              , CASE
                    WHEN U.AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
                    THEN (SELECT COUNT(C_ADPT.BLG_USR_ID)
@@ -74,7 +75,7 @@
              , U.CRT_DT
           FROM USR U
           WHERE U.DLT_YN = 'N'
-            AND U.ACCNT_BLCK_STTS = 'N'
+            AND U.ACCNT_BLCK_STTS != 'R'
             AND U.AUTR != 'ROLE-20251203-000001'
           ORDER BY
 				   CASE
@@ -93,6 +94,7 @@
              , U.NM
              , U.AUTR
              , U.BLG_ADDRS
+             , U.ACCNT_BLCK_STTS
              , U.RCNT_BLG_CRTFCTN_DT
              , (SELECT COUNT(C_ADPT.BLG_USR_ID)
                   FROM CMPN_PST_ADPT C_ADPT
@@ -135,6 +137,7 @@
              , U.NM
              , U.AUTR
              , U.CMPNY
+             , U.ACCNT_BLCK_STTS
              , CASE
                    WHEN U.ACCNT_BLCK_STTS = 'P'
                    THEN 'N'
@@ -165,6 +168,7 @@
           FROM USR U
          WHERE U.DLT_YN = 'N'
            AND U.AUTR = 'ROLE-20251203-000004'
+           AND U.ACCNT_BLCK_STTS != 'R'
          ORDER BY
                  CASE
                      WHEN U.ACCNT_BLCK_STTS = 'P'
@@ -184,7 +188,7 @@
                    ELSE 'none'       
                 END AS AUTR
           FROM USR
-         WHERE USR_ID = {_parameter}
+         WHERE USR_ID = #{_parameter}
            AND DLT_YN = 'N'
            AND ACCNT_BLCK_STTS != 'R'
     </select>
@@ -203,6 +207,7 @@
              , U.AUTR
              , U.BLG_ADDRS
              , U.RCNT_BLG_CRTFCTN_DT
+             , U.ACCNT_BLCK_STTS
              , CASE 
                    WHEN U.RCNT_LGN_SCS_DT IS NULL
                    THEN '-'
@@ -339,6 +344,7 @@
              , U.NM
              , U.AUTR
              , U.CMPNY 
+             , U.ACCNT_BLCK_STTS
              , CASE
                    WHEN U.ACCNT_BLCK_STTS = 'P'
                    THEN 'N'
@@ -415,7 +421,9 @@
     <!-- 상세 정보 - 광고주 가입 승인 -->
     <update id="updateAdvertiserAuthCodeByApprove" parameterType="map">
         UPDATE USR
-		   SET AUTR = #{autr}
+		   SET ACCNT_BLCK_STTS = 'N'
+		     , UPDT_DT = SYSDATE
+		     , MTTR = #{adminId}
 		 WHERE USR_ID = #{usrId}
 		   AND DLT_YN = 'N'
     </update>
@@ -423,8 +431,9 @@
     <!-- 상세 정보 - 광고주 가입 반려 -->
     <update id="updateAdvertiserAuthCodeByReject" parameterType="map">
         UPDATE USR
-           SET AUTR = #{autr}
-             , DLT_YN = 'Y'
+           SET ACCNT_BLCK_STTS = 'R'
+             , UPDT_DT = SYSDATE
+             , MTTR = #{adminId}
          WHERE USR_ID = #{usrId}
            AND DLT_YN = 'N'
     </update>
@@ -642,5 +651,12 @@
                                  , #{updtAdmin}
                                  , 'N')
     </insert>
+    
+    <!-- ======================================== 2차 ======================================== -->
+    <select id="selectCurrentUpdtDt" resultType="String">
+	    SELECT TO_CHAR(UPDT_DT, 'YYYY-MM-DD HH24:MI:SS')
+	     FROM USR
+	    WHERE USR_ID = #{usrId}
+	</select>
     
 </mapper>

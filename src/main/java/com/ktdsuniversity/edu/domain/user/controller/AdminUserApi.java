@@ -1,12 +1,15 @@
 package com.ktdsuniversity.edu.domain.user.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +17,7 @@ import com.ktdsuniversity.edu.domain.user.service.AdminUserService;
 import com.ktdsuniversity.edu.domain.user.vo.AdminUserBaseInfoVO;
 import com.ktdsuniversity.edu.domain.user.vo.AdminUserListVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
+import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
 // @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
@@ -77,6 +81,46 @@ public class AdminUserApi {
 		
 		logger.info("user-detail: ", ajaxResponse);
 		
+		return ajaxResponse;
+	}
+	
+	/**
+	 * 광고주 가입 승인
+	 * @param usrId
+	 * @param requestBody
+	 * @return
+	 */
+	@PutMapping("/regist-approve/{usrId}")
+	public AjaxResponse advertiserRegistApprove(@PathVariable String usrId, @RequestBody Map<String, String> requestBody) {
+		boolean updateResult = this.adminUserService.updateAdvertiserRegistApprove(usrId, requestBody.get("adminId"));
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(updateResult);
+		return ajaxResponse;
+	}
+	
+	/**
+	 * 광고주 가입 반려
+	 * @param usrId
+	 * @param requestBody
+	 * @return
+	 */
+	@PutMapping("/regist-reject/{usrId}")
+	public AjaxResponse advertiserRegistReject(@PathVariable String usrId, @RequestBody Map<String, String> requestBody) {
+		boolean updateResult = this.adminUserService.updateAdvertiserRegistReject(usrId, requestBody.get("adminId"));
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(updateResult);
+		return ajaxResponse;
+	}
+	
+	/**
+	 * 선택 가능한 블로그 전체 카테고리 받아오기
+	 * @return
+	 */
+	@GetMapping("/blogcategory-list")
+	public AjaxResponse getBlogCategoryList() {
+		List<CommonCodeVO> blogCategoryList = this.adminUserService.readBlogCategoryList();
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(blogCategoryList);
 		return ajaxResponse;
 	}
 

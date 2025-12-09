@@ -16,6 +16,8 @@ import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
 public interface AdminUserDao {
+	
+	/* ======================================== 1차 ======================================== */
 
 	List<AdminUserListVO> selectAdminUserList();
 	
@@ -41,7 +43,7 @@ public interface AdminUserDao {
 
 	List<CampaignVO> selectAdvertiserCmpnCompletedList(String usrId);
 
-	int updateAdvertiserAuthCodeByApprove(Map<String, String> requestData);
+//	int updateAdvertiserAuthCodeByApprove(Map<String, String> requestData);
 
 	int updateAdvertiserAuthCodeByReject(Map<String, String> requestData);
 
@@ -64,5 +66,11 @@ public interface AdminUserDao {
 	int updateUserPenaltyCount(AdminPenaltyRequestVO requestVO);
 
 	int insertNewHistoryByPenaltyCount(UserUpdateHistoryVO history);
+	
+	/* ======================================== 2차 ======================================== */
+
+	int updateAdvertiserAuthCodeByApprove(Map<String, Object> updateParamMap);
+
+	String selectCurrentUpdtDt(String usrId);
 
 }
