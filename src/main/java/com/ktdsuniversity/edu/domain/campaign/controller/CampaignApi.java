@@ -112,6 +112,29 @@ public class CampaignApi {
     	log.info( "캠페인 상세조회 결과 : " + detail.toString());
     	return ajaxResponse;
     }
+    
+    /**  
+     * 좋아요 
+     * @param loginUser
+     * @param campaignId
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/blgr/dolove")
+    public AjaxResponse favCampaignDo(Authentication authentication, @RequestBody String campaignId,  String UsrId) {
+    	String blgId = UsrId;
+    	int count = campaignService.favCampaignDo(blgId, campaignId);
+    	System.out.println("doLove 작동!!");
+    	
+    	
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(count);
+    	return ajaxResponse;
+    }
+    
+    //////////////////////////// Hapa up!
+    
+    
 	@GetMapping("/applicant")
     public AjaxResponse readApplicantList(RequestApplicantVO requestApplicantVO,
     									  Authentication authentication) {
