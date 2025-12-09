@@ -56,7 +56,7 @@ public class DashboardApi {
 	    if (authentication == null) {
 	        throw new AjaxException(null, HttpStatus.BAD_REQUEST);
 	    }
-	    UserVO loginUser
+	    //UserVO loginUser
 		requestExpireSoonCampaignVO.setListSize(15);
 		requestExpireSoonCampaignVO.setPageCount(1);
 
@@ -77,7 +77,7 @@ public class DashboardApi {
 		double currentIndex = this.blogDataService.selectMostRecentIndex(usrId);
 		int totalVisitor = this.blogDataService.selectTotalVisitor(usrId);
 
-		model.addAttribute("user", loginUser);
+		//model.addAttribute("user", loginUser);
 		model.addAttribute("dailyVisitorsResult", dailyVisitorsResult);
 		model.addAttribute("list", result);
 		model.addAttribute("paginator", requestExpireSoonCampaignVO);
@@ -89,7 +89,7 @@ public class DashboardApi {
 
 		model.addAttribute("campaignList", CampaignListAndCategory.getResponseCampaignList());
 		AjaxResponse response;
-		return response;
+		return null;
 	}
 	
 	@GetMapping("/blog/{usrId}/manage")
