@@ -42,6 +42,7 @@ import com.ktdsuniversity.edu.domain.file.dao.FileGroupDao;
 import com.ktdsuniversity.edu.domain.file.util.MultipartFileHandler;
 import com.ktdsuniversity.edu.domain.file.vo.FileGroupVO;
 import com.ktdsuniversity.edu.domain.file.vo.FileVO;
+import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 import com.ktdsuniversity.edu.global.util.SessionUtil;
 import com.ktdsuniversity.edu.global.util.TimeFormatUtil;
 
@@ -379,6 +380,8 @@ public class ChatServiceImpl implements ChatService {
 		message.setUpdtDt(now);
 		message.setRdYn("N");
 		message.setDltYn("N");
+		
+		log.info("READYN", message.getRdYn());
 
 		// MongoDB에 메시지 저장
 		ChatMessageVO savedMessage = chatMessageRepository.save(message);
@@ -397,32 +400,37 @@ public class ChatServiceImpl implements ChatService {
 	@Transactional
 	@Override
 	public void updateMessagesAsRead(String chtRmId, String usrId) {
-		// MongoDB에서 안읽은 메시지 조회
-		List<ChatMessageVO> unreadMessages = chatMessageRepository.findUnreadMessages(chtRmId, usrId);
-		String now = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+		log.info("USRID : {}", usrId);
+		if(usrId != null) {
+			log.info("USRID1 : {}", usrId);
 
-		//Bulk operation으로 N+1해소
-		// 1번의 조회 - n개의 데이터 
-		// n번만큼 업데이트 - n번 
-		// 업데이트를 한번의 실행으로 끝냄
-		if (unreadMessages.isEmpty()) {
-			return;
-		}
-		BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, ChatMessageVO.class);
-
-		for (ChatMessageVO msg : unreadMessages) {
-			Query query = new Query(Criteria.where("_id").is(msg.getChtMsgId()));
-			Update update = new Update().set("rdYn", "Y").set("updtDt", now);
-			bulkOps.updateOne(query, update);
-		}
+			// MongoDB에서 안읽은 메시지 조회
+			List<ChatMessageVO> unreadMessages = chatMessageRepository.findUnreadMessages(chtRmId, usrId);
+			String now = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+	
+			//Bulk operation으로 N+1해소
+			// 1번의 조회 - n개의 데이터 
+			// n번만큼 업데이트 - n번 
+			// 업데이트를 한번의 실행으로 끝냄
+			if (unreadMessages.isEmpty()) {
+				return;
+			}
+			BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, ChatMessageVO.class);
+	
+			for (ChatMessageVO msg : unreadMessages) {
+				Query query = new Query(Criteria.where("_id").is(msg.getChtMsgId()));
+				Update update = new Update().set("rdYn", "Y").set("updtDt", now);
+				bulkOps.updateOne(query, update);
+			}
 
 		bulkOps.execute();
+		}
 	}
 
 	@Override
 	public CampaignVO readCampaignByChtRmId(String chtRmId) {
 
-		String currentUsrId = SessionUtil.getLoginObject().getUsrId();
+		String currentUsrId = AuthenticationUtil.getUserVO().getUsrId();
 		
 		Map<String, String> chtRoomInfo = new HashMap<>();
 		chtRoomInfo.put("chtRmId", chtRmId);

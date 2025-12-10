@@ -31,6 +31,7 @@ import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseDenyHistoryVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.exceptions.BrichException;
+import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 
 @RequestMapping("/api/v1/campaign")
 @RestController
@@ -65,7 +66,7 @@ public class CampaignApi {
     
     @PostMapping("/main")
     public AjaxResponse campaignMainPage(@RequestBody RequestSearchCampaignVO requestSearchCampaignVO){
-
+    	
     	log.info( "입력 파라미터 값 : " + requestSearchCampaignVO.toString());
     	ResponseCampaignListVO CampaignListAndCategory = campaignService.readCampaignListAndCategory(requestSearchCampaignVO);
     	
