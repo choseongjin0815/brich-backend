@@ -259,6 +259,7 @@
                     autoMapping="true">
             <result column="RETN_FL_ID" property="flId" />
             <result column="RETN_FL_NM" property="flNm" />
+            <result column="RETN_FL_GRP_ID" property="flGrpId" />
         </collection>
         <collection property="submitFile"
                     javaType="list"
@@ -266,6 +267,7 @@
                     autoMapping="true">
             <result column="SUBMIT_FL_ID" property="flId" />
             <result column="SUBMIT_FL_NM" property="flNm" />
+            <result column="SUBMIT_FL_GRP_ID" property="flGrpId" />
         </collection>
     </resultMap>
     <select id="selectDenyHistoryByCmpnPstAdptId"

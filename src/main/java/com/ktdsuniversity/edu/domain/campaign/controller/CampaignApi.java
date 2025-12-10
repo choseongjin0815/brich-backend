@@ -32,6 +32,7 @@ import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignwriteV
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseDenyHistoryVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
+import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 import com.ktdsuniversity.edu.global.exceptions.BrichException;
 
 @RequestMapping("/api/v1/campaign")
@@ -221,5 +222,14 @@ public class CampaignApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		ajaxResponse.setBody(common);
 		return ajaxResponse;
+	}
+	
+	@GetMapping("/{cdId}")
+	public AjaxResponse doReadDistrictAction(@PathVariable String cdId) {
+		AjaxResponse response = new AjaxResponse();
+		
+		List<CommonCodeVO> districtList = this.campaignService.readDistrictByCdId(cdId);
+		response.setBody(districtList);
+		return response;
 	}
 }
