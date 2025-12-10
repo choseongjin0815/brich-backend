@@ -7,7 +7,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,7 @@ import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseDenyHistoryVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.exceptions.BrichException;
+import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 
 @RequestMapping("/api/v1/campaign")
 @RestController
@@ -62,10 +65,24 @@ public class CampaignApi {
 	
 	
 	// Hapa ===============================================================
-    
+//    @PreAuthorize("hasRole('ROLE_BLG')")
     @PostMapping("/main")
     public AjaxResponse campaignMainPage(@RequestBody RequestSearchCampaignVO requestSearchCampaignVO){
+    	
+    	// 로그인 했으면 UserVO, 아니면 null
+        UserVO user = AuthenticationUtil.getUserVO();
 
+        String loginId = null;
+        if (user != null) {
+            loginId = user.getUsrId();
+        }
+    	
+//    	String loginId = AuthenticationUtil.getUserVO().getUsrId();
+//    	Object loginId = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//    	log.info( "뭐냐:ㅣ" + loginId);
+    	requestSearchCampaignVO.setLoginId(loginId);
+        
+        
     	log.info( "입력 파라미터 값 : " + requestSearchCampaignVO.toString());
     	ResponseCampaignListVO CampaignListAndCategory = campaignService.readCampaignListAndCategory(requestSearchCampaignVO);
     	
@@ -78,13 +95,13 @@ public class CampaignApi {
     }  
     
     @GetMapping("/detail/{campaignId}")
-    public AjaxResponse campaignDetailPage(@PathVariable String campaignId) {
+    public AjaxResponse campaignDetailPage(@RequestBody String campaignId) {
     	ResponseCampaignVO detail = new ResponseCampaignVO();
     	
     	//지울부분
     	UserVO loginUser = new UserVO();
-    	loginUser.setAutr("1002");
-    	loginUser.setUsrId("USR-20251110-000271");
+    	loginUser.setAutr(AuthenticationUtil.getUserVO().getAutr());
+    	loginUser.setUsrId(AuthenticationUtil.getUserVO().getUsrId());
     	
     	if(loginUser != null) {
     		if(loginUser.getAutr().equals("1002") || loginUser.getAutr().equals("1003") ) {
@@ -121,8 +138,8 @@ public class CampaignApi {
      */
     @ResponseBody
     @PostMapping("/blgr/dolove")
-    public AjaxResponse favCampaignDo(Authentication authentication, @RequestBody RequestSearchCampaignVO requestSearchCampaignVO) {
-    	String blgId = requestSearchCampaignVO.getLoginId();
+    public AjaxResponse favCampaignDo( @RequestBody RequestSearchCampaignVO requestSearchCampaignVO) {
+    	String blgId = AuthenticationUtil.getUserVO().getUsrId();
     	int count = campaignService.favCampaignDo(blgId, requestSearchCampaignVO.getCmpnId());
     	System.out.println("doLove 작동!!");
     	
