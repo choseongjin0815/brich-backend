@@ -94,23 +94,26 @@ public class CampaignApi {
     	return ajaxResponse;
     }  
     
-    @GetMapping("/detail/{campaignId}")
-    public AjaxResponse campaignDetailPage(@RequestBody String campaignId) {
+    @PostMapping("/detail")
+    public AjaxResponse campaignDetailPage(@RequestBody RequestSearchCampaignVO requestSearchCampaignVO) {
+    	String campaignId = requestSearchCampaignVO.getCmpnId();
     	ResponseCampaignVO detail = new ResponseCampaignVO();
     	
     	//지울부분
     	UserVO loginUser = new UserVO();
-    	loginUser.setAutr(AuthenticationUtil.getUserVO().getAutr());
-    	loginUser.setUsrId(AuthenticationUtil.getUserVO().getUsrId());
+    	if(AuthenticationUtil.getUserVO() != null) {
+    		loginUser.setAutr(AuthenticationUtil.getUserVO().getAutr());
+    		loginUser.setUsrId(AuthenticationUtil.getUserVO().getUsrId());
+    	}
     	
-    	if(loginUser != null) {
-    		if(loginUser.getAutr().equals("1002") || loginUser.getAutr().equals("1003") ) {
+    	if(loginUser.getAutr() != null) {
+    		if(loginUser.getAutr().contains("ROLE-20251203-000002") || loginUser.getAutr().contains("ROLE-20251203-000003")) {
         		detail = campaignService.readCampaignDetail(campaignId, loginUser.getUsrId());    	
         		String returnReason =  campaignService.postReturnReason(campaignId, loginUser.getUsrId());
-        	}else {    		
+        	}else {
         		detail = campaignService.readCampaignDetail(campaignId);
         	}
-    	}else {    		
+    	}else {
     		detail = campaignService.readCampaignDetail(campaignId);
     	}
         String usrId = (loginUser != null) ? loginUser.getUsrId() : null;
@@ -137,6 +140,7 @@ public class CampaignApi {
      * @return
      */
     @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
     @PostMapping("/blgr/dolove")
     public AjaxResponse favCampaignDo( @RequestBody RequestSearchCampaignVO requestSearchCampaignVO) {
     	String blgId = AuthenticationUtil.getUserVO().getUsrId();
@@ -149,7 +153,7 @@ public class CampaignApi {
     	return ajaxResponse;
     }
     
-    //////////////////////////// Hapa up!
+    // ////////////////////////// Hapa up!
     
     
 	@GetMapping("/applicant")

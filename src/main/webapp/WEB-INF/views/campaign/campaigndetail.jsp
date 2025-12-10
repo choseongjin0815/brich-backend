@@ -66,9 +66,9 @@
 				                <div class="campaign-fav campaign-fav1 love-${detail.favYn}"
 				                     data-usr-id="${sessionScope.__LOGIN_USER__.usrId}"
 				                     data-cmpn-id="${detail.cmpnId}"> 
-				                <div class="love-on ${love ? '' : 'display-none'}"></div>
-				                <div class="love-off ${love ? 'display-none' : ''}"></div>
-				              </div>
+					                <div class="love-on ${love ? '' : 'display-none'}"></div>
+					                <div class="love-off ${love ? 'display-none' : ''}"></div>
+				                </div>
 				            </c:if>							
     					</div>
 					   </c:if>
