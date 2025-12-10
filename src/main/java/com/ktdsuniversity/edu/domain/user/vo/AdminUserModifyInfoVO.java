@@ -26,9 +26,9 @@ public class AdminUserModifyInfoVO {
 	// 광고주 전용 데이터
 	private String cmpny;
 	private String flGrpId;
-	private List<String> existFileIds;
-	private List<String> deleteFileIds;
-	private List<MultipartFile> newFiles;
+//	private List<String> existFileIds;
+//	private List<String> deleteFileIds;
+//	private List<MultipartFile> newFiles;
 	
 	// 수정 이력 테이블 전용 데이터
 	private String updtRsn;
@@ -114,24 +114,24 @@ public class AdminUserModifyInfoVO {
 	public void setFlGrpId(String flGrpId) {
 		this.flGrpId = flGrpId;
 	}
-	public List<String> getExistFileIds() {
-		return this.existFileIds;
-	}
-	public void setExistFileIds(List<String> existFileIds) {
-		this.existFileIds = existFileIds;
-	}
-	public List<String> getDeleteFileIds() {
-		return this.deleteFileIds;
-	}
-	public void setDeleteFileIds(List<String> deleteFileIds) {
-		this.deleteFileIds = deleteFileIds;
-	}
-	public List<MultipartFile> getNewFiles() {
-		return this.newFiles;
-	}
-	public void setNewFiles(List<MultipartFile> newFiles) {
-		this.newFiles = newFiles;
-	}
+//	public List<String> getExistFileIds() {
+//		return this.existFileIds;
+//	}
+//	public void setExistFileIds(List<String> existFileIds) {
+//		this.existFileIds = existFileIds;
+//	}
+//	public List<String> getDeleteFileIds() {
+//		return this.deleteFileIds;
+//	}
+//	public void setDeleteFileIds(List<String> deleteFileIds) {
+//		this.deleteFileIds = deleteFileIds;
+//	}
+//	public List<MultipartFile> getNewFiles() {
+//		return this.newFiles;
+//	}
+//	public void setNewFiles(List<MultipartFile> newFiles) {
+//		this.newFiles = newFiles;
+//	}
 	public String getUpdtRsn() {
 		return this.updtRsn;
 	}

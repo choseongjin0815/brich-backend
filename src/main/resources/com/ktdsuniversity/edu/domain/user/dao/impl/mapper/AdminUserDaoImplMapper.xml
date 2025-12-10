@@ -180,13 +180,7 @@
     
     <!-- 분기 처리를 위한 아이디로 권한 찾기 -->
     <select id="selectAdminUserAutrById" parameterType="string">
-        SELECT CASE
-                   WHEN AUTR IN ('ROLE-20251203-000002', 'ROLE-20251203-000003')
-                   THEN '블로거'
-                   WHEN AUTR = 'ROLE-20251203-000004'
-                   THEN '광고주'
-                   ELSE 'none'       
-                END AS AUTR
+        SELECT AUTR
           FROM USR
          WHERE USR_ID = #{_parameter}
            AND DLT_YN = 'N'
@@ -483,6 +477,7 @@
              , UPDT_DT
              , MTTR
              , DLT_YN
+             , ACCNT_BLCK_STTS
          FROM USR
         WHERE DLT_YN = 'N'
           AND USR_ID = #{_parameter}
@@ -498,6 +493,7 @@
              , MTTR = #{adminId}
          WHERE USR_ID = #{usrId}
            AND DLT_YN = 'N'
+           AND ACCNT_BLCK_STTS != 'R'
     </update>
     
     <!-- 광고주 전용 정보 수정 (회사명) -->
@@ -508,6 +504,7 @@
              , MTTR = #{adminId}
          WHERE USR_ID = #{usrId}
            AND DLT_YN = 'N'
+           AND ACCNT_BLCK_STTS != 'R'
     </update>
     
     <!-- 회원 정보 수정 이력 테이블 데이터 INSERT -->

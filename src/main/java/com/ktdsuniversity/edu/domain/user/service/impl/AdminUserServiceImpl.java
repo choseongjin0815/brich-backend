@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktdsuniversity.edu.domain.campaign.vo.CampaignVO;
 import com.ktdsuniversity.edu.domain.file.dao.FileDao;
 import com.ktdsuniversity.edu.domain.file.util.MultipartFileHandler;
@@ -40,6 +41,13 @@ import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 public class AdminUserServiceImpl implements AdminUserService {
 
 	private static final Logger log = LoggerFactory.getLogger(AdminUserServiceImpl.class);
+	
+	private final String BLOGGER_SUB = "ROLE-20251203-000002";
+	private final String BLOGGER_NO_SUB = "ROLE-20251203-000003";
+	private final String ADVERTISER = "ROLE-20251203-000004";
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private AdminUserDao adminUserDao;
@@ -165,6 +173,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 그대로 사용)
 	 * 회원 상세 정보 
 	 * @param usrId
 	 * @return
@@ -174,7 +183,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 		
 		String userAutr = this.adminUserDao.selectAdminUserAutrById(usrId);
 		
-		if(userAutr.equals("블로거")) {
+		if(userAutr.equals(BLOGGER_NO_SUB) || userAutr.equals(BLOGGER_SUB)) {
 			AdminBloggerDetailVO info = this.adminUserDao.selectAdminBloggerDetailById(usrId);
 			
 			List<CampaignVO> progressList = this.adminUserDao.selectBloggerCmpnProgressList(usrId);
@@ -187,14 +196,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 		    info.setUsrAr(usrAr);
 		    info.setUsrBlgCtg(usrBlgCtg);
 		    
-		    /*
 	        if (usrAr != null) {
 	            List<String> checkedAreaIds = usrAr.stream()
 	                .map(AdminBloggerAreaInfoVO::getArId)
 	                .collect(Collectors.toList());
 	            info.setCheckedAreaIds(checkedAreaIds);
 	        }
-	        */
 		    
 	        if (usrBlgCtg != null) {
 	            List<String> checkedCategory = 
@@ -208,7 +215,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	        
 			return info;
 		}
-		else if(userAutr.equals("광고주")) {
+		else if(userAutr.equals(ADVERTISER)) {
 			AdminAdvertiserDetailVO info = this.adminUserDao.selectAdminAdvertiserDetailById(usrId);
 			
 			List<CampaignVO> progressList = this.adminUserDao.selectAdvertiserCmpnProgressList(usrId);
@@ -252,6 +259,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 그대로 사용)
 	 * 블로거 카테고리 받아오기 (List)
 	 * @return
 	 */
@@ -261,17 +269,35 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 일부 수정해서 사용)
 	 * 회원 정보 수정
 	 * @param adminUserModifyInfoVO
 	 * @param newFiles
+	 * @param fileToDeleteJson
 	 * @return
 	 */
 	@Transactional
 	@Override
-	public boolean updateUserInfo(AdminUserModifyInfoVO adminUserModifyInfoVO, List<MultipartFile> newFiles) {
+	public boolean updateUserInfo(AdminUserModifyInfoVO adminUserModifyInfoVO, 
+												List<MultipartFile> newFiles, String fileToDeleteJson) {
+		
+//		AdminUserModifyInfoVO adminUserModifyInfoVO = null;
+//		
+//		// JSON으로 받은 수정 정보 파싱 (JSON -> DTO)
+//		try {
+//			// 성공적으로 작업되면 내용 채워짐
+//			adminUserModifyInfoVO = objectMapper.readValue(adminUserModifyInfoJson, AdminUserModifyInfoVO.class);
+//		} catch(Exception e) {
+//			throw new RuntimeException("회원 수정 정보 DTO 파싱 실패: ", e);
+//		}
 		
 		String adminId = adminUserModifyInfoVO.getAdminId();
 		String usrId = adminUserModifyInfoVO.getUsrId();
+		
+		log.info("AdminUserServlceImple - logId: ", adminUserModifyInfoVO.getLogId());
+		log.info("AdminUserServlceImple - eml: ", adminUserModifyInfoVO.getEml());
+		log.info("AdminUserServlceImple - nm: ", adminUserModifyInfoVO.getNm());
+		log.info("AdminUserServlceImple - cmpny: ", adminUserModifyInfoVO.getCmpny());
 		
 		// 수정 전 회원 정보 백업
 		UserVO beforeInfo = this.adminUserDao.selectUserInfoById(usrId);
@@ -287,18 +313,18 @@ public class AdminUserServiceImpl implements AdminUserService {
 		String modifyUserAutr = beforeInfo.getAutr();
 		
 		// 블로거/광고주 분기 처리
-		if(modifyUserAutr.equals("1002") || modifyUserAutr.equals("1003")) {
+		if(modifyUserAutr.equals(BLOGGER_NO_SUB) || modifyUserAutr.equals(BLOGGER_SUB)) {
 			
 			updateOrInsertBlogCategories(adminUserModifyInfoVO.getUsrBlgCtg(), usrId, adminId);
 		}
-		else if(modifyUserAutr.equals("1004")) {
+		else if(modifyUserAutr.equals(ADVERTISER)) {
 			
 			// 상호명
 			updateCount = this.adminUserDao.updateAdvertiserInfo(adminUserModifyInfoVO);
 			daoValidate(updateCount, "updateAdvertiserInfo");
 			
 			// 사업자 등록증 파일 INSERT or UPDATE 구분 처리
-			updateOrInsertFiles(adminUserModifyInfoVO, newFiles);
+			updateOrInsertFiles(adminUserModifyInfoVO, newFiles, fileToDeleteJson);
 		}
 		
 		// UPDATE 전 데이터와, UPDATE 후 데이터를 비교하여 변경 목록 추출?
@@ -316,6 +342,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 	
 	/**
+	 * (2차 때 그대로 사용)
 	 * 수정될 회원 정보 UserVO에 매핑 시키기 (수정 전/수정 후 비교를 위해)
 	 * (UPDATE 후의 UserVO ==> afterInfo)
 	 * @param adminUserModifyInfoVO
@@ -334,7 +361,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 		userVO.setMttr(adminUserModifyInfoVO.getAdminId());
 		
 		// 광고주 전용 정보 매핑
-		if(adminUserModifyInfoVO.getAutr().equals("1004")) {
+		if(adminUserModifyInfoVO.getAutr().equals(ADVERTISER)) {
 			userVO.setCmpny(adminUserModifyInfoVO.getCmpny());
 			userVO.setFlGrpId(adminUserModifyInfoVO.getFlGrpId());
 		}
@@ -343,7 +370,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
-	 * 블로거 카테고리 추가/삭제/재활성화 대상 판별 후 UPATE/INSERT
+	 * (2차 때 그대로 사용)
+	 * 블로거 카테고리 추가/삭제/재활성화 대상 판별 후 UPDATE/INSERT
 	 * @param usrBlgCtg
 	 * @param usrId
 	 * @param adminId
@@ -456,18 +484,29 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 일부 수정해서 사용)
 	 * 기존 파일 추가/삭제 구분 및 새 파일 업로드 처리 (UPDATE/INSERT)
 	 * @param adminUserModifyInfoVO
 	 * @param newFiles
+	 * @param fileToDeleteJson
 	 */
-	public void updateOrInsertFiles(AdminUserModifyInfoVO adminUserModifyInfoVO, List<MultipartFile> newFiles) {
+	public void updateOrInsertFiles(AdminUserModifyInfoVO adminUserModifyInfoVO, List<MultipartFile> newFiles, String fileToDeleteJson) {
 
 		int updateAndInsertCount = 0;
 		
 		String adminId = adminUserModifyInfoVO.getAdminId();
 		
-		// 기존 파일 중 삭제될 파일의 flId를 가져옴
-		List<String> deleteFiles = adminUserModifyInfoVO.getDeleteFileIds();
+		// 삭제될 파일 JSON 파싱 - 삭제될 파일의 flId 추출
+		List<String> deleteFiles = null;
+		if(fileToDeleteJson != null && !fileToDeleteJson.isEmpty() && !fileToDeleteJson.equals("[]")) {
+			try {
+				// JSON string -> List<String>
+				// fileToDeleteJson의 문자열을 받아서, 그 안에 String 요소만 들어있는 List로 정확히 변환한다. ↓
+				deleteFiles = objectMapper.readValue(fileToDeleteJson, new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {});
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		// 기존 파일 중 삭제될 항목이 있다면, UPDATE (DLT_YN = 'Y')
 		if(deleteFiles != null && !deleteFiles.isEmpty()) {
@@ -477,7 +516,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 			deleteParamMap.put("adminId", adminId);
 			
 			updateAndInsertCount = this.fileDao.updateFilesAsDelete(deleteParamMap);
-			// daoValidate(updateAndInsertCount, "updateFilesAsDelete");
+			daoValidate(updateAndInsertCount, "updateFilesAsDelete");
 		}
 		
 		// 추가된 파일이 있다면 INSERT
@@ -492,6 +531,8 @@ public class AdminUserServiceImpl implements AdminUserService {
 			// 업로드 된 파일의 flGrpId를 지정
 			for(FileVO fileVO : insertResult) {
 				fileVO.setFlGrpId(flGrpId);
+//				fileVO.setCrtr(adminId);
+//				fileVO.setMttr(adminId);
 				updateAndInsertCount = this.fileDao.insertFile(fileVO);
 				daoValidate(updateAndInsertCount, "insertFile");
 			}
@@ -500,6 +541,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 	
 	/**
+	 * (2차 때 그대로 사용)
 	 * 기존 정보와 수정 후 정보를 비교하여, 
 	 * 변경된 정보에 대한 데이터를 UserUpdateHistoryVO에 매핑해 주기 위한 메소드
 	 * @param beforeInfo
@@ -529,7 +571,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 		}
 		
 		// 광고주의 경우
-		if(beforeInfo.getAutr().equals("1004")) {
+		if(beforeInfo.getAutr().equals(ADVERTISER)) {
 			
 			// cmpny 비교
 			if(!(afterInfo.getCmpny().equals(beforeInfo.getCmpny()))) {
@@ -543,6 +585,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 그대로 사용)
 	 * 수정 기록 테이블에 INSERT할 데이터를 매핑해 주는 메소드
 	 * @param usrId
 	 * @param updtItem
@@ -567,6 +610,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 	
 	/**
+	 * (2차 때 그대로 사용)
 	 * INSERT/UPDATE Exception 처리 (임시)
 	 * @param rows
 	 * @param message

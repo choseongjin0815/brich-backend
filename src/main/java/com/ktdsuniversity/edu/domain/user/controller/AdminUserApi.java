@@ -8,15 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.domain.user.service.AdminUserService;
 import com.ktdsuniversity.edu.domain.user.vo.AdminUserBaseInfoVO;
 import com.ktdsuniversity.edu.domain.user.vo.AdminUserListVO;
+import com.ktdsuniversity.edu.domain.user.vo.AdminUserModifyInfoVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
@@ -122,6 +127,22 @@ public class AdminUserApi {
 		List<CommonCodeVO> blogCategoryList = this.adminUserService.readBlogCategoryList();
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		ajaxResponse.setBody(blogCategoryList);
+		return ajaxResponse;
+	}
+	
+	@PostMapping("/user-update")
+	public AjaxResponse modifyUserInfo(@ModelAttribute AdminUserModifyInfoVO adminUserModifyInfoVO
+									 , @RequestPart(name = "file", required = false) List<MultipartFile> newFiles
+									 , @RequestPart(name = "fileToDelete", required = false) String fileToDeleteJson) {
+		
+		logger.info("newFiles: {}", newFiles != null ? newFiles.size() : 0);
+		logger.info("fileToDelete: {}", fileToDeleteJson);
+		
+		boolean isSuccess = this.adminUserService.updateUserInfo(adminUserModifyInfoVO, newFiles, fileToDeleteJson);
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(isSuccess);
+		
 		return ajaxResponse;
 	}
 

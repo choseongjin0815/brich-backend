@@ -21,6 +21,7 @@ public class AdminBloggerDetailVO extends AdminUserBaseInfoVO {
     private int blgNghbrCnt;
     private int scrpCnt;
 
+    private List<String> checkedAreaIds;
     private List<String> checkedBlgCtg;
     
 	public int getCmpnProgressCnt() {
@@ -94,6 +95,12 @@ public class AdminBloggerDetailVO extends AdminUserBaseInfoVO {
 	}
 	public void setScrpCnt(int scrpCnt) {
 		this.scrpCnt = scrpCnt;
+	}
+	public List<String> getCheckedAreaIds() {
+		return this.checkedAreaIds;
+	}
+	public void setCheckedAreaIds(List<String> checkedAreaIds) {
+		this.checkedAreaIds = checkedAreaIds;
 	}
 	public List<String> getCheckedBlgCtg() {
 		return this.checkedBlgCtg;
