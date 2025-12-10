@@ -126,7 +126,7 @@ public class AdminUserController {
 													@ModelAttribute AdminUserModifyInfoVO adminUserModifyInfoVO,
 													@RequestParam(name="file", required=false) List<MultipartFile> newFiles) {
 		
-		boolean isSuccess = this.adminUserService.updateUserInfo("", newFiles, "");
+		boolean isSuccess = this.adminUserService.updateUserInfo(adminUserModifyInfoVO, newFiles, "");
 		
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		ajaxResponse.setBody(isSuccess);
