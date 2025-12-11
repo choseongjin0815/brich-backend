@@ -34,4 +34,6 @@ public interface ChatService {
 
 	public List<String> readAllChtRmIdByUsrIdOrCmpnId(Map<String, String> parameter);
 
+	public List<String> readMyRoomIds(String usrId);
+
 }

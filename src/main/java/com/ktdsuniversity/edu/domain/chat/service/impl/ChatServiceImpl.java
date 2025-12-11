@@ -460,6 +460,12 @@ public class ChatServiceImpl implements ChatService {
 		return chtRmIdList;
 	}
 
+	@Override
+	public List<String> readMyRoomIds(String usrId) {
+		List<String> myRoomIds = this.chatDao.selectMyChtRmIdList(usrId);
+		return myRoomIds;
+	}
+
 
 	
 

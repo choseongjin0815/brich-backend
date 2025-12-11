@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.domain.chat.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -48,14 +49,12 @@ public class ChatApi {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADV')")
 	@GetMapping("/campaigns")
-	@ResponseBody
 	public AjaxResponse getCampaignList(
 			@RequestParam String status
 		   ,@RequestParam(defaultValue = "0") int pageNo) {
 		
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
 		
-		log.info("USRID : {}", usrId);
 		SearchChatVO searchChatVO = new SearchChatVO();
 		searchChatVO.setPageNo(pageNo);
 		searchChatVO.setUsrId(usrId);
@@ -73,13 +72,11 @@ public class ChatApi {
 	 * 채팅방 목록 조회
 	 */
 	@GetMapping
-	@ResponseBody
 	public AjaxResponse getChatRoomList(
 			@RequestParam(required = false) String cmpnId
 		  , @RequestParam(defaultValue = "0") int pageNo
 		  , @RequestParam String status) {
 		
-		log.info("cmpnId{} : ",cmpnId);
 		
 		UserVO loginUser = AuthenticationUtil.getUserVO();
 
@@ -128,7 +125,6 @@ public class ChatApi {
 	 * 채팅방 나가기
 	 */
 	@PostMapping("/leave")
-	@ResponseBody
 	public AjaxResponse leaveChatRoom(@RequestBody String chtRmId) {
 		
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
@@ -157,7 +153,6 @@ public class ChatApi {
 	 * 채팅방 입장 시 메시지 목록 조회 (페이징)
 	 */
 	@GetMapping("/messages")
-	@ResponseBody
 	public AjaxResponse getChatMessages(
 			@RequestParam String chtRmId
 		  , @RequestParam(defaultValue = "0") int page
@@ -177,7 +172,6 @@ public class ChatApi {
 	 * 메시지 전송 파일이 있는 경우
 	 */
 	@PostMapping("/message")
-	@ResponseBody
 	public AjaxResponse sendMessage(RequestChatMessageVO requestChatMessageVO) {
 		log.info("requestmessage{}", requestChatMessageVO.getChtRmId());
 		
@@ -197,6 +191,22 @@ public class ChatApi {
 		return ajaxResponse;
 	}
 
+	/*
+	 * 구독할 채팅방 ID 리스트 
+	 */
+	@GetMapping("/my-rooms")
+	public AjaxResponse getMyChatRoomIdList() {
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		String usrId = AuthenticationUtil.getUserVO().getUsrId();
+		
+		List<String> roomIds = chatService.readMyRoomIds(usrId);
+		
+		ajaxResponse.setBody(roomIds);
+		
+		return ajaxResponse;
+	}
+	
+	
 	/**
 	 * WebSocket 메시지 핸들러 - 채팅 메시지 전송
 	 */
