@@ -132,6 +132,7 @@ public class ChatApi {
 	public AjaxResponse leaveChatRoom(@RequestBody String chtRmId) {
 		
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
+		
 
 		AjaxResponse ajaxResponse = new AjaxResponse();
 
