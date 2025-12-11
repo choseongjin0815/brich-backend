@@ -182,7 +182,7 @@
              , TO_CHAR(CMPN.PST_END_DT,  'RR-MM-DD') AS PST_END_DT
              , TO_CHAR(CMPN.CMPN_END_DT, 'RR-MM-DD') AS CMPN_END_DT
              , CMPN.RTRN_RSN
-             , CMPN.ADDRS
+             , CMPN.RD_ADRS || ' ' || CMPN.DTL_ADRS AS ADDRS
              , CMPN.ATTCH_GRP_ID
              , CMPN.CMPN_TITLE
              , CMPN.CMPN_CN
@@ -256,7 +256,7 @@
              , PST_END_DT
              , CMPN_END_DT
              , RTRN_RSN
-             , ADDRS
+             , RD_ADRS || ' ' || DTL_ADRS AS ADDRS
              , ATTCH_GRP_ID
              , CMPN_TITLE
              , CMPN_CN

@@ -203,6 +203,6 @@ public class ResponseCampaignVO extends CampaignVO{
 				+ ", flGrpId=" + flGrpId + ", fileVoList=" + fileVoList + ", likeCnt=" + likeCnt + ", adptCnt="
 				+ adptCnt + ", area=" + area + ", parentArea=" + parentArea + ", pstSttsCd=" + pstSttsCd
 				+ ", pstSttsCdNm=" + pstSttsCdNm + ", favYn=" + favYn + ", adptYn=" + adptYn + ", SttsCdNm=" + SttsCdNm
-				+ ", stats=" + stats + "]";
+				+ ", stats=" + stats + super.toString() + "]";
 	}
 }

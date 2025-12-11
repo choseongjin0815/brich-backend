@@ -199,6 +199,8 @@ public class CampaignVO extends BaseVO{
      */
     private String cnfmDt;
     
+    private String rdAdrs;
+	private String dtlAdrs;
     
 	public String getCmpnId() {
         return this.cmpnId;
@@ -416,6 +418,22 @@ public class CampaignVO extends BaseVO{
         this.cnfmDt = cnfmDt;
     }
 
+	public String getRdAdrs() {
+		return this.rdAdrs;
+	}
+
+	public void setRdAdrs(String rdAdrs) {
+		this.rdAdrs = rdAdrs;
+	}
+
+	public String getDtlAdrs() {
+		return this.dtlAdrs;
+	}
+
+	public void setDtlAdrs(String dtlAdrs) {
+		this.dtlAdrs = dtlAdrs;
+	}
+
 	@Override
 	public String toString() {
 		return "CampaignVO [cmpnId=" + cmpnId + ", usrId=" + usrId + ", ctgCd=" + ctgCd + ", sttsCd=" + sttsCd
@@ -425,8 +443,6 @@ public class CampaignVO extends BaseVO{
 				+ cmpnEndDt + ", rtrnRsn=" + rtrnRsn + ", addrs=" + addrs + ", attchGrpId=" + attchGrpId
 				+ ", cmpnTitle=" + cmpnTitle + ", cmpnCn=" + cmpnCn + ", offrCn=" + offrCn + ", offrPrc=" + offrPrc
 				+ ", pstMssn=" + pstMssn + ", hstg=" + hstg + ", ntfcn=" + ntfcn + ", view=" + view + ", cnfmDt="
-				+ cnfmDt + "]";
+				+ cnfmDt + ", rdAdrs=" + rdAdrs + ", dtlAdrs=" + dtlAdrs + "]";
 	}
-    
-    
 }

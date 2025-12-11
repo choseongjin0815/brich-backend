@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.domain.blog.service.BlogDataService;
 import com.ktdsuniversity.edu.domain.campaign.service.CampaignService;
+import com.ktdsuniversity.edu.domain.campaign.vo.ResponseModifyCampaignVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestApplicantVO;
+import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestCreateCmpnVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestDenyVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestSearchCampaignVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseAdoptListVO;
@@ -34,16 +38,24 @@ import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 import com.ktdsuniversity.edu.global.exceptions.BrichException;
+import com.ktdsuniversity.edu.global.security.jwt.JwtProvider;
+import jakarta.validation.Valid;
 
 @RequestMapping("/api/v1/campaign")
 @RestController
 public class CampaignApi {
+
+    private final JwtProvider jwtProvider;
 	private static final Logger log = LoggerFactory.getLogger(CampaignApi.class);
 	
 	@Autowired
 	private CampaignService campaignService;
 	@Autowired
     private BlogDataService blogDataService;
+
+    CampaignApi(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
 
 	// Hapa ===============================================================
     
@@ -231,5 +243,67 @@ public class CampaignApi {
 		List<CommonCodeVO> districtList = this.campaignService.readDistrictByCdId(cdId);
 		response.setBody(districtList);
 		return response;
+	}
+	
+	@PostMapping("/write")
+	public boolean doCreateNewCampaignAction(@Valid RequestCreateCmpnVO requestCreateCmpnVO,
+											BindingResult bindingResult,
+											Authentication authentication) {
+//		if (!loginUser.getAutr().equals("1004")) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
+		
+		if (bindingResult.hasErrors()) {
+			throw new BrichException("인자가 부족합니다.", "error/403");
+		}
+		
+//		requestCreateCmpnVO.setUsrId(loginUser.getUsrId());
+		requestCreateCmpnVO.setUsrId("USR-20240413-000007");
+		
+		boolean insert = this.campaignService.createNewCampaign(requestCreateCmpnVO);
+		return insert;
+	}
+	
+	@GetMapping("/modify")
+	public AjaxResponse modifyCampaign(String cmpnId,
+									   Authentication authentication) {
+		ResponseModifyCampaignVO responseModifyCampaignVO = this.campaignService.readModifyInfoByCmpnId(cmpnId);
+
+		log.info("---modfiy:" + responseModifyCampaignVO);
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(responseModifyCampaignVO);
+		
+		return ajaxResponse;
+	}
+	
+	@PostMapping("/modify")
+	public boolean doModifyCampaignAction(@Valid RequestCreateCmpnVO requestCreateCmpnVO,
+										 BindingResult bindingResult,
+										 Authentication authentication) {
+//		if (!loginUser.getAutr().equals("1004")) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
+		
+		if (bindingResult.hasErrors()) {
+			throw new BrichException("인자가 부족합니다.", "error/500");
+		}
+		
+//		requestCreateCmpnVO.setUsrId(loginUser.getUsrId());
+		requestCreateCmpnVO.setUsrId("USR-20240413-000007");
+		log.info("---requestCreateCmpnVO" + requestCreateCmpnVO.toString());
+		boolean modify = this.campaignService.modifyNewCampaign(requestCreateCmpnVO);
+		return modify;
+	}
+	
+	@PostMapping("/temporary")
+	public boolean doCreateTemporaryCampaignAction(RequestCreateCmpnVO requestCreateCmpnVO
+												 ,Authentication authentication) {
+//		requestCreateCmpnVO.setUsrId(loginUser.getUsrId());
+		requestCreateCmpnVO.setUsrId("USR-20240413-000007");
+		
+		log.info("--temporary--" + requestCreateCmpnVO.toString());
+		boolean create = this.campaignService.createTemporaryCampaign(requestCreateCmpnVO);
+		
+		return create;
 	}
 }

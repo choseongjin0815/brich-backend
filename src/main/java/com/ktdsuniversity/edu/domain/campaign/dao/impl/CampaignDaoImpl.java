@@ -181,7 +181,7 @@ public class CampaignDaoImpl extends SqlSessionDaoSupport implements CampaignDao
 	}
 
 	@Override
-	public String selectPersonPrice() {
+	public int selectPersonPrice() {
 		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectPersonPrice");
 	}
 
