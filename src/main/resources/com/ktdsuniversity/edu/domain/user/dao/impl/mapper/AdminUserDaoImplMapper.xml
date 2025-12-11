@@ -480,6 +480,7 @@
              , ACCNT_BLCK_STTS
          FROM USR
         WHERE DLT_YN = 'N'
+          AND ACCNT_BLCK_STTS != 'R'
           AND USR_ID = #{_parameter}
     </select>
     
@@ -549,6 +550,7 @@
             , UPDT_DT = SYSDATE
             , MTTR = #{adminId}
         WHERE DLT_YN = 'N'
+          AND ACCNT_BLCK_STTS != 'R'
           AND USR_ID = #{usrId}
     </update>
     
@@ -597,14 +599,15 @@
     </select>
     
     <!-- 신고 대상 회원의 징계 횟수를 1 증가시키고, 증가 시킨 횟수가 3이상일 경우 BLOCK 처리 -->
+    <!-- 2차에서 BLCK_YN -> ACCNT_BLCK_STTS로 바꿈 -->
     <update id="updateUserPenaltyCount" parameterType="com.ktdsuniversity.edu.domain.report.vo.AdminPenaltyRequestVO">
         UPDATE USR
            SET PNLT_CNT = PNLT_CNT + 1
-             , BLCK_YN = CASE 
-                             WHEN PNLT_CNT + 1 >= 3
-                             THEN 'Y'
-                             ELSE BLCK_YN
-                          END
+             , ACCNT_BLCK_STTS = CASE 
+		                             WHEN PNLT_CNT + 1 >= 3
+		                             THEN 'R'
+		                             ELSE ACCNT_BLCK_STTS
+		                          END
              , UPDT_DT = SYSDATE
              , MTTR = #{adminId}
          WHERE USR_ID = <if test="usrId == '' or usrId == null">

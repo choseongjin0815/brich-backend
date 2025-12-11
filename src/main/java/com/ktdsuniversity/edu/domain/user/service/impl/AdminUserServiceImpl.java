@@ -65,21 +65,40 @@ public class AdminUserServiceImpl implements AdminUserService {
 	private MultipartFileHandler multipartFileHandler;
 	
 	/* ======================================== 2차 ======================================== */
+	
+	/**
+	 * 회원 전체 리스트
+	 * @return
+	 */
 	@Override
 	public List<AdminUserListVO> readAdminAllUserList() {
 		return this.adminUserDao.selectAdminUserList();
 	}
 	
+	/**
+	 * 블로거 리스트
+	 * @return
+	 */
 	@Override
 	public List<AdminUserListVO> readAdminBloggerList() {
 		return this.adminUserDao.selectAdminBloggerList();
 	}
 	
+	/**
+	 * 광고주 리스트
+	 * @return
+	 */
 	@Override
 	public List<AdminUserListVO> readAdminAdvertiserList() {
 		return this.adminUserDao.selectAdminAdvertiserList();
 	}
 	
+	/**
+	 * 광고주 가입 승인
+	 * @param usrId
+	 * @param adminId
+	 * @return
+	 */
 	@Transactional
 	@Override
 	public boolean updateAdvertiserRegistApprove(String usrId, String adminId) {
@@ -114,6 +133,12 @@ public class AdminUserServiceImpl implements AdminUserService {
 		return updateAndInsertResult > 0;
 	}
 	
+	/**
+	 * 광고주 가입 반려
+	 * @param usrId
+	 * @param adminId
+	 * @return
+	 */
 	@Transactional
 	@Override
 	public boolean updateAdvertiserRegistReject(String usrId, String adminId) {
@@ -149,6 +174,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 	
 	/* ======================================== 1차 ======================================== */
+	
 	/**
 	 * 회원 관리 목록
 	 * @param tab
@@ -622,6 +648,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 그대로 사용)
 	 * 블로그 주소 수동 인증 (UPDATE)
 	 * @param adminUserModifyInfoVO
 	 * @return
@@ -656,6 +683,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	}
 
 	/**
+	 * (2차 때 일부 수정해서 사용)
 	 * 회원 경고/정지 처리
 	 * @param adminPanaltyRequestVO
 	 * @return
@@ -689,17 +717,26 @@ public class AdminUserServiceImpl implements AdminUserService {
 	    history.setAftUpdtCn( (pnltCnt + 1) + "");
 	    history.setUpdtAdmin(adminPanaltyRequestVO.getAdminId());
 	    history.setUpdtRsn("징계 처리(" + adminPanaltyRequestVO.getPenaltyKeyword() + ")");
+	    updateAndInsertCount = this.adminUserDao.insertNewHistoryByPenaltyCount(history);
 		
 		if( (pnltCnt + 1) >= 3 ) {
 			history.setUpdtRsn("징계 누적 횟수 3 이상 (최근 징계: " + adminPanaltyRequestVO.getPenaltyKeyword() + ")");
+			
+			// ACCNT_BLCK_STTS ('N' -> 'R')
+			 history.setUsrId(adminPanaltyRequestVO.getUsrId());
+			 history.setUpdtItem("ACCNT_BLCK_STTS");
+			 history.setBefUpdtCn("N");
+			 history.setAftUpdtCn("R");
+			 history.setUpdtAdmin(adminPanaltyRequestVO.getAdminId());
+			 history.setUpdtRsn("징계 처리(" + adminPanaltyRequestVO.getPenaltyKeyword() + ")");
+			 updateAndInsertCount = this.adminUserDao.insertNewHistoryByPenaltyCount(history);
 			
 			// 징계 기록도 함께 갱신한다.
 			updateAndInsertCount = this.penaltyHistoryDao.updateHistoryBanToPenaltyCount(adminPanaltyRequestVO);
 			daoValidate(updateAndInsertCount, "updateHistoryBanToPenaltyCount");
 		}
 		
-		return this.adminUserDao.insertNewHistoryByPenaltyCount(history) > 0;
-		
+		return true;
 	}
 
 }
