@@ -42,7 +42,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		if (requestURL.startsWith("/api/")) {
 			// RequestHeader에 있는 Authorization의 앖을 추출. ==> JWT
 			String jwt = request.getHeader("Authorization");
-
+			
+//	       if (jwt == null || jwt.isBlank()
+//	                || "null".equalsIgnoreCase(jwt)
+//	                || "undefined".equalsIgnoreCase(jwt)) {
+//	            filterChain.doFilter(request, response); // 그냥 다음 필터/컨트롤러로 넘김
+//	            return;
+//	        }
+	       
 			// JWT가 존재한다
 			// JWT를 검증 / 복호화 ==> MemberVO
 			if (jwt != null && jwt.length() > 0) {

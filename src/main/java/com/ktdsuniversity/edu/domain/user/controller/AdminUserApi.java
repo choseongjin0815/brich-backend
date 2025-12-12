@@ -6,31 +6,41 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.domain.report.vo.AdminPenaltyRequestVO;
 import com.ktdsuniversity.edu.domain.user.service.AdminUserService;
 import com.ktdsuniversity.edu.domain.user.vo.AdminUserBaseInfoVO;
 import com.ktdsuniversity.edu.domain.user.vo.AdminUserListVO;
+import com.ktdsuniversity.edu.domain.user.vo.AdminUserModifyInfoVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
-// @PreAuthorize("hasRole('ROLE_ADMIN')")
+/**
+ * 회원 관리
+ */
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminUserApi {
 	
-	private static final Logger logger = LoggerFactory.getLogger(AdminUserApi.class);
+	private static final Logger log = LoggerFactory.getLogger(AdminUserApi.class);
 	
 	@Autowired
 	private AdminUserService adminUserService;
 
 	/**
-	 * 회원 관리 - 전체 회원 리스트
+	 * 전체 회원 리스트
 	 * @return
 	 */
 	@GetMapping("/users")
@@ -43,7 +53,7 @@ public class AdminUserApi {
 	}
 	
 	/**
-	 * 회원 관리 - 블로거 리스트
+	 * 블로거 리스트
 	 * @return
 	 */
 	@GetMapping("/bloggers")
@@ -56,7 +66,7 @@ public class AdminUserApi {
 	}
 	
 	/**
-	 * 회원 관리 - 광고주 리스트
+	 * 광고주 리스트
 	 * @return
 	 */
 	@GetMapping("/advertisers")
@@ -69,7 +79,7 @@ public class AdminUserApi {
 	}
 	
 	/**
-	 * 회원 관리 - 회원 상세 정보
+	 * 회원 상세 정보
 	 * @param usrId
 	 * @return
 	 */
@@ -79,7 +89,7 @@ public class AdminUserApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		ajaxResponse.setBody(userInfo);
 		
-		logger.info("user-detail: ", ajaxResponse);
+		log.info("user-detail: ", ajaxResponse);
 		
 		return ajaxResponse;
 	}
@@ -121,6 +131,59 @@ public class AdminUserApi {
 		List<CommonCodeVO> blogCategoryList = this.adminUserService.readBlogCategoryList();
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		ajaxResponse.setBody(blogCategoryList);
+		return ajaxResponse;
+	}
+	
+	/**
+	 * 회원 정보 수정
+	 * @param adminUserModifyInfoVO
+	 * @param newFiles
+	 * @param fileToDeleteJson
+	 * @return
+	 */
+	@PostMapping("/user-update")
+	public AjaxResponse modifyUserInfo(@ModelAttribute AdminUserModifyInfoVO adminUserModifyInfoVO
+									 , @RequestPart(name = "file", required = false) List<MultipartFile> newFiles
+									 , @RequestPart(name = "fileToDelete", required = false) String fileToDeleteJson) {
+		
+		log.info("newFiles: {}", newFiles != null ? newFiles.size() : 0);
+		log.info("fileToDelete: {}", fileToDeleteJson);
+		
+		boolean isSuccess = this.adminUserService.updateUserInfo(adminUserModifyInfoVO, newFiles, fileToDeleteJson);
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(isSuccess);
+		
+		return ajaxResponse;
+	}
+	
+	/**
+	 * 블로거 블로그 주소 수동 인증
+	 * @param adminUserModifyInfoVO
+	 * @return 
+	 */
+	@PutMapping("/blog-address-certify/{usrId}")
+	public AjaxResponse certifyBlogAddress(@RequestBody AdminUserModifyInfoVO adminUserModifyInfoVO) {
+		boolean isSuccess = this.adminUserService.updateBlogAddress(adminUserModifyInfoVO);
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(isSuccess);
+		
+		return ajaxResponse;
+	}
+	
+	/**
+	 * 회원 페널티 (경고/정지)
+	 * @param adminPanaltyRequestVO
+	 * @return
+	 */
+	@PostMapping("/user-panelty/{usrId}")
+	public AjaxResponse userPenaltyProcess(@RequestBody AdminPenaltyRequestVO adminPanaltyRequestVO) {
+		boolean isSuccess = this.adminUserService.updateUserPenaltyInfo(adminPanaltyRequestVO);
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(isSuccess);
+		
 		return ajaxResponse;
 	}
 

@@ -30,17 +30,9 @@
 	}
 }
 
-.title{
-	display: flex;
-	font-size: 2.25rem;
-	color: #5A6ACF;
-	font-weight: bold;
-	margin: 10px 0;
-	flex-direction: column;
-}
 
 /* 모달 배경 */
-.modal {
+.verify-modal {
   display: none; /* 기본 비활성 */
   position: fixed;
   z-index: 1000;
@@ -53,7 +45,7 @@
 }
 
 /* 모달 내부 박스 */
-.modal-content {
+.verify-modal-content {
   background-color: #fff;
   margin: 12% auto;
   padding: 20px;
@@ -64,14 +56,14 @@
 }
 
 /* 닫기 버튼 */
-.close {
+.verify-close {
   float: right;
   font-size: 20px;
   cursor: pointer;
 }
 
 /* 버튼 */
-.btn {
+.verify-btn {
   background-color: #5275C1;
   border: none;
   color: white;
@@ -82,7 +74,7 @@
 
 
 
-.btn-green {
+.verify-btn-green {
   background-color: #28a745;
   color: white;
   border: none;

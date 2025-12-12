@@ -11,7 +11,16 @@ public class ResponseCampaignVO extends CampaignVO{
 	
 	private String personPrice;
 	private String dayPrice;
+	private String returnReason;
 
+	
+	 public String getReturnReason() {
+		return this.returnReason;
+	}
+
+	public void setReturnReason(String returnReason) {
+		this.returnReason = returnReason;
+	}
 
 	 /**
 	  * 파일 갯수

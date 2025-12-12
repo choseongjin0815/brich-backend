@@ -23,6 +23,7 @@ import com.ktdsuniversity.edu.domain.blog.vo.BlogIndexVO;
 import com.ktdsuniversity.edu.domain.blog.vo.DailyVisitorVO;
 import com.ktdsuniversity.edu.domain.blog.vo.RequestBlogIndexListVO;
 import com.ktdsuniversity.edu.domain.blog.vo.RequestExpireSoonCampaignVO;
+import com.ktdsuniversity.edu.domain.blog.vo.ResponseDashboardVO;
 import com.ktdsuniversity.edu.domain.campaign.service.CampaignService;
 import com.ktdsuniversity.edu.domain.campaign.vo.CampaignPostManageVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.CampaignVO;
@@ -38,16 +39,15 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/v1/blog")
-public class DashboardApi {
+public class BlogApi {
 	private static final Logger log = LoggerFactory.getLogger(BlogDataController.class);
 
 	@Autowired BlogDataService blogDataService;
 	@Autowired CampaignService campaignService;
 
 	@PreAuthorize("isAuthenticated() or hasRole('ROLE_BLG')" )
-	@GetMapping("/dashboard")
-	public AjaxResponse viewBlogDashBoard(@PathVariable String usrId, 
-										  Model model, 
+	@GetMapping("/dashboard/{usrId}")
+	public AjaxResponse viewBlogDashBoard(@PathVariable String usrId,
 										  RequestExpireSoonCampaignVO requestExpireSoonCampaignVO, 
 										  Authentication authentication,
 										  RequestBlogIndexListVO requestBlogIndexListVO) 
@@ -77,37 +77,38 @@ public class DashboardApi {
 		double currentIndex = this.blogDataService.selectMostRecentIndex(usrId);
 		int totalVisitor = this.blogDataService.selectTotalVisitor(usrId);
 
-		//model.addAttribute("user", loginUser);
-		model.addAttribute("dailyVisitorsResult", dailyVisitorsResult);
-		model.addAttribute("list", result);
-		model.addAttribute("paginator", requestExpireSoonCampaignVO);
-		model.addAttribute("index", indexResult);
-		model.addAttribute("goldenKeywordListJson", goldenKeywordListJson);
-		model.addAttribute("currentIndex",currentIndex);
-		model.addAttribute("totalVisitor", totalVisitor);
-		model.addAttribute("recommended",recommendResult);
-
-		model.addAttribute("campaignList", CampaignListAndCategory.getResponseCampaignList());
-		AjaxResponse response;
-		return null;
+		ResponseDashboardVO responseDashboardVO = new ResponseDashboardVO();
+		responseDashboardVO.setBlogIndexList(indexResult);
+		responseDashboardVO.setCurrentIndex(currentIndex);
+		responseDashboardVO.setDailyVisitorList(dailyVisitorsResult);
+//		responseDashboardVO.setGoldenKeywordList(goldenKeywordListJson);
+		responseDashboardVO.setRecommendedCampaignList(recommendResult);
+		responseDashboardVO.setResponseCampaignListVO(CampaignListAndCategory);
+		responseDashboardVO.setResponseExpireSoonlistVO(result);
+		responseDashboardVO.setTotalVisitor(totalVisitor);
+		responseDashboardVO.setUserVO(null);
+		
+		AjaxResponse response = new AjaxResponse();
+		response.setBody(responseDashboardVO);
+		return response;
 	}
 	
 	@GetMapping("/blog/{usrId}/manage")
-	public String viewBlogManagePage(@PathVariable String usrId, HttpSession session, Model model, RequestExpireSoonCampaignVO requestExpireSoonCampaignVO) {
-		UserVO loginUser = (UserVO) session.getAttribute("__LOGIN_USER__");
-		if (loginUser == null || !loginUser.getUsrId().equals(usrId)) {
-			System.out.println(usrId);
-	        return "redirect:/access-denied";
-	    }
-		if(loginUser.getBlgAddrs() == null) {
-			return "redirect:/blog/"+ loginUser.getUsrId() + "/verification";
-		}
-		
-		
-		List<CampaignPostManageVO> results = this.blogDataService.readCampaignPostByUsrId(usrId);
-		model.addAttribute("list",results);
-		
-		return "/blog/manage";
+	public AjaxResponse viewBlogManagePage(@PathVariable String usrId, RequestExpireSoonCampaignVO requestExpireSoonCampaignVO) {
+
+//		if(loginUser.getBlgAddrs() == null) {
+//			return "redirect:/blog/"+ loginUser.getUsrId() + "/verification";
+//		}
+//		
+//		
+//		List<CampaignPostManageVO> results = this.blogDataService.readCampaignPostByUsrId(usrId);
+//		model.addAttribute("list",results);
+//		
+//		AjaxResponse response = new AjaxResponse();
+//		response.setBody(response);
+//		
+//		return response;
+		return null;
 	}
 	
 	@GetMapping("/blog/{usrId}/verification")

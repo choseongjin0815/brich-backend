@@ -19,11 +19,7 @@ public interface ChatService {
     public SearchChatVO readUnreadChatRoomList(SearchChatVO searchChatVO);
     
     // 캠페인 목록 조회 (페이징)
-    public SearchChatVO readAllCampaignList(SearchChatVO searchChatVO);
-    
-    public SearchChatVO readEndedCampaignList(SearchChatVO searchChatVO);
-    
-    public SearchChatVO readOngoingCampaignList(SearchChatVO searchChatVO);
+    public SearchChatVO readCampaignList(SearchChatVO searchChatVO, String status);
     
     // 채팅방 나가기
     public boolean leaveChatRoom(ChatParticipantVO participant);
@@ -37,5 +33,7 @@ public interface ChatService {
 	public Map<String, Object> readChatMessageListPaged(String chtRmId, String usrId, int page, int size);
 
 	public List<String> readAllChtRmIdByUsrIdOrCmpnId(Map<String, String> parameter);
+
+	public List<String> readMyRoomIds(String usrId);
 
 }

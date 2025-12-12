@@ -113,5 +113,11 @@ public class ChatDaoImpl extends SqlSessionDaoSupport implements ChatDao {
 	public List<String> selectChtRmIdListByUsrId(Map<String, String> parameter) {
 		return super.getSqlSession().selectList(this.NAME_SPACE + "selectChtRmIdListByUsrId", parameter);
 	}
+
+
+	@Override
+	public List<String> selectMyChtRmIdList(String usrId) {
+		return super.getSqlSession().selectList(this.NAME_SPACE + "selectMyChtRmIdList", usrId);
+	}
     
 }

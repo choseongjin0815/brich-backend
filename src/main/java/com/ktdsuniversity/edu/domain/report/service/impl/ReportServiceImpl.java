@@ -15,7 +15,6 @@ import com.ktdsuniversity.edu.domain.file.dao.FileGroupDao;
 import com.ktdsuniversity.edu.domain.file.util.MultipartFileHandler;
 import com.ktdsuniversity.edu.domain.file.vo.FileGroupVO;
 import com.ktdsuniversity.edu.domain.file.vo.FileVO;
-import com.ktdsuniversity.edu.domain.report.controller.ReportController;
 import com.ktdsuniversity.edu.domain.report.dao.ReportDao;
 import com.ktdsuniversity.edu.domain.report.service.ReportService;
 import com.ktdsuniversity.edu.domain.report.vo.ReportSearchVO;

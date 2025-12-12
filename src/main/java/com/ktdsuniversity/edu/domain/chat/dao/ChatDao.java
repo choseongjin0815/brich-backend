@@ -48,4 +48,6 @@ public interface ChatDao {
 	public List<String> selectChtRmIdListByCmpnId(Map<String, String> parameter);
 
 	public List<String> selectChtRmIdListByUsrId(Map<String, String> parameter);
+
+	public List<String> selectMyChtRmIdList(String usrId);
 }
