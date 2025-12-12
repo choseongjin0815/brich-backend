@@ -65,6 +65,11 @@ public class CampaignApi {
 	
 	
 	// Hapa ===============================================================
+	/**
+	 * 캠페인 메인 리스트 조회
+	 * @param requestSearchCampaignVO
+	 * @return
+	 */
 //    @PreAuthorize("hasRole('ROLE_BLG')")
     @PostMapping("/main")
     public AjaxResponse campaignMainPage(@RequestBody RequestSearchCampaignVO requestSearchCampaignVO){
@@ -94,12 +99,16 @@ public class CampaignApi {
     	return ajaxResponse;
     }  
     
+    /**
+     * 캠페인 상세조회
+     * @param requestSearchCampaignVO
+     * @return
+     */
     @PostMapping("/detail")
     public AjaxResponse campaignDetailPage(@RequestBody RequestSearchCampaignVO requestSearchCampaignVO) {
     	String campaignId = requestSearchCampaignVO.getCmpnId();
     	ResponseCampaignVO detail = new ResponseCampaignVO();
     	
-    	//지울부분
     	UserVO loginUser = new UserVO();
     	if(AuthenticationUtil.getUserVO() != null) {
     		loginUser.setAutr(AuthenticationUtil.getUserVO().getAutr());
@@ -110,6 +119,7 @@ public class CampaignApi {
     		if(loginUser.getAutr().contains("ROLE-20251203-000002") || loginUser.getAutr().contains("ROLE-20251203-000003")) {
         		detail = campaignService.readCampaignDetail(campaignId, loginUser.getUsrId());    	
         		String returnReason =  campaignService.postReturnReason(campaignId, loginUser.getUsrId());
+        		detail.setReturnReason(returnReason);
         	}else {
         		detail = campaignService.readCampaignDetail(campaignId);
         	}
@@ -134,7 +144,7 @@ public class CampaignApi {
     }
     
     /**  
-     * 좋아요 
+     * 좋아요(즐겨찾기) do undo 
      * @param loginUser
      * @param campaignId
      * @return
@@ -151,6 +161,22 @@ public class CampaignApi {
     	AjaxResponse ajaxResponse = new AjaxResponse();
     	ajaxResponse.setBody(count);
     	return ajaxResponse;
+    }
+    /**
+     * blog My캠페인 - 신청한 캠페인
+     * @param model
+     * @param loginUser
+     * @return
+     */
+    @PostMapping("/blgr/submitted")
+    public String submittedmycampaign(Model model,@SessionAttribute(value = "__LOGIN_USER__") 
+    						UserVO loginUser) {
+    	String blgId = loginUser.getUsrId();
+    	ResponseCampaignListVO CampaignListAndCategory = campaignService.readSubmittedMyCampaignByBlgId(blgId);
+    	model.addAttribute("campaignList", CampaignListAndCategory.getResponseCampaignList());
+    	
+    	log.info( "캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
+    	return "campaign/submittedmycampaign";
     }
     
     // ////////////////////////// Hapa up!

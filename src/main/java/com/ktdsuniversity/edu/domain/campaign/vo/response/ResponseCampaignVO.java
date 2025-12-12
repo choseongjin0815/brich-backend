@@ -11,7 +11,16 @@ public class ResponseCampaignVO extends CampaignVO{
 	
 	private String personPrice;
 	private String dayPrice;
+	private String returnReason;
 
+	
+	 public String getReturnReason() {
+		return this.returnReason;
+	}
+
+	public void setReturnReason(String returnReason) {
+		this.returnReason = returnReason;
+	}
 
 	 /**
 	  * 파일 갯수
@@ -199,10 +208,10 @@ public class ResponseCampaignVO extends CampaignVO{
 
 	 @Override
 	public String toString() {
-		return "ResponseCampaignVO [personPrice=" + personPrice + ", dayPrice=" + dayPrice + ", flCnt=" + flCnt
-				+ ", flGrpId=" + flGrpId + ", fileVoList=" + fileVoList + ", likeCnt=" + likeCnt + ", adptCnt="
-				+ adptCnt + ", area=" + area + ", parentArea=" + parentArea + ", pstSttsCd=" + pstSttsCd
-				+ ", pstSttsCdNm=" + pstSttsCdNm + ", favYn=" + favYn + ", adptYn=" + adptYn + ", SttsCdNm=" + SttsCdNm
-				+ ", stats=" + stats + "]";
+		return "ResponseCampaignVO [personPrice=" + personPrice + ", dayPrice=" + dayPrice + ", returnReason="
+				+ returnReason + ", flCnt=" + flCnt + ", flGrpId=" + flGrpId + ", fileVoList=" + fileVoList
+				+ ", likeCnt=" + likeCnt + ", adptCnt=" + adptCnt + ", area=" + area + ", parentArea=" + parentArea
+				+ ", pstSttsCd=" + pstSttsCd + ", pstSttsCdNm=" + pstSttsCdNm + ", favYn=" + favYn + ", adptYn="
+				+ adptYn + ", SttsCdNm=" + SttsCdNm + ", stats=" + stats + "]";
 	}
 }
