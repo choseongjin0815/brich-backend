@@ -23,8 +23,6 @@ public interface AdminUserService {
 
 	List<CommonCodeVO> readBlogCategoryList();
 
-	boolean updateUserInfo(AdminUserModifyInfoVO adminUserModifyInfoVO, List<MultipartFile> newFiles);
-
 	boolean updateBlogAddress(AdminUserModifyInfoVO adminUserModifyInfoVO);
 
 	boolean updateUserPenaltyInfo(AdminPenaltyRequestVO adminPanaltyRequestVO);
@@ -40,5 +38,7 @@ public interface AdminUserService {
 	boolean updateAdvertiserRegistApprove(String usrId, String adminId);
 
 	boolean updateAdvertiserRegistReject(String usrId, String adminId);
+	
+	boolean updateUserInfo(AdminUserModifyInfoVO adminUserModifyInfoVO, List<MultipartFile> newFiles, String fileToDeleteJson);
 
 }
