@@ -95,6 +95,7 @@ public class CampaignApi {
     	return ajaxResponse;
     }  
     
+    
     /**
      * 캠페인 상세조회
      * @param requestSearchCampaignVO
@@ -140,25 +141,6 @@ public class CampaignApi {
     }
     
     
-    
- // 석진 ===============================================================
- 	@GetMapping("list")
- 	public AjaxResponse readCampaignList(Authentication authentication,
- 										 RequestSearchCampaignVO requestSearchCampaignVO) {
- 		requestSearchCampaignVO.setListSize(8);
- 		requestSearchCampaignVO.setPageCountInGroup(5);
- 		
- 		
- 		ResponseCampaignListVO campaignList = this.campaignService.readCampaignListByUsrId(requestSearchCampaignVO);
- 		
- 		AjaxResponse ajaxResponse = new AjaxResponse();
- 		ajaxResponse.setBody(campaignList);
- 		ajaxResponse.setPaginator(requestSearchCampaignVO);
- 		
- 		log.info("campaigncheck : " + campaignList);
- 		return ajaxResponse;
- 	}
- 	
     /**  
      * 좋아요(즐겨찾기) do undo 
      * @param loginUser
@@ -180,22 +162,93 @@ public class CampaignApi {
     }
     /**
      * blog My캠페인 - 신청한 캠페인
-     * @param model
-     * @param loginUser
      * @return
      */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
     @PostMapping("/blgr/submitted")
-    public String submittedmycampaign(Model model,@SessionAttribute(value = "__LOGIN_USER__") 
-    						UserVO loginUser) {
-    	String blgId = loginUser.getUsrId();
+    public AjaxResponse submittedmycampaign() {
+    	String blgId = AuthenticationUtil.getUserVO().getUsrId();
     	ResponseCampaignListVO CampaignListAndCategory = campaignService.readSubmittedMyCampaignByBlgId(blgId);
-    	model.addAttribute("campaignList", CampaignListAndCategory.getResponseCampaignList());
     	
-    	log.info( "캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
-    	return "campaign/submittedmycampaign";
+    	log.info( " 신청한 캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(CampaignListAndCategory.getResponseCampaignList());
+    	return ajaxResponse;
+    	}
+    
+    /**
+     * blog My캠페인 - 진행중 캠페인
+     * @return
+     */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
+    @PostMapping("/blgr/ongoing")
+    public AjaxResponse campaignongoing() {
+    	String blgId = AuthenticationUtil.getUserVO().getUsrId();
+    	ResponseCampaignListVO CampaignListAndCategory = campaignService.readOnGoingMyCampaignByBlgId(blgId);
+    	
+    	log.info( "진행중 캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(CampaignListAndCategory.getResponseCampaignList());
+    	return ajaxResponse;
     }
     
+    /**
+     * blog My캠페인 - 마감된 캠페인
+     * @return
+     */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
+    @PostMapping("/blgr/closed")
+    public AjaxResponse closedcampaign() {
+    	String blgId = AuthenticationUtil.getUserVO().getUsrId();
+    	ResponseCampaignListVO CampaignListAndCategory = campaignService.readClosedMyCampaignByBlgId(blgId);
+    	
+    	log.info( "마감된 캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(CampaignListAndCategory.getResponseCampaignList());
+    	return ajaxResponse;
+    }
+    
+    /**
+     * blog My캠페인 - 관심 캠페인
+     * @return
+     */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
+    @PostMapping("/blgr/fav")
+    public AjaxResponse favcampaign() {
+    	String blgId = AuthenticationUtil.getUserVO().getUsrId();
+    	ResponseCampaignListVO CampaignListAndCategory = campaignService.readFavMyCampaignByBlgId(blgId);
+    	
+    	log.info( "관심 캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(CampaignListAndCategory.getResponseCampaignList());
+    	return ajaxResponse;
+    }
     // ////////////////////////// Hapa up!
+    
+    
+ // 석진 ===============================================================
+ 	@GetMapping("list")
+ 	public AjaxResponse readCampaignList(Authentication authentication,
+ 										 RequestSearchCampaignVO requestSearchCampaignVO) {
+ 		requestSearchCampaignVO.setListSize(8);
+ 		requestSearchCampaignVO.setPageCountInGroup(5);
+ 		
+ 		
+ 		ResponseCampaignListVO campaignList = this.campaignService.readCampaignListByUsrId(requestSearchCampaignVO);
+ 		
+ 		AjaxResponse ajaxResponse = new AjaxResponse();
+ 		ajaxResponse.setBody(campaignList);
+ 		ajaxResponse.setPaginator(requestSearchCampaignVO);
+ 		
+ 		log.info("campaigncheck : " + campaignList);
+ 		return ajaxResponse;
+ 	}
+ 	
+    
     
     
 	@GetMapping("/applicant")
