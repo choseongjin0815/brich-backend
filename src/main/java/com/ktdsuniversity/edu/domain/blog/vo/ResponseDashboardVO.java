@@ -9,6 +9,11 @@ import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignListVO
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class ResponseDashboardVO {
 	
 	private UserVO userVO;
