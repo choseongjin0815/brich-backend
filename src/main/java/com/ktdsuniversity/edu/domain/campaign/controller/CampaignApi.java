@@ -365,8 +365,8 @@ public class CampaignApi {
 	}
 	
 	@PostMapping("/temporary")
-	public boolean doCreateTemporaryCampaignAction(RequestCreateCmpnVO requestCreateCmpnVO
-												 ,Authentication authentication) {
+	public boolean doCreateTemporaryCampaignAction(RequestCreateCmpnVO requestCreateCmpnVO,
+												   Authentication authentication) {
 //		requestCreateCmpnVO.setUsrId(loginUser.getUsrId());
 		requestCreateCmpnVO.setUsrId("USR-20240413-000007");
 		
@@ -374,5 +374,17 @@ public class CampaignApi {
 		boolean create = this.campaignService.createTemporaryCampaign(requestCreateCmpnVO);
 		
 		return create;
+	}
+	
+	@GetMapping("deny-history/{cmpnId}")
+	public AjaxResponse readDenyHistory(@PathVariable String cmpnId,
+								  Authentication authentication) {
+		ResponseCampaignListVO denyList = this.campaignService.readDenyHistoryByCmpnId(cmpnId);
+		log.info("---denyList:" + denyList.toString());
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		ajaxResponse.setBody(denyList);
+		
+		return ajaxResponse;
 	}
 }

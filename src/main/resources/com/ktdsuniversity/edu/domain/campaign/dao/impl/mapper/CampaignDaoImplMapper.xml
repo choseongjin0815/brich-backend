@@ -552,7 +552,7 @@
     </select>
     
     <select id="selectDenyListByCmpnId"
-            parameterType="com.ktdsuniversity.edu.domain.campaign.vo.request.RequestSearchCampaignVO"
+            parameterType="string"
             resultType="com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignVO">
         SELECT LEVEL AS LVL
 		     , C.CMPN_ID

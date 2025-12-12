@@ -580,20 +580,20 @@ public class CampaignServiceImpl implements CampaignService {
 	}
 
 	@Override
-	public ResponseCampaignListVO readDenyHistoryByCmpnId(RequestSearchCampaignVO requestSearchCampaignVO) {
-		CampaignVO campaignInfo = this.campaignDao.selectCampaignInfoByCmpnId(requestSearchCampaignVO.getCmpnId());
+	public ResponseCampaignListVO readDenyHistoryByCmpnId(String cmpnId) {
+		CampaignVO campaignInfo = this.campaignDao.selectCampaignInfoByCmpnId(cmpnId);
 		
-		UserVO userId = SessionUtil.getLoginObject();
-		if (!campaignInfo.getUsrId().equals(userId.getUsrId())) {
-			throw new BrichException("잘못된 접근입니다.", "error/403");
-		}
+//		UserVO userId = SessionUtil.getLoginObject();
+//		if (!campaignInfo.getUsrId().equals(userId.getUsrId())) {
+//			throw new BrichException("잘못된 접근입니다.", "error/403");
+//		}
 		
-		List<ResponseCampaignVO> denyList = this.campaignDao.selectDenyListByCmpnId(requestSearchCampaignVO);
+		List<ResponseCampaignVO> denyList = this.campaignDao.selectDenyListByCmpnId(cmpnId);
 		
 		ResponseCampaignListVO deny = new ResponseCampaignListVO();
 		deny.setResponseCampaignList(denyList);
 		
-		deny.setCampaignInfo(this.campaignDao.selectCampaignInfoByCmpnId(requestSearchCampaignVO.getCmpnId()));
+		deny.setCampaignInfo(this.campaignDao.selectCampaignInfoByCmpnId(cmpnId));
 		
 		return deny;
   }
