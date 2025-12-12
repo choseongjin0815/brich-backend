@@ -21,7 +21,6 @@ public class FaqApi {
     @Autowired
     private FaqService faqService;
     
-    //TODO WHERE 조건 걸기
     @GetMapping
     public AjaxResponse getFaqList(@RequestParam(required=false) String category
     						) {

@@ -240,5 +240,14 @@
          WHERE USR_ID = #{usrId}
            AND LFT_YN = 'N'
     </select> 
+    
+    <select id="selectMyChtRmIdList"
+            parameterType="string">
+        SELECT CHT_RM_ID 
+		  FROM CHT_PRTCPNT
+	  	 WHERE USR_ID = #{usrId} 
+		   AND DLT_YN = 'N' 
+		   AND LFT_YN = 'N'
+    </select>
      
 </mapper>

@@ -86,8 +86,10 @@
            SET END_DT = TO_DATE('9999-12-31 23:59:59', 'YYYY-MM-DD HH24:MI:SS')
              , UPDT_DT = SYSDATE
              , MTTR = #{adminId}
-         WHERE RPT_ID = #{rptId}
-           AND DLT_YN = 'N'
+         WHERE DLT_YN = 'N'
+         <if test="rptId != null and rptId != ''">
+           AND RPT_ID = #{rptId}
+         </if>
     </update>
     
 </mapper>
