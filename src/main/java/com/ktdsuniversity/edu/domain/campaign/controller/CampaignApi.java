@@ -29,6 +29,7 @@ import com.ktdsuniversity.edu.domain.campaign.vo.ResponseModifyCampaignVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestApplicantVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestCreateCmpnVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestDenyVO;
+import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestPostSubmitVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.request.RequestSearchCampaignVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseAdoptListVO;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseApplicantListVO;
@@ -225,6 +226,64 @@ public class CampaignApi {
     	log.info( "관심 캠페인 리스트 조회결과 : " + CampaignListAndCategory.getResponseCampaignList().toString());
     	AjaxResponse ajaxResponse = new AjaxResponse();
     	ajaxResponse.setBody(CampaignListAndCategory.getResponseCampaignList());
+    	return ajaxResponse;
+    }
+    
+
+    /**
+     * 캠페인 신청, 취소 하기
+     * @return
+     */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
+    @PostMapping("/blgr/apply")
+    public AjaxResponse applyCampaign(@RequestBody RequestPostSubmitVO requestPostSubmitVO) {
+    	
+    	String blgId = AuthenticationUtil.getUserVO().getUsrId();
+    	int count = this.campaignService.applyCampaign(requestPostSubmitVO.getCmpnId(), blgId);
+    	
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(count);
+    	
+    	return ajaxResponse;
+    }
+    
+    /**
+     * 포스팅 작성
+     * @return
+     */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
+    @PostMapping("/blgr/pstsubmit")
+    public AjaxResponse postSubmit(@RequestBody RequestPostSubmitVO requestPostSubmitVO) {
+    	
+    	requestPostSubmitVO.setBlgId( AuthenticationUtil.getUserVO().getUsrId());
+    	int count = this.campaignService.postSubmit(requestPostSubmitVO);
+    	log.info( "포스팅 input 정보 : " + requestPostSubmitVO.toString());
+    
+    	
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(count);
+    	
+    	return ajaxResponse;
+    }
+    
+    /**
+     * 포스팅 재 제출
+     * @return
+     */
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_BLG')")
+    @PostMapping("/blgr/repstsubmit")
+    public AjaxResponse rePostSubmit(@RequestBody RequestPostSubmitVO requestPostSubmitVO) {
+    	
+    	requestPostSubmitVO.setBlgId( AuthenticationUtil.getUserVO().getUsrId());
+    	int count = this.campaignService.rePostSubmit(requestPostSubmitVO);
+    	log.info( "포스팅 input 정보 : " + requestPostSubmitVO.toString());
+    	
+    	AjaxResponse ajaxResponse = new AjaxResponse();
+    	ajaxResponse.setBody(1);
+    	
     	return ajaxResponse;
     }
     // ////////////////////////// Hapa up!
