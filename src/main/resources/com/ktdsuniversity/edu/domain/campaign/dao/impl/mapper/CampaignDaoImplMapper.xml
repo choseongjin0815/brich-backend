@@ -259,6 +259,7 @@
                     autoMapping="true">
             <result column="RETN_FL_ID" property="flId" />
             <result column="RETN_FL_NM" property="flNm" />
+            <result column="RETN_FL_GRP_ID" property="flGrpId" />
         </collection>
         <collection property="submitFile"
                     javaType="list"
@@ -266,6 +267,7 @@
                     autoMapping="true">
             <result column="SUBMIT_FL_ID" property="flId" />
             <result column="SUBMIT_FL_NM" property="flNm" />
+            <result column="SUBMIT_FL_GRP_ID" property="flGrpId" />
         </collection>
     </resultMap>
     <select id="selectDenyHistoryByCmpnPstAdptId"
@@ -315,7 +317,7 @@
     </select>
     
     <select id="selectPersonPrice"
-            resultType="string">
+            resultType="_int">
         SELECT VALUE1
           FROM CM_CD
          WHERE CD_ID = '5000'
@@ -403,7 +405,8 @@
          , PST_END_DT
          , CMPN_END_DT
          , RTRN_RSN
-         , ADDRS
+         , RD_ADRS
+         , DTL_ADRS
          , ATTCH_GRP_ID
          , CMPN_TITLE
          , CMPN_CN
@@ -436,7 +439,8 @@
         , NULL
         , NULL
         , NULL
-        , #{addrs}
+        , #{rdAdrs}
+        , #{dtlAdrs}
         , #{attchGrpId}
         , #{cmpnTitle}
         , #{cmpnCn}
@@ -461,7 +465,8 @@
          , CTG_CD=#{ctgCd}
          , STTS_CD=#{sttsCd}
          , RCRT_PRSNN=#{rcrtPrsnn}
-         , ADDRS=#{addrs}
+         , RD_ADRS=#{rdAdrs}
+         , DTL_ADRS=#{dtlAdrs}
          , ATTCH_GRP_ID=#{attchGrpId}
          , CMPN_TITLE=#{cmpnTitle}
          , CMPN_CN=#{cmpnCn}
@@ -618,6 +623,8 @@
                   , CMPN.PST_MSSN
                   , CMPN.HSTG
                   , CMPN.NTFCN
+                  , CMPN.RD_ADRS
+                  , CMPN.DTL_ADRS
                   , CMPN."VIEW"
                   , TO_CHAR(CMPN.CNFM_DT, 'MM-DD')       AS CNFM_DT
                   , TO_CHAR(CMPN.CRT_DT,  'MM-DD')       AS CRT_DT
@@ -1247,6 +1254,7 @@ FROM (
     C.RCRT_END_DT,
     C.PST_END_DT,
     C.OFFR_PRC,
+    C.RD_ADRS || ' ' || C.DTL_ADRS AS ADDRS,
     ROUND(AI.AVG_INDEX, 2) AS AVG_INDEX,
     ROUND(M.MY_INDEX, 2)    AS MY_INDEX,
     ROW_NUMBER() OVER (ORDER BY ABS(AI.AVG_INDEX - M.MY_INDEX)) AS RN

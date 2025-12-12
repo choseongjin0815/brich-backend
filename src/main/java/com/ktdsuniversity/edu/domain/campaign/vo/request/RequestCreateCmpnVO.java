@@ -17,7 +17,6 @@ public class RequestCreateCmpnVO {
 	private String cmpnPrntId;
 	@NotNull(message = "값을 입력해주세요.")
 	private int rcrtPrsnn;
-	private String addrs;
 	private String attchGrpId;
 	@NotEmpty(message="필수 입력입니다.")
 	private String cmpnTitle;
@@ -25,6 +24,7 @@ public class RequestCreateCmpnVO {
 	private String cmpnCn;
 	@NotEmpty(message="필수 입력입니다.")
 	private String offrCn;
+	@NotNull(message="필수 입력입니다.")
 	private int offrPrc;
 	@NotEmpty(message="필수 입력입니다.")
 	private String pstMssn;
@@ -33,8 +33,8 @@ public class RequestCreateCmpnVO {
 	@NotEmpty(message="필수 입력입니다.")
 	private String ntfcn;
 
-	private String roadAddress;
-	private String detailAddress;
+	private String rdAdrs;
+	private String dtlAdrs;
 	private List<String> area;
 	private MultipartFile file;
 	private String prevCmpnId;
@@ -76,12 +76,6 @@ public class RequestCreateCmpnVO {
 	}
 	public void setRcrtPrsnn(int rcrtPrsnn) {
 		this.rcrtPrsnn = rcrtPrsnn;
-	}
-	public String getAddrs() {
-		return this.addrs;
-	}
-	public void setAddrs(String addrs) {
-		this.addrs = addrs;
 	}
 	public String getAttchGrpId() {
 		return this.attchGrpId;
@@ -131,17 +125,17 @@ public class RequestCreateCmpnVO {
 	public void setNtfcn(String ntfcn) {
 		this.ntfcn = ntfcn;
 	}
-	public String getRoadAddress() {
-		return this.roadAddress;
+	public String getRdAdrs() {
+		return this.rdAdrs;
 	}
-	public void setRoadAddress(String roadAddress) {
-		this.roadAddress = roadAddress;
+	public void setRdAdrs(String rdAdrs) {
+		this.rdAdrs = rdAdrs;
 	}
-	public String getDetailAddress() {
-		return this.detailAddress;
+	public String getDtlAdrs() {
+		return this.dtlAdrs;
 	}
-	public void setDetailAddress(String detailAddress) {
-		this.detailAddress = detailAddress;
+	public void setDtlAdrs(String dtlAdrs) {
+		this.dtlAdrs = dtlAdrs;
 	}
 	public List<String> getArea() {
 		return this.area;
@@ -165,10 +159,9 @@ public class RequestCreateCmpnVO {
 	@Override
 	public String toString() {
 		return "RequestCreateCmpnVO [cmpnId=" + cmpnId + ", usrId=" + usrId + ", ctgCd=" + ctgCd + ", sttsCd=" + sttsCd
-				+ ", cmpnPrntId=" + cmpnPrntId + ", rcrtPrsnn=" + rcrtPrsnn + ", addrs=" + addrs + ", attchGrpId="
-				+ attchGrpId + ", cmpnTitle=" + cmpnTitle + ", cmpnCn=" + cmpnCn + ", offrCn=" + offrCn + ", offrPrc="
-				+ offrPrc + ", pstMssn=" + pstMssn + ", hstg=" + hstg + ", ntfcn=" + ntfcn + ", roadAddress="
-				+ roadAddress + ", detailAddress=" + detailAddress + ", area=" + area + ", file=" + file
-				+ ", prevCmpnId=" + prevCmpnId + "]";
+				+ ", cmpnPrntId=" + cmpnPrntId + ", rcrtPrsnn=" + rcrtPrsnn + ", attchGrpId=" + attchGrpId
+				+ ", cmpnTitle=" + cmpnTitle + ", cmpnCn=" + cmpnCn + ", offrCn=" + offrCn + ", offrPrc=" + offrPrc
+				+ ", pstMssn=" + pstMssn + ", hstg=" + hstg + ", ntfcn=" + ntfcn + ", rdAdrs=" + rdAdrs + ", dtlAdrs="
+				+ dtlAdrs + ", area=" + area + ", file=" + file + ", prevCmpnId=" + prevCmpnId + "]";
 	}
 }

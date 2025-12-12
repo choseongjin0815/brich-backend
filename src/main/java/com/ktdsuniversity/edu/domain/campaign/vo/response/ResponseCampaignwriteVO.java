@@ -8,7 +8,7 @@ public class ResponseCampaignwriteVO {
 
 	private List<CommonCodeVO> categoryList;
 	private List<CommonCodeVO> doAndCityList;
-	private String personPrice;
+	private int personPrice;
 	
 	public List<CommonCodeVO> getCategoryList() {
 		return this.categoryList;
@@ -22,10 +22,10 @@ public class ResponseCampaignwriteVO {
 	public void setDoAndCityList(List<CommonCodeVO> doAndCityList) {
 		this.doAndCityList = doAndCityList;
 	}
-	public String getPersonPrice() {
+	public int getPersonPrice() {
 		return this.personPrice;
 	}
-	public void setPersonPrice(String personPrice) {
+	public void setPersonPrice(int personPrice) {
 		this.personPrice = personPrice;
 	}
 	

@@ -80,7 +80,7 @@ public interface CampaignDao {
 
 	List<CommonCodeVO> selectDistrictByCdId(String cdId);
 
-	String selectPersonPrice();
+	int selectPersonPrice();
 
 	int insertNewCampaign(RequestCreateCmpnVO requestCreateCmpnVO);
 

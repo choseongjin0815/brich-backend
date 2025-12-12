@@ -46,10 +46,13 @@ import com.ktdsuniversity.edu.global.common.CommonCodeVO;
 import com.ktdsuniversity.edu.global.config.WebSocketConfig;
 import com.ktdsuniversity.edu.global.exceptions.AjaxException;
 import com.ktdsuniversity.edu.global.exceptions.BrichException;
+import com.ktdsuniversity.edu.global.security.jwt.JwtProvider;
 import com.ktdsuniversity.edu.global.util.SessionUtil;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
+
+    private final JwtProvider jwtProvider;
 
     private final WebSocketConfig webSocketConfig;
 	
@@ -67,8 +70,9 @@ public class CampaignServiceImpl implements CampaignService {
     @Autowired
     private MultipartFileHandler multipartFileHandler;
 
-    CampaignServiceImpl(WebSocketConfig webSocketConfig) {
+    CampaignServiceImpl(WebSocketConfig webSocketConfig, JwtProvider jwtProvider) {
         this.webSocketConfig = webSocketConfig;
+        this.jwtProvider = jwtProvider;
     }
     
     /**
@@ -524,10 +528,10 @@ public class CampaignServiceImpl implements CampaignService {
 	@Override
 	@Transactional
 	public boolean createNewCampaign(RequestCreateCmpnVO requestCreateCmpnVO) {
-		if (requestCreateCmpnVO.getRoadAddress() != null || requestCreateCmpnVO.getDetailAddress() != null) {
-			String addr = requestCreateCmpnVO.getRoadAddress() + " " + requestCreateCmpnVO.getDetailAddress();
-			requestCreateCmpnVO.setAddrs(addr);
-		}
+//		if (requestCreateCmpnVO.getRoadAddress() != null || requestCreateCmpnVO.getDetailAddress() != null) {
+//			String addr = requestCreateCmpnVO.getRoadAddress() + " " + requestCreateCmpnVO.getDetailAddress();
+//			requestCreateCmpnVO.setAddrs(addr);
+//		}
 		
 		FileVO uploadResult = this.multipartFileHandler.upload(requestCreateCmpnVO.getFile());
 		
@@ -610,10 +614,10 @@ public class CampaignServiceImpl implements CampaignService {
   public boolean modifyNewCampaign(RequestCreateCmpnVO requestCreateCmpnVO) {
 	int modify = 0;
 	if (requestCreateCmpnVO.getSttsCd().equals("2008")) {
-		if (requestCreateCmpnVO.getRoadAddress() != null || requestCreateCmpnVO.getDetailAddress() != null) {
-			String addr = requestCreateCmpnVO.getRoadAddress() + " " + requestCreateCmpnVO.getDetailAddress();
-			requestCreateCmpnVO.setAddrs(addr);
-		}
+//		if (requestCreateCmpnVO.getRoadAddress() != null || requestCreateCmpnVO.getDetailAddress() != null) {
+//			String addr = requestCreateCmpnVO.getRoadAddress() + " " + requestCreateCmpnVO.getDetailAddress();
+//			requestCreateCmpnVO.setAddrs(addr);
+//		}
 		
 		FileVO uploadResult = this.multipartFileHandler.upload(requestCreateCmpnVO.getFile());
 		
@@ -631,6 +635,7 @@ public class CampaignServiceImpl implements CampaignService {
 		}
 		requestCreateCmpnVO.setSttsCd("2001");
 		modify = this.campaignDao.updateTemporaryCampaignByCmpnId(requestCreateCmpnVO);
+		System.out.println(modify);
 		
 		if (requestCreateCmpnVO.getArea() != null && modify == 1) {
 			RequestCampaignAreaVO requestCampaignAreaVO = new RequestCampaignAreaVO();
