@@ -92,6 +92,7 @@ public class CrawlingApi {
         log.info("usrId = {}", usrId);
         log.info("blogUrl = {}", blogUrl);
         String code = (String) session.getAttribute("VERIFY_CODE");
+        log.info(code);
 
         boolean verified = blogDataService.runPythonVerification(blogInfo, code);
 
