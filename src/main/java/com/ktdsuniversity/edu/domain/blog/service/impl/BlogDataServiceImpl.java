@@ -3,10 +3,14 @@ package com.ktdsuniversity.edu.domain.blog.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import com.ktdsuniversity.edu.domain.blog.controller.CrawlingApi;
 import com.ktdsuniversity.edu.domain.blog.dao.DailyVisitorDao;
 import com.ktdsuniversity.edu.domain.blog.dao.GoldenKeyWordDao;
 import com.ktdsuniversity.edu.domain.blog.vo.*;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +44,8 @@ public class BlogDataServiceImpl implements BlogDataService{
 	private PostDataDao postDataDao;
 	@Autowired
 	private GoldenKeyWordDao goldenKeyWordDao;
-
+	
+	private static final Logger log = LoggerFactory.getLogger(BlogDataServiceImpl.class);
 
 	@Override
 	public ResponseExpireSoonListVO readExpireSoonCampaignList(RequestExpireSoonCampaignVO request) {
@@ -53,11 +58,14 @@ public class BlogDataServiceImpl implements BlogDataService{
 	    return result;
 	}
 
-
 	@Transactional
 	@Override
 	public boolean runPythonVerification(RequestModifyBlogAddrsVO requestModifyBlogAddrsVO, String code) {
-		String pythonOutput = PythonExecutor.runPython(this.NAME_SPACE + "verification-crawler.py", requestModifyBlogAddrsVO.getBlgAddrs(), code);
+		String scriptPath = this.NAME_SPACE + "verification-crawler.py";
+		log.error(">>>> scriptPath = {}", scriptPath);
+
+		String pythonOutput = PythonExecutor.runPython(scriptPath, requestModifyBlogAddrsVO.getBlgAddrs(), code);
+
 		int updateCount = 0;
 		if(pythonOutput.contains("Verification successful")) {
 			updateCount = userDao.updateBlgAddrsById(requestModifyBlogAddrsVO);
