@@ -38,6 +38,8 @@ public class SecurityConfig {
 		
 //		http.csrf(csrf -> csrf.disable());
 		http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth", "/api/**"));
+		
+					
 
 		// CORSFilter 활성화
 		http.cors(cors /*CorsCofigurer*/->{
@@ -63,7 +65,19 @@ public class SecurityConfig {
 ////			oAuthLogin.successHandler(null); // JWT 인증 기반시 사용.
 //		});
 		
-		
+//	    http.authorizeHttpRequests(auth -> auth
+//	            // 캠페인 메인은 누구나 접근 가능
+//	            .requestMatchers("/api/v1/campaign/main").permitAll()
+//
+//	            // 로그인/회원가입, 정적 리소스 등도 보통 열어둔다 (있으면 추가)
+//	            .requestMatchers("/login", "/authenticate", "/css/**", "/js/**", "/img/**").permitAll()
+//
+//	            // (나중에 다른 API들을 인증 필요로 하고 싶으면 여기서 지정)
+//	            // .requestMatchers("/api/**").authenticated()
+//
+//	            // 그 외는 일단 다 허용
+//	            .anyRequest().permitAll()
+//	        );
 		
 		// 인증과 관련된 필터에 대한 조건 명시.
 		http.formLogin((formLogin) -> {

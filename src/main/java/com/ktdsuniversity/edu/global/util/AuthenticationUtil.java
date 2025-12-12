@@ -11,8 +11,21 @@ public class AuthenticationUtil {
 	}
 	
 	public static UserVO getUserVO() {
-		UserVO authMember = (UserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return authMember;
+		Object authMember =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if(authMember instanceof UserVO u) {
+			return (UserVO)authMember;
+		} else  {
+			return  null;
+		}
+		
 	}
 
+//	public static UserVO getUserVO() {
+//		UserVO authMember = (UserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			
+//		return authMember;
+//	}
 }
+
+

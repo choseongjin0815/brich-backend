@@ -609,7 +609,7 @@
                   , TO_CHAR(CMPN.PST_END_DT,  'MM-DD')  AS PST_END_DT
                   , TO_CHAR(CMPN.CMPN_END_DT, 'MM-DD')  AS CMPN_END_DT
                   , CMPN.RTRN_RSN
-                  , CMPN.ADDRS
+                  , CMPN.RD_ADRS || ' ' || CMPN.DTL_ADRS AS ADDRS
                   , CMPN.ATTCH_GRP_ID
                   , CMPN.CMPN_TITLE
                   , CMPN.CMPN_CN
