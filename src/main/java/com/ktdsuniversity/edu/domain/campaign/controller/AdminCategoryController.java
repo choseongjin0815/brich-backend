@@ -40,6 +40,20 @@ public class AdminCategoryController {
 		return "/campaign/admin_category_manage";
 	}
 	
+	
+    /**
+     * React에서 사용하는 카테고리 목록 JSON
+     */
+    @ResponseBody
+    @GetMapping("/admin/category-manage/list")
+    public List<AdminCampaignCategoryVO> getCampaignCategoryList() {
+
+        List<AdminCampaignCategoryVO> campaignCategoryList = this.adminCategoryService.readCampaignCategoryList();
+
+        return campaignCategoryList;
+    }
+    
+
 	/**
 	 * 카테고리 분할 option List 받아오기 (자신의 하위 카테고리)
 	 * @param parentCdId
@@ -54,6 +68,8 @@ public class AdminCategoryController {
 		return divTargetCategory;
 	}
 	
+	
+	
 	/**
 	 * 카테고리 병합 option List 받아오기 (자신 제외 상위 카테고리)
 	 * @param excludeCdId
@@ -67,6 +83,8 @@ public class AdminCategoryController {
 		
 		return mergeTargetCategory;
 	}
+	
+	
 	
 	/**
 	 * 카테고리 추가 (SELECT/INSERT)
@@ -85,6 +103,8 @@ public class AdminCategoryController {
 		return ajaxResponse;
 	}
 	
+	
+	
 	/**
 	 * 카테고리 분할 (UPDATE)
 	 * @param adminCampaignCategoryVO
@@ -101,6 +121,9 @@ public class AdminCategoryController {
 		
 		return ajaxResponse;
 	}
+	
+	
+	
 	
 	/**
 	 * 카테고리 병합 (UPDATE)

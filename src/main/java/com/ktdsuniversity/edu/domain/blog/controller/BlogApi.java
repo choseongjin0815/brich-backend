@@ -70,8 +70,6 @@ public class BlogApi {
 		List<CommonCodeVO> goldenKeywordList =
 				this.blogDataService.selectUserCategoryKeywords(usrId);
 		List<CampaignVO> recommendResult = this.blogDataService.selectRecommendCampaign(usrId);
-		ObjectMapper mapper = new ObjectMapper();
-		String goldenKeywordListJson = mapper.writeValueAsString(goldenKeywordList);
 		ResponseCampaignListVO CampaignListAndCategory = 
 				campaignService.readSubmittedMyCampaignByBlgId(usrId);
 		double currentIndex = this.blogDataService.selectMostRecentIndex(usrId);
@@ -81,7 +79,7 @@ public class BlogApi {
 		responseDashboardVO.setBlogIndexList(indexResult);
 		responseDashboardVO.setCurrentIndex(currentIndex);
 		responseDashboardVO.setDailyVisitorList(dailyVisitorsResult);
-//		responseDashboardVO.setGoldenKeywordList(goldenKeywordListJson);
+		responseDashboardVO.setGoldenKeywordList(goldenKeywordList);
 		responseDashboardVO.setRecommendedCampaignList(recommendResult);
 		responseDashboardVO.setResponseCampaignListVO(CampaignListAndCategory);
 		responseDashboardVO.setResponseExpireSoonlistVO(result);
