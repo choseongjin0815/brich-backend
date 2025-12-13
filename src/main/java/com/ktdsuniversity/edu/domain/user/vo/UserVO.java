@@ -408,6 +408,11 @@ public class UserVO extends BaseVO{
 				+ this.blogIndexVO + ", roles=" + this.roles + ", accntBlckStts=" + this.accntBlckStts + "]";
 	}
 
+	public void setUserName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
     
    

@@ -131,5 +131,20 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
 		return super.getSqlSession().selectList(this.NAME_SPACE+"selectRolesByLogId", username);
 	}
 
+	@Override
+	public UserVO selectUserEmail(String email) {
+		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectUserEmail", email);
+	}
+
+	@Override
+	public List<String> selectRolesByEmail(String email) {
+		return super.getSqlSession().selectList(this.NAME_SPACE + "selectRolesByEmail", email);
+	}
+
+	@Override
+	public int updateAutrByUsrIdAndRoles(Map<String, String> updateRoleInfo) {
+		return super.getSqlSession().update(this.NAME_SPACE + "updateAutrByUsrIdAndRoles", updateRoleInfo);
+	}
+
 
 }

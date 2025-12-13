@@ -51,9 +51,26 @@ public class JwtAuthenticationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/api/v1/account")
 	public AjaxResponse getMyAccountInfo() {
-		AjaxResponse response = new AjaxResponse();
-		response.setBody(AuthenticationUtil.getUserVO());
-		return response;
+	    AjaxResponse response = new AjaxResponse();
+	    
+	    UserVO userVO = AuthenticationUtil.getUserVO();
+	    
+	    // AUTR이 "-"면 DB에서 최신 정보 다시 조회
+	    if (userVO.getAutr() != null && userVO.getAutr().equals("-")) {
+	        String usrId = userVO.getUsrId();
+	    	String eml = userVO.getEml();
+	        
+	        // 이미 있는 메서드 사용!
+	        UserVO freshUser = this.userService.readUserByUserId(usrId).getUserVO();
+	        List<String> roles = this.userService.readRolseByEml(eml);
+	        freshUser.setRoles(roles);
+	        
+	        response.setBody(freshUser);
+	    } else {
+	        response.setBody(userVO);
+	    }
+	    
+	    return response;
 	}
 	
 }

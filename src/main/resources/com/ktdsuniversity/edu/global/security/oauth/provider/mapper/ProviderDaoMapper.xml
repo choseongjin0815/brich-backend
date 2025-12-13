@@ -1,0 +1,70 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+    namespace="com.ktdsuniversity.edu.global.security.oauth.provider.ProviderDao">
+
+    <select id="selectMemberCountByEmail"
+            parameterType="string"
+            resultType="_int">
+        SELECT COUNT(EML)
+          FROM USR
+         WHERE EML = #{_parameter}
+           AND DLT_YN = 'N'
+    </select>
+
+    <insert id="insertOAuthMember"
+            parameterType="com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO">
+        <selectKey keyProperty="usrId" order="BEFORE" resultType="string">
+         SELECT 'USR-' || TO_CHAR(SYSDATE, 'YYYYMMDD-') || LPAD(SEQ_USR_PK.NEXTVAL, 6, 0)
+           FROM DUAL
+        </selectKey>
+        INSERT INTO USR
+        (USR_ID
+        , LOG_ID
+        , EML
+        , PSWRD
+        , NM
+        , SALT
+        , AUTR
+        , CRT_DT
+        , CRTR
+        , UPDT_DT
+        , MTTR
+        )
+        VALUES
+        ( #{usrId}
+        , #{logId}
+        , #{eml}
+        , #{pswrd}
+        , #{nm}
+        , #{salt}
+        , #{autr}
+        , SYSDATE
+        , #{usrId}
+        , SYSDATE
+        , #{usrId}
+        )
+    </insert>
+
+    <insert id="insertOAuthProvider"
+            parameterType="com.ktdsuniversity.edu.global.security.oauth.provider.vo.OAuthProviderVO">
+        INSERT INTO OAUTH_PROVIDER
+         (EMAIL
+        , PROVIDER
+        , CRT_DT)
+        VALUES
+         (#{email}
+        , #{provider}
+        , SYSDATE)
+    </insert>
+
+    <select id="selectProviderCountByEmailAndProvider"
+            parameterType="com.ktdsuniversity.edu.global.security.oauth.provider.vo.OAuthProviderVO"
+            resultType="_int">
+        SELECT COUNT(EMAIL)
+          FROM OAUTH_PROVIDER
+         WHERE EMAIL = #{email}
+           AND PROVIDER = #{provider}
+    </select>
+</mapper>

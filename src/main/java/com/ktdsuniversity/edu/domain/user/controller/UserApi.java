@@ -20,6 +20,7 @@ import com.ktdsuniversity.edu.domain.user.vo.request.RequestUserFindIdVO;
 import com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO;
 import com.ktdsuniversity.edu.domain.user.vo.request.RequestUserResetPasswordVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
+import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 
 import jakarta.validation.Valid;
 
@@ -120,6 +121,16 @@ public class UserApi {
 		log.info("password{}, result{}", resetPasswordInfo.getPswrd(), updateResult);
 
     	
+		return ajaxResponse;
+	}
+	
+	@PutMapping("/role")
+	public AjaxResponse updateRole(@RequestParam String role) {
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		String usrId = AuthenticationUtil.getUserVO().getUsrId(); 
+		boolean updateResult = this.userService.updateRoleByUsrId(usrId, role);
+		ajaxResponse.setBody(updateResult);
+		
 		return ajaxResponse;
 	}
 }

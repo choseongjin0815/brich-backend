@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.domain.user.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -361,6 +362,29 @@ public class UserServiceImpl implements UserService {
 		int count = this.userDao.selectEmailCountByInputEmail(email);
 
 		return count < 1;
+	}
+
+	@Override
+	public boolean updateRoleByUsrId(String usrId, String role) {
+		Map<String, String> updateRoleInfo = new HashMap<>();
+		int updateResult;
+		updateRoleInfo.put("usrId", usrId);
+		if(role.equals("blogger")) {
+			updateRoleInfo.put("autr", "ROLE-20251203-000003");
+			updateResult = userDao.updateAutrByUsrIdAndRoles(updateRoleInfo);
+		}
+		else {
+			updateRoleInfo.put("autr", "ROLE-20251203-000004");
+			updateResult = userDao.updateAutrByUsrIdAndRoles(updateRoleInfo);
+
+		}
+		
+		return updateResult > 0;
+	}
+
+	@Override
+	public List<String> readRolseByEml(String eml) {
+		return userDao.selectRolesByEmail(eml);
 	}
 
 }

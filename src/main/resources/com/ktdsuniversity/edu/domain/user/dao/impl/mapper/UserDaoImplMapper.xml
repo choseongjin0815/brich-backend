@@ -259,5 +259,30 @@
                            WHERE LOG_ID = #{_parameter})
     CONNECT BY PRIOR RL_ID = TP_RL
     </select>
+    
+    <select id="selectUserEmail"
+            parameterType="string"
+            resultType="com.ktdsuniversity.edu.domain.user.vo.UserVO">
+        SELECT *
+          FROM USR
+         WHERE EML = #{_parameter}  
+    </select>
+    
+    <select id="selectRolesByEmail"
+            parameterType="string"
+            resultType="string">
+     SELECT RL_NM
+       FROM "ROLE"
+      START WITH RL_ID = (SELECT AUTR
+                            FROM USR
+                           WHERE EML = #{_parameter})
+    CONNECT BY PRIOR RL_ID = TP_RL
+    </select>
+    
+    <update id="updateAutrByUsrIdAndRoles">
+        UPDATE USR
+           SET AUTR = #{autr}
+         WHERE USR_ID = #{usrId}
+    </update>
 	
 </mapper>
