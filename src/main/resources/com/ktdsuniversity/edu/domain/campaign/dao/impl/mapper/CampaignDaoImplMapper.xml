@@ -566,7 +566,7 @@
 		 WHERE C.DLT_YN = 'N'
 		 START WITH C.CMPN_PRNT_ID = #{cmpnId}
 	   CONNECT BY PRIOR C.CMPN_ID = C.CMPN_PRNT_ID
-		 ORDER BY LVL DESC
+		 ORDER BY LVL ASC
     </select>
     
     <insert id="insertCampaignCategory"
