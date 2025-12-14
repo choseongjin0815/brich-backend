@@ -72,6 +72,7 @@ public class AdminReportServiceImpl implements AdminReportService {
 		}
 		
 		// 신고 대상의 징계 횟수를 1 증가시킨다. (+ 증가 시 3이상일 경우, 자동으로 BLOCK 처리한다.)
+		// BLCK_YN -> ACCNT_BLCK_STTS
 		updateAndInsertCount = this.adminUserDao.updateUserPenaltyCount(requestVO);
 		daoValidate(updateAndInsertCount, "updateUserPenaltyCount");
 		

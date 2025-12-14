@@ -46,19 +46,18 @@ public class AdminInqrServiceImpl implements AdminInqrService {
 	public AdminInqrDetailVO readAdminInqrDetailByInqrId(String inqrId) {
 		
 		AdminInqrDetailVO inqrInfo = this.adminInqrDao.selectAdminInqrDetailByInqrId(inqrId);
-		System.out.println("로그");
-		log.info(inqrInfo.getInqrVO().getInqrId());
-		log.info(inqrInfo.getInqrVO().getInqrCn());
-		log.info(inqrInfo.getInqrVO().getCrtDt());
-		log.info(inqrInfo.getInqrVO().getInqrFlGrpId());
-		log.info(inqrInfo.getInqrVO().getInqrTitle());
-		log.info(inqrInfo.getInqrVO().getAnsrUsrId());
-		log.info(inqrInfo.getInqrVO().getAnsrFlGrpId());
-		log.info(inqrInfo.getLogId());
-		log.info(inqrInfo.getCdId());
-		log.info(inqrInfo.getCdNm());
-		log.info(inqrInfo.getAnsrYn());
-		log.info(inqrInfo.getAnsrDt());
+//		log.info(inqrInfo.getInqrVO().getInqrId());
+//		log.info(inqrInfo.getInqrVO().getInqrCn());
+//		log.info(inqrInfo.getInqrVO().getCrtDt());
+//		log.info(inqrInfo.getInqrVO().getInqrFlGrpId());
+//		log.info(inqrInfo.getInqrVO().getInqrTitle());
+//		log.info(inqrInfo.getInqrVO().getAnsrUsrId());
+//		log.info(inqrInfo.getInqrVO().getAnsrFlGrpId());
+//		log.info(inqrInfo.getLogId());
+//		log.info(inqrInfo.getCdId());
+//		log.info(inqrInfo.getCdNm());
+//		log.info(inqrInfo.getAnsrYn());
+//		log.info(inqrInfo.getAnsrDt());
 		
 		return inqrInfo;
 	}
@@ -72,7 +71,8 @@ public class AdminInqrServiceImpl implements AdminInqrService {
 			List<FileVO> insertedFiles = this.multipartFileHandler.upload(files);
 			
 			FileGroupVO fileGroupVo = new FileGroupVO();
-			this.fileGroupDao.insertFileGroup(fileGroupVo);
+			fileGroupVo.setFlCnt(insertedFiles != null ? insertedFiles.size() : 0);
+			int insertFileGroupCount = this.fileGroupDao.insertFileGroup(fileGroupVo);
 			
 			for(FileVO fileVO : insertedFiles) {
 				fileVO.setFlGrpId(fileGroupVo.getFlGrpId());

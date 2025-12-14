@@ -66,11 +66,13 @@
         
         <collection javaType="list" ofType="com.ktdsuniversity.edu.domain.file.vo.FileVO" property="inqrFileList" autoMapping="true">
             <id column="INQR_FL_ID" property="flId"/>
+            <result column="INQR_FL_GRP_ID" property="flGrpId"/>
             <result column="INQR_FL_NM" property="flNm"/>
         </collection>
         
         <collection javaType="list" ofType="com.ktdsuniversity.edu.domain.file.vo.FileVO" property="ansrFileList" autoMapping="true">
             <id column="ANSR_FL_ID" property="flId"/>
+            <result column="ANSR_FL_GRP_ID" property="flGrpId"/>
             <result column="ANSR_FL_NM" property="flNm"/>
         </collection>
     </resultMap>
@@ -107,14 +109,14 @@
              , U.LOG_ID
              , C.CD_ID 
              , C.CD_NM
-             , I.INQR_FL_GRP_ID
+             , I.INQR_FL_GRP_ID AS INQR_FL_GRP_ID
              , F_INQR.FL_ID AS INQR_FL_ID
              , F_INQR.FL_NM AS INQR_FL_NM
              , F_INQR.FL_SZ AS INQR_FL_SZ
              , F_INQR.FL_TYP AS INQR_FL_TYP
              , F_INQR.FL_PTH AS INQR_FL_PTH
              , F_INQR.OBFSCTIN_FL_NM AS INQR_OBFSCTIN_FL_NM
-             , I.ANSR_FL_GRP_ID
+             , I.ANSR_FL_GRP_ID AS ANSR_FL_GRP_ID
              , F_ANSR.FL_ID AS ANSR_FL_ID
              , F_ANSR.FL_NM AS ANSR_FL_NM
              , F_ANSR.FL_SZ AS ANSR_FL_SZ
