@@ -149,6 +149,7 @@
                id="ResponseAdminCampaignVOMap"
                autoMapping="true">
         <id column="CMPN_ID" property="cmpnId"/>
+        <result column="STTS_CD" property="sttsCd"/>
         <result column="STTS_CD_NM" property="sttsCdNm"/>
         
         <collection property="area" javaType="list" ofType="java.lang.String">
