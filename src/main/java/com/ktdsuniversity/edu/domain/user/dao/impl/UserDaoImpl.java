@@ -146,5 +146,10 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
 		return super.getSqlSession().update(this.NAME_SPACE + "updateAutrByUsrIdAndRoles", updateRoleInfo);
 	}
 
+	@Override
+	public int updateAdvertiserCmpny(RequestUserRegistVO requestUserRegistVO) {
+		return super.getSqlSession().update(this.NAME_SPACE + "updateAdvertiserCmpny", requestUserRegistVO);
+	}
+
 
 }

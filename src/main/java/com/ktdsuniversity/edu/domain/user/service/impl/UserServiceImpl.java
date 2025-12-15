@@ -387,4 +387,31 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectRolesByEmail(eml);
 	}
 
+	@Override
+	public boolean updateAdvetiserCmpny(RequestUserRegistVO requestUserRegistVO) {
+		
+		log.info("cmpny : {}, file {} usrID {} ", requestUserRegistVO.getCmpny(), requestUserRegistVO.getFile(), requestUserRegistVO.getUsrId());
+		List<FileVO> uploadResult = this.multipartFileHandler.upload(requestUserRegistVO.getFile());
+
+		if (uploadResult != null && uploadResult.size() > 0) {
+			// 1.File Group Insert
+			FileGroupVO fileGroupVO = new FileGroupVO();
+			fileGroupVO.setFlCnt(uploadResult != null ? uploadResult.size() : 0);
+			int insertGroupCount = this.fileGroupDao.insertFileGroup(fileGroupVO);
+
+			// 2.File Insert
+
+			for (FileVO result : uploadResult) {
+				result.setFlGrpId(fileGroupVO.getFlGrpId());
+				int insertFileCount = this.fileDao.insertFile(result);
+			}
+			// 게시글에 첨부되어있는 파일 그룹의 아이디가 무엇인지 알수있다.
+			requestUserRegistVO.setFlGrpId(fileGroupVO.getFlGrpId());
+
+		}
+		
+		int count = this.userDao.updateAdvertiserCmpny(requestUserRegistVO);
+		return count > 0;
+	}
+
 }

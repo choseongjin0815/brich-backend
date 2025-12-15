@@ -62,6 +62,8 @@ public interface UserDao {
 
 	public int updateAutrByUsrIdAndRoles(Map<String, String> updateRoleInfo);
 
+	public int updateAdvertiserCmpny(RequestUserRegistVO requestUserRegistVO);
+
 
 
 

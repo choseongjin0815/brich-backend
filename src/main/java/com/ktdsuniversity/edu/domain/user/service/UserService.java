@@ -51,6 +51,8 @@ public interface UserService {
 
 	public List<String> readRolseByEml(String eml);
 
+	public boolean updateAdvetiserCmpny(RequestUserRegistVO requestUserRegistVO);
+
 
 
 }

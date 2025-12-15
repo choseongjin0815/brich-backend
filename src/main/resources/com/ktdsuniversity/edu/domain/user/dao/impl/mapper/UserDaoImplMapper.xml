@@ -284,5 +284,13 @@
            SET AUTR = #{autr}
          WHERE USR_ID = #{usrId}
     </update>
+    
+    <update id="updateAdvertiserCmpny"
+            parameterType="com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO">
+        UPDATE USR
+           SET FL_GRP_ID = #{flGrpId}
+             , CMPNY = #{cmpny}
+         WHERE USR_ID = #{usrId}
+    </update>
 	
 </mapper>

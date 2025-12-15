@@ -251,5 +251,21 @@ public class UserApi {
 		return ajaxResponse;
 	}
 	
+	/*
+	 * 광고주 OAuth 최초 로그인 시 사업자 정보 등록
+	 */
+	@PutMapping("/oauth")
+	public AjaxResponse updateOAuthAdvertiser(RequestUserRegistVO requestUserRegistVO) {
+		String usrId = AuthenticationUtil.getUserVO().getUsrId();
+		requestUserRegistVO.setUsrId(usrId);
+		
+		AjaxResponse ajaxResponse = new AjaxResponse();
+		boolean updateResult = this.userService.updateAdvetiserCmpny(requestUserRegistVO);
+		
+		ajaxResponse.setBody(updateResult);
+		
+		return ajaxResponse;
+		
+	}
 	
 }
