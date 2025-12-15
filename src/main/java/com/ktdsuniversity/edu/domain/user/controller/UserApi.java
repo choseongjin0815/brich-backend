@@ -6,7 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.domain.campaign.service.CampaignService;
 import com.ktdsuniversity.edu.domain.campaign.vo.response.ResponseCampaignwriteVO;
 import com.ktdsuniversity.edu.domain.user.service.UserService;
-import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.domain.user.vo.request.RequestUserAccountPasswordVO;
 import com.ktdsuniversity.edu.domain.user.vo.request.RequestUserFindIdVO;
 import com.ktdsuniversity.edu.domain.user.vo.request.RequestUserInfoModifyVO;
@@ -32,9 +29,9 @@ import com.ktdsuniversity.edu.domain.user.vo.response.ResponseUserInfoVO;
 import com.ktdsuniversity.edu.domain.user.vo.response.ResponseUserSubscriptionInfoVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
+import com.ktdsuniversity.edu.global.exceptions.AjaxException;
 import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -49,12 +46,16 @@ public class UserApi {
 
 	// 회원가입
 	@PostMapping
-	public AjaxResponse createUser(@Valid RequestUserRegistVO requestUserRegistVO, BindingResult bindingResult,
+	public AjaxResponse createUser(RequestUserRegistVO requestUserRegistVO, BindingResult bindingResult,
 			@RequestParam String roleType) {
 
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		boolean registResult = this.userService.createNewUser(requestUserRegistVO);
 
+		if(!registResult) {
+			throw new AjaxException(null, HttpStatus.BAD_REQUEST, Map.of("message", "회원가입에 실패했습니다."));
+		}
+		
 		if (registResult && roleType.equals("blogger")) {
 			ajaxResponse.setBody("회원가입이 완료되었습니다!");
 		} else if (registResult && roleType.equals("advertiser")) {
@@ -109,8 +110,11 @@ public class UserApi {
 		requestUserFindIdVO.setNm(nm);
 		
 		String logId = this.userService.readLogIdByNameAndEmail(requestUserFindIdVO);
-		log.info("logId{}",logId);
 
+		if(logId == null) {
+			throw new AjaxException(null, HttpStatus.NOT_FOUND, Map.of("message", "아이디가 존재하지 않습니다."));
+		}
+		
 		int start = 3;
 		int end = 6;
 
@@ -130,8 +134,9 @@ public class UserApi {
 
     	boolean updateResult = this.userService.updatePswrdByLogIdAndPswrd(resetPasswordInfo);   	
 
-		log.info("password{}, result{}", resetPasswordInfo.getPswrd(), updateResult);
-
+    	if(!updateResult) {
+    		throw new AjaxException(null, HttpStatus.BAD_REQUEST, Map.of("message", "비밀번호 재설정에 실패했습니다."));
+    	}
     	
 		return ajaxResponse;
 	}
@@ -141,6 +146,9 @@ public class UserApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		String usrId = AuthenticationUtil.getUserVO().getUsrId(); 
 		boolean updateResult = this.userService.updateRoleByUsrId(usrId, role);
+		if(!updateResult) {
+    		throw new AjaxException(null, HttpStatus.BAD_REQUEST, Map.of("message", "권한 설정에 실패했습니다."));
+    	}
 		ajaxResponse.setBody(updateResult);
 		
 		return ajaxResponse;
@@ -155,6 +163,9 @@ public class UserApi {
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
 		
 		ResponseUserInfoVO userInfo = this.userService.readUserByUserId(usrId);
+		if(userInfo == null) {
+			throw new AjaxException(null, HttpStatus.NOT_FOUND, Map.of("message", "존재하지 않는 회원 정보입니다."));
+		}
 		ResponseCampaignwriteVO common = userInfo.getResponseCampaignwriteVO();
 		
 		ajaxResponse.setBody(Map.of("userInfo", userInfo, "common", common));
@@ -183,9 +194,8 @@ public class UserApi {
 		boolean updateResult = this.userService.updateUserInfoByUsrId(requestUserInfoModifyVO);
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		
-		if(updateResult == false) {
-			ajaxResponse.setBody("수정에 실패했습니다.");
-			return ajaxResponse;
+		if(!updateResult) {
+			throw new AjaxException(null, HttpStatus.BAD_REQUEST, Map.of("message", "계정 정보 수정에 실패했습니다."));
 		}
 		ajaxResponse.setBody("수정에 성공했습니다.");
 		
@@ -241,13 +251,10 @@ public class UserApi {
 	public AjaxResponse getSubscriptionInfo() {
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
 		AjaxResponse ajaxResponse = new AjaxResponse();
-	
-
 		ResponseUserSubscriptionInfoVO subscriptionInfo = this.userService.readSubscriptionInfoByUserId(usrId);
-		log.info("subInfo:  {}", subscriptionInfo);
+		
 		ajaxResponse.setBody(subscriptionInfo);
 	
-		
 		return ajaxResponse;
 	}
 	
@@ -261,6 +268,10 @@ public class UserApi {
 		
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		boolean updateResult = this.userService.updateAdvetiserCmpny(requestUserRegistVO);
+		
+		if(!updateResult) {
+			throw new AjaxException(null, HttpStatus.BAD_REQUEST, Map.of("message", "잘못된 요청입니다."));
+		}
 		
 		ajaxResponse.setBody(updateResult);
 		

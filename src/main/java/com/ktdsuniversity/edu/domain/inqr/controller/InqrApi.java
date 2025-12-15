@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import com.ktdsuniversity.edu.domain.inqr.vo.request.RequestInqrCreateVO;
 import com.ktdsuniversity.edu.domain.inqr.vo.response.ResponseInqrVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
+import com.ktdsuniversity.edu.global.exceptions.AjaxException;
 
 @RestController
 @RequestMapping("/api/v1/inqr")
@@ -64,6 +66,10 @@ public class InqrApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		
 		ResponseInqrVO inqr = this.inqrService.readInqrDetailByInqrId(inqrId);
+		
+		if(inqr == null) {
+			throw new AjaxException(null, HttpStatus.NOT_FOUND, Map.of("message", "문의글을 찾을 수 없습니다."));
+		}
 		
 		ajaxResponse.setBody(inqr);
 		
