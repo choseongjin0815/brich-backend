@@ -38,7 +38,13 @@ public class AdminReportServiceImpl implements AdminReportService {
 
 	@Override
 	public AdminReportDetailVO readAdminReportDetailById(String rptId) {
-		return this.adminReportDao.selectAdminReportDetailById(rptId);
+		
+		AdminReportDetailVO reportInfo = this.adminReportDao.selectAdminReportDetailById(rptId);
+		
+		int penaltyCount = this.adminReportDao.selectAdminReportedUserPenaltyCount(reportInfo.getRptedUsrId());
+		reportInfo.setPnltCnt(penaltyCount);
+		
+		return reportInfo;
 	}
 
 	@Transactional

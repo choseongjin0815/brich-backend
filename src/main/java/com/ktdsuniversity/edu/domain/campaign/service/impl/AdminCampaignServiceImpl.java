@@ -62,6 +62,8 @@ public class AdminCampaignServiceImpl implements AdminCampaignService {
 		log.info("어드민 카테고리 목록: "+ categoryList.toString());
 		
 		log.info("어드민 getCategory(): " + requestAdminSearchCampaignVO.getCategory());
+		
+		// 조회 조건 세팅
 		if(requestAdminSearchCampaignVO.getCategory() != null) {
 			String searchCategory = this.adminCampaignDao.selectAdminCategoryParent(requestAdminSearchCampaignVO.getCategory());
 			requestAdminSearchCampaignVO.setCategory(searchCategory);
@@ -70,14 +72,15 @@ public class AdminCampaignServiceImpl implements AdminCampaignService {
 		
 		requestAdminSearchCampaignVO.setListSize(16);
 		
-		// 초기 정렬 세팅
+		// 초기 정렬 세팅 (최신순, 승인 대기 중 상태 우선)
 		if(requestAdminSearchCampaignVO.getSortBy() == null) {
 			requestAdminSearchCampaignVO.setSortBy("latest");
 		}
 		
+		// 목록 조회
 		responseAdminCampaignListVO.setResponseAdminCampaignList(this.adminCampaignDao.selectAdminCampaignListCategoryAndSortBy(requestAdminSearchCampaignVO));
 		
-		// 지역명 두 글자로 자르기
+		// 지역명 두 글자로 자르기 ("서울특별시" -> "서울")
 		List<ResponseAdminCampaignVO> campaignList = responseAdminCampaignListVO.getResponseAdminCampaignList();
 		for(ResponseAdminCampaignVO vo : campaignList) {
 			if(vo.getParentArea() != null) {

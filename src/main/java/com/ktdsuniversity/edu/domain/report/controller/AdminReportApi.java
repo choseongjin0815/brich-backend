@@ -19,6 +19,9 @@ import com.ktdsuniversity.edu.domain.report.vo.AdminReportDetailVO;
 import com.ktdsuniversity.edu.domain.report.vo.AdminReportListVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 
+/**
+ * 신고 관리
+ */
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
 @RequestMapping("/api/admin")
