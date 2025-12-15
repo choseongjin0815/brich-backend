@@ -146,6 +146,9 @@ public class UserApi {
 		return ajaxResponse;
 	}
 	
+	/**
+	 * 계정 정보 가져오기 
+	 */
 	@GetMapping("/account")
 	public AjaxResponse getAccountInfo() {
 		AjaxResponse ajaxResponse = new AjaxResponse();
@@ -172,8 +175,9 @@ public class UserApi {
 	/*
 	 * 계정 정보 수정 
 	 */
-	@PostMapping("/acoount")
-	public AjaxResponse doUpdateUserInfo(RequestUserInfoModifyVO requestUserInfoModifyVO) {
+	@PutMapping("/account")
+	public AjaxResponse updateUserInfo(RequestUserInfoModifyVO requestUserInfoModifyVO) {
+		log.info("account update {}", requestUserInfoModifyVO);
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
 		requestUserInfoModifyVO.setUsrId(usrId);
 		boolean updateResult = this.userService.updateUserInfoByUsrId(requestUserInfoModifyVO);
@@ -191,7 +195,7 @@ public class UserApi {
 	/**
 	 * 비밀번호 재설정 요청
 	 */
-	@PostMapping("/reset-password")
+	@PutMapping("/reset-password")
 	public AjaxResponse resetPassword(RequestUserAccountPasswordVO requestUserAccountPasswordVO) {
 		
 		String usrId = AuthenticationUtil.getUserVO().getUsrId();
@@ -201,8 +205,7 @@ public class UserApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 		
 		if(requestUserAccountPasswordVO.getCurrentPswrd().equals("")|| 
-		   requestUserAccountPasswordVO.getNewPswrd().equals("") ||
-		   requestUserAccountPasswordVO.getCurrentPswrd().equals("")) {
+		   requestUserAccountPasswordVO.getNewPswrd().equals("")) {
 		   ajaxResponse.setBody(Map.of("result", "모든 값을 입력해야합니다."));
     	   return ajaxResponse;
 		} 
