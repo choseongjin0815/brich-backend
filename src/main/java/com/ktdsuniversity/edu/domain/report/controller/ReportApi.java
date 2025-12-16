@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.ktdsuniversity.edu.domain.report.vo.response.ResponseMyReportInfoVO;
 import com.ktdsuniversity.edu.domain.report.vo.response.ResponseReportDetailVO;
 import com.ktdsuniversity.edu.domain.report.vo.response.ResponseReportVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
+import com.ktdsuniversity.edu.global.exceptions.AjaxException;
 
 @RestController
 @RequestMapping("/api/v1/report")
@@ -60,7 +62,7 @@ public class ReportApi {
 
 		if (report != null) {
 			ajaxResponse.setBody(report);
-		}
+		} 
 
 		return ajaxResponse;
 	}
@@ -73,6 +75,7 @@ public class ReportApi {
 		ResponseReportDetailVO reportDetail = this.reportService.readReportDetailByReportId(reportId);
 		if (reportDetail != null)
 			ajaxResponse.setBody(reportDetail);
+		else throw new AjaxException(null, HttpStatus.NOT_FOUND, Map.of("message", "신고글을 찾을 수 없습니다."));
 
 		return ajaxResponse;
 	}

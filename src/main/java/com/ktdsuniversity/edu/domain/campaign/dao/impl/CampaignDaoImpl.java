@@ -235,8 +235,8 @@ public class CampaignDaoImpl extends SqlSessionDaoSupport implements CampaignDao
 	}
 
 	@Override
-	public List<ResponseCampaignVO> selectDenyListByCmpnId(RequestSearchCampaignVO requestSearchCampaignVO) {
-		return super.getSqlSession().selectList(this.NAME_SPACE + "selectDenyListByCmpnId", requestSearchCampaignVO);
+	public List<ResponseCampaignVO> selectDenyListByCmpnId(String cmpnId) {
+		return super.getSqlSession().selectList(this.NAME_SPACE + "selectDenyListByCmpnId", cmpnId);
 	}
 
 	@Override

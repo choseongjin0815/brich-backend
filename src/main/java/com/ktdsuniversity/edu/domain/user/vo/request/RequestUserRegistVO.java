@@ -41,6 +41,8 @@ public class RequestUserRegistVO{
 	
 	private String flGrpId;
 	
+	private String accntBlckStts;
+	
 	private List<String> cdIdList;
 	
 	private List <String> areaList;
@@ -157,6 +159,14 @@ public class RequestUserRegistVO{
 
 	public void setAreaList(List<String> areaList) {
 		this.areaList = areaList;
+	}
+	
+	public String getAccntBlckStts() {
+		return this.accntBlckStts;
+	}
+
+	public void setAccntBlckStts(String accntBlckStts) {
+		this.accntBlckStts = accntBlckStts;
 	}
 
 	@Override

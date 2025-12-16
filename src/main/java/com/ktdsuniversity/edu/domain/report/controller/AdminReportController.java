@@ -35,7 +35,7 @@ public class AdminReportController {
 	@GetMapping("/admin/report_list")
 	public String viewAdminReportListPage(Model model) {
 		
-		List<AdminReportListVO> reportList = adminReportService.readAdminReportList();
+		List<AdminReportListVO> reportList = this.adminReportService.readAdminReportList();
 		
 		model.addAttribute("reportList", reportList);
 		

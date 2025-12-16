@@ -37,6 +37,7 @@
          FROM BRICH.USR
         WHERE LOG_ID = #{logId}
           AND AUTR IN('ROLE-20251203-000001', 'ROLE-20251203-000002', 'ROLE-20251203-000003', 'ROLE-20251203-000004')
+          
     </select>
     <insert parameterType="com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO"
             id="insertNewUser">
@@ -58,6 +59,7 @@
         , CRTR
         , UPDT_DT
         , MTTR
+        , ACCNT_BLCK_STTS
         )
         VALUES 
         ( #{usrId}
@@ -73,6 +75,7 @@
         , #{usrId}
         , SYSDATE
         , #{usrId}
+        , #{accntBlckStts}
         )
     </insert>
     
@@ -259,5 +262,39 @@
                            WHERE LOG_ID = #{_parameter})
     CONNECT BY PRIOR RL_ID = TP_RL
     </select>
+    
+    <select id="selectUserEmail"
+            parameterType="string"
+            resultType="com.ktdsuniversity.edu.domain.user.vo.UserVO">
+        SELECT *
+          FROM USR
+         WHERE EML = #{_parameter}  
+    </select>
+    
+    <select id="selectRolesByEmail"
+            parameterType="string"
+            resultType="string">
+     SELECT RL_NM
+       FROM "ROLE"
+      START WITH RL_ID = (SELECT AUTR
+                            FROM USR
+                           WHERE EML = #{_parameter})
+    CONNECT BY PRIOR RL_ID = TP_RL
+    </select>
+    
+    <update id="updateAutrByUsrIdAndRoles">
+        UPDATE USR
+           SET AUTR = #{autr}
+         WHERE USR_ID = #{usrId}
+    </update>
+    
+    <update id="updateAdvertiserCmpny"
+            parameterType="com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO">
+        UPDATE USR
+           SET FL_GRP_ID = #{flGrpId}
+             , CMPNY = #{cmpny}
+             ,ACCNT_BLCK_STTS = 'P'
+         WHERE USR_ID = #{usrId}
+    </update>
 	
 </mapper>

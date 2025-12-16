@@ -25,6 +25,8 @@ public class AdminReportDetailVO {
 	
 	private List<FileVO> fileList;
 	
+	private int pnltCnt;
+	
 	public String getRptId() {
 		return this.rptId;
 	}
@@ -108,6 +110,12 @@ public class AdminReportDetailVO {
 	}
 	public void setFileList(List<FileVO> fileList) {
 		this.fileList = fileList;
+	}
+	public int getPnltCnt() {
+		return this.pnltCnt;
+	}
+	public void setPnltCnt(int pnltCnt) {
+		this.pnltCnt = pnltCnt;
 	}
 	
 }

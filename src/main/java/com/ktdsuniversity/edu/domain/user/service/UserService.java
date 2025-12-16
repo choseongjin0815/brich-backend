@@ -47,6 +47,12 @@ public interface UserService {
 
 	public boolean readEmailByInputEmail(String email);
 
+	public boolean updateRoleByUsrId(String usrId, String role);
+
+	public List<String> readRolseByEml(String eml);
+
+	public boolean updateAdvetiserCmpny(RequestUserRegistVO requestUserRegistVO);
+
 
 
 }

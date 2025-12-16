@@ -56,6 +56,14 @@ public interface UserDao {
 
 	public List<String> selectRolesByLogId(String username);
 
+	public UserVO selectUserEmail(String email);
+
+	public List<String> selectRolesByEmail(String email);
+
+	public int updateAutrByUsrIdAndRoles(Map<String, String> updateRoleInfo);
+
+	public int updateAdvertiserCmpny(RequestUserRegistVO requestUserRegistVO);
+
 
 
 

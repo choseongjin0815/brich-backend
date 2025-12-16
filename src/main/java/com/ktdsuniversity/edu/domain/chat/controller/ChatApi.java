@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,6 +31,7 @@ import com.ktdsuniversity.edu.domain.chat.vo.SearchChatVO;
 import com.ktdsuniversity.edu.domain.chat.vo.request.RequestChatMessageVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
+import com.ktdsuniversity.edu.global.exceptions.AjaxException;
 import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 
 @RestController
@@ -113,6 +115,10 @@ public class ChatApi {
 		AjaxResponse ajaxResponse = new AjaxResponse();
 
 		CampaignVO campaign = this.chatService.readCampaignByChtRmId(chtRmId);
+		
+		if(campaign == null) {
+			throw new AjaxException(null, HttpStatus.NOT_FOUND, Map.of("message", "존재하지 않는 채팅방입니다."));
+		}
 
 		ajaxResponse.setBody(campaign);
 		
