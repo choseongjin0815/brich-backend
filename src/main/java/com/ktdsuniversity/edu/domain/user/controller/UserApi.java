@@ -50,6 +50,12 @@ public class UserApi {
 			@RequestParam String roleType) {
 
 		AjaxResponse ajaxResponse = new AjaxResponse();
+		if(roleType.equals("advertiser")) {
+			requestUserRegistVO.setAccntBlckStts("P");
+		}
+		else {
+			requestUserRegistVO.setAccntBlckStts("N");
+		}
 		boolean registResult = this.userService.createNewUser(requestUserRegistVO);
 
 		if(!registResult) {

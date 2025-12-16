@@ -58,6 +58,7 @@
         , CRTR
         , UPDT_DT
         , MTTR
+        , ACCNT_BLCK_STTS
         )
         VALUES 
         ( #{usrId}
@@ -73,6 +74,7 @@
         , #{usrId}
         , SYSDATE
         , #{usrId}
+        , #{accntBlckStts}
         )
     </insert>
     
@@ -290,6 +292,7 @@
         UPDATE USR
            SET FL_GRP_ID = #{flGrpId}
              , CMPNY = #{cmpny}
+             ,ACCNT_BLCK_STTS = 'P'
          WHERE USR_ID = #{usrId}
     </update>
 	
