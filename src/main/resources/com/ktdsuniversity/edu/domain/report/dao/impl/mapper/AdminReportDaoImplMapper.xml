@@ -111,4 +111,10 @@
            AND DLT_YN = 'N'
     </update>
     
+    <!-- 신고 대상의 징계 카운트 -->
+    <select id="selectAdminReportedUserPenaltyCount" parameterType="string" resultType="_int">
+        SELECT PNLT_CNT
+          FROM USR 
+         WHERE USR_ID = #{_parameter}
+    </select>
 </mapper>

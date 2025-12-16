@@ -38,4 +38,9 @@ public class AdminReportDaoImpl extends SqlSessionDaoSupport implements AdminRep
 		return super.getSqlSession().update(this.NAME_SPACE + "updateReportInfo", requestVO);
 	}
 
+	@Override
+	public int selectAdminReportedUserPenaltyCount(String rptedUsrId) {
+		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectAdminReportedUserPenaltyCount", rptedUsrId);
+	}
+
 }

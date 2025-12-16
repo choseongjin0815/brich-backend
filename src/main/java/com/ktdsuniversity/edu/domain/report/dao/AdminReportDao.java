@@ -14,4 +14,6 @@ public interface AdminReportDao {
 
 	int updateReportInfo(AdminPenaltyRequestVO requestVO);
 
+	int selectAdminReportedUserPenaltyCount(String rptedUsrId);
+
 }
