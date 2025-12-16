@@ -8,7 +8,7 @@ public class InqrSearchVO extends AbstractSearchVO{
 	
 	public InqrSearchVO() {
 		super();
-		this.setListSize(10);
+		this.setListSize(9);
 		this.setPageCountInGroup(5);
 	}
 
