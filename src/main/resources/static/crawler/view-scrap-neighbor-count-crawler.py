@@ -99,7 +99,7 @@ print("=== 전송 데이터 미리보기 ===")
 print(json.dumps(payload, indent=2, ensure_ascii=False))
 print("==========================")
 
-url = "http://localhost:8080/api/stats"
+url = "http://localhost:8080/api/v1/crawling/stats"
 try:
     response = requests.post(
         url,

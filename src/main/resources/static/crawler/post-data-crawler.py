@@ -430,7 +430,7 @@ else:
     print("새로운 포스트가 없습니다. (모두 5일 이내 또는 수집 실패)")
 
 # ====== API 전송 ======
-url = "http://localhost:8080/api/results"
+url = "http://localhost:8080/api/v1/crawling/results"
 
 def safe_int(value):
     try:

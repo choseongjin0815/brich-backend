@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -39,7 +40,10 @@ public class SecurityConfig {
 //		http.csrf(csrf -> csrf.disable());
 		http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth", "/api/**"));
 		
-					
+	    http.sessionManagement(session ->
+        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+	    );
+
 
 		// CORSFilter 활성화
 		http.cors(cors /*CorsCofigurer*/->{
@@ -48,7 +52,7 @@ public class SecurityConfig {
 				corsConfig.setAllowCredentials(true);
 				corsConfig.setAllowedOrigins(List.of("http://localhost:5173")); // 누가 우리에게 요청할 것이
 				corsConfig.setAllowedHeaders(List.of("*")); // 요청할 때 어떤 Request Header를 보낼것이냐
-				corsConfig.setAllowedMethods(List.of("POST", "GET","PUT","FETCH", "OPTION","DELETE")); // 요청할 때 어떤 메소드로 요청할 것이냐.
+				corsConfig.setAllowedMethods(List.of("POST", "GET","PUT","FETCH", "OPTIONS","DELETE")); // 요청할 때 어떤 메소드로 요청할 것이냐.
 				return corsConfig;
 			}; 
 			

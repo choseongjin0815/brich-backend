@@ -37,6 +37,7 @@
          FROM BRICH.USR
         WHERE LOG_ID = #{logId}
           AND AUTR IN('ROLE-20251203-000001', 'ROLE-20251203-000002', 'ROLE-20251203-000003', 'ROLE-20251203-000004')
+          
     </select>
     <insert parameterType="com.ktdsuniversity.edu.domain.user.vo.request.RequestUserRegistVO"
             id="insertNewUser">

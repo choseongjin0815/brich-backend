@@ -91,47 +91,43 @@ public class BlogApi {
 		return response;
 	}
 	
-	@GetMapping("/blog/{usrId}/manage")
-	public AjaxResponse viewBlogManagePage(@PathVariable String usrId, RequestExpireSoonCampaignVO requestExpireSoonCampaignVO) {
-
-//		if(loginUser.getBlgAddrs() == null) {
-//			return "redirect:/blog/"+ loginUser.getUsrId() + "/verification";
-//		}
-//		
-//		
-//		List<CampaignPostManageVO> results = this.blogDataService.readCampaignPostByUsrId(usrId);
-//		model.addAttribute("list",results);
-//		
-//		AjaxResponse response = new AjaxResponse();
-//		response.setBody(response);
-//		
-//		return response;
-		return null;
+	@PreAuthorize("isAuthenticated() or hasRole('ROLE_BLG')" )
+	@GetMapping("/manage/{usrId}")
+	public AjaxResponse viewBlogManagePage(@PathVariable String usrId
+			, RequestExpireSoonCampaignVO requestExpireSoonCampaignVO
+			, Authentication authentication) {
+		if(authentication == null) {
+			throw new AjaxException(null, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<CampaignPostManageVO> results = this.blogDataService.readCampaignPostByUsrId(usrId);
+		
+		AjaxResponse response = new AjaxResponse();
+		response.setBody(results);
+		
+		return response;
 	}
 	
-	@GetMapping("/blog/{usrId}/verification")
-	public String viewBlogVerificationPage(@PathVariable String usrId, HttpSession session, Model model) {
-		UserVO loginUser = (UserVO) session.getAttribute("__LOGIN_USER__");
-	    if (loginUser == null || !loginUser.getUsrId().equals(usrId) || loginUser.getBlgAddrs() != null) {
-	    	
-	        return "redirect:/access-denied";
-	    }
-	    
-	    
-		return "/blog/verification";
-	}
-	
-	@GetMapping("/api/blog/index/{usrId}/detail")
+	@PreAuthorize("isAuthenticated() or hasRole('ROLE_BLG')" )
+	@GetMapping("/details/{usrId}")
 	@ResponseBody
-	public List<BlogDetailStatVO> getBlogDetails(
+	public AjaxResponse getBlogDetails(
 	        @PathVariable String usrId) {
 	    List<BlogDetailStatVO> list = blogDataService.readBlogDetailStat(usrId);
-	    return list;
+	    AjaxResponse response = new AjaxResponse();
+	    response.setBody(list);
+	    return response;
 	}
 	
-	@GetMapping("/api/user/{postId}/return-reason")
+	@PreAuthorize("isAuthenticated() or hasRole('ROLE_BLG')" )
+	@GetMapping("/return-reason/{postId}")
 	@ResponseBody
-	public List<ResponseDenyHistoryVO> getReturnHistory(@PathVariable String postId) {
-	    return blogDataService.getReturnHistory(postId);
+	public AjaxResponse getReturnHistory(@PathVariable String postId) {
+		List<ResponseDenyHistoryVO> history = blogDataService.getReturnHistory(postId);
+		AjaxResponse response = new AjaxResponse();
+		response.setBody(history);
+	    return response;
 	}
+	
+	
 }
