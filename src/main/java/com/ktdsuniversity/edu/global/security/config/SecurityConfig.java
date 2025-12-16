@@ -18,6 +18,8 @@ import com.ktdsuniversity.edu.domain.user.dao.UserDao;
 import com.ktdsuniversity.edu.global.security.handler.LoginFailureHandler;
 import com.ktdsuniversity.edu.global.security.handler.LoginSuccessHandler;
 import com.ktdsuniversity.edu.global.security.jwt.filter.JwtAuthenticationFilter;
+import com.ktdsuniversity.edu.global.security.oauth.SecurityOAtuhService;
+import com.ktdsuniversity.edu.global.security.oauth.handler.CustomOAuth2SuccessHandler;
 
 @Configuration
 @EnableWebSecurity(debug=true)
@@ -28,6 +30,10 @@ public class SecurityConfig {
 	private UserDao userDao;
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    @Autowired
+    private SecurityOAtuhService securityOAtuhService;
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -38,7 +44,7 @@ public class SecurityConfig {
 		
 		
 //		http.csrf(csrf -> csrf.disable());
-		http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth", "/api/**"));
+		http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth", "/api/**", "/oauth2/**"));
 		
 	    http.sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -59,15 +65,13 @@ public class SecurityConfig {
 			cors.configurationSource(corsSource);
 		});
 		
-//		// OAuth Login 필터 조건 명시.
-//		http.oauth2Login(oAuthLogin -> {
-//			oAuthLogin.userInfoEndpoint(config /*UserInfoEndpointConfig*/ ->{
-//				config.userService(this.securityOAuthService); // SecurityAuthService Instance
-//			});
-//			oAuthLogin.defaultSuccessUrl("/list"); // 브라우저 이용시 사용.
-//			oAuthLogin.loginPage("/member/login"); // OAuth2 인증 시작 페이지 명
-////			oAuthLogin.successHandler(null); // JWT 인증 기반시 사용.
-//		});
+		//OAuth2
+		http.oauth2Login(oAuthLogin -> {
+	            oAuthLogin.userInfoEndpoint(config -> {
+	                config.userService(this.securityOAtuhService);
+	            });
+	            oAuthLogin.successHandler(this.customOAuth2SuccessHandler);
+	        });
 		
 //	    http.authorizeHttpRequests(auth -> auth
 //	            // 캠페인 메인은 누구나 접근 가능

@@ -1,7 +1,6 @@
 package com.ktdsuniversity.edu.domain.faq.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,14 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.domain.faq.service.FaqService;
 import com.ktdsuniversity.edu.domain.faq.vo.response.ResponseFaqVO;
-import com.ktdsuniversity.edu.domain.inqr.controller.InqrApi;
 import com.ktdsuniversity.edu.global.common.AjaxResponse;
 
 @RestController
 @RequestMapping("/api/v1/faq")
 public class FaqApi {
-	private static final Logger log = LoggerFactory.getLogger(FaqApi.class);
-
     @Autowired
     private FaqService faqService;
     
@@ -27,9 +23,7 @@ public class FaqApi {
     	AjaxResponse ajaxResponse = new AjaxResponse();
     	
     	ResponseFaqVO faqResponse = this.faqService.selectFaqList(category);
-    	
-    	log.info("FAQ : {}", faqResponse);
-    	
+    	    	
     	ajaxResponse.setBody(faqResponse);
     	
     	return ajaxResponse;

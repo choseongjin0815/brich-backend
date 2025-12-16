@@ -5,8 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import com.ktdsuniversity.edu.domain.file.dao.FileDao;
 import com.ktdsuniversity.edu.domain.file.dao.FileGroupDao;
@@ -21,6 +23,7 @@ import com.ktdsuniversity.edu.domain.inqr.vo.request.RequestInqrCreateVO;
 import com.ktdsuniversity.edu.domain.inqr.vo.response.ResponseInqrVO;
 import com.ktdsuniversity.edu.domain.report.vo.response.ResponseMyReportInfoVO;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
+import com.ktdsuniversity.edu.global.exceptions.AjaxException;
 
 @Service
 public class InqrServiceImpl implements InqrService {
@@ -45,6 +48,11 @@ public class InqrServiceImpl implements InqrService {
 	@Transactional
 	@Override
 	public boolean createNewInqr(RequestInqrCreateVO requestInqrCreateVO) {
+		
+		if(requestInqrCreateVO == null) {
+			throw new AjaxException("생성할 문의글 정보가 존재하지 않습니다.", HttpStatus.NO_CONTENT);
+		}
+
 
 		List<FileVO> uploadResult = this.multipartFileHandler.upload(requestInqrCreateVO.getFile());
 
@@ -95,6 +103,10 @@ public class InqrServiceImpl implements InqrService {
 	public ResponseInqrVO readInqrDetailByInqrId(String inqrId) {
 
 		ResponseInqrVO inqrDetail = this.inqrDao.selectInqrDetailByInqrId(inqrId);
+		
+		if(inqrDetail == null) {
+			throw new AjaxException(null, HttpStatus.NOT_FOUND, Map.of("message", "존재하지 않는 문의글입니다."));
+		}
 
 		//문의글 첨부파일 존재 여부 확인
 		if (inqrDetail.getInqrFlGrpId() != null && !inqrDetail.getInqrFlGrpId().isEmpty()) {
