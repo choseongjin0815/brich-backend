@@ -301,6 +301,25 @@ public class CampaignApi {
 
     // ////////////////////////// Hapa up!
     
+    ///////////////////////////////// 석진
+    @GetMapping("list")
+ 	@PreAuthorize("isAuthenticated() and hasRole('ROLE_ADV')")
+ 	public AjaxResponse readCampaignList(Authentication authentication,
+ 										 RequestSearchCampaignVO requestSearchCampaignVO) {
+ 		requestSearchCampaignVO.setListSize(8);
+ 		requestSearchCampaignVO.setPageCountInGroup(5);
+
+
+ 		ResponseCampaignListVO campaignList = this.campaignService.readCampaignListByUsrId(requestSearchCampaignVO);
+
+ 		AjaxResponse ajaxResponse = new AjaxResponse();
+ 		ajaxResponse.setBody(campaignList);
+ 		ajaxResponse.setPaginator(requestSearchCampaignVO);
+
+ 		log.info("campaigncheck : " + campaignList);
+ 		return ajaxResponse;
+ 	}
+    
 	@GetMapping("/applicant")
 	@PreAuthorize("isAuthenticated() and hasRole('ROLE_ADV')")
     public AjaxResponse readApplicantList(RequestApplicantVO requestApplicantVO,
