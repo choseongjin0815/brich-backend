@@ -142,6 +142,7 @@
             resultType="com.ktdsuniversity.edu.domain.campaign.vo.CampaignVO">
         SELECT C.STTS_CD
              , C.USR_ID
+             , C.RCRT_PRSNN
 		  FROM CMPN C
 		 INNER JOIN CMPN_PST_ADPT CPA
 		    ON C.CMPN_ID = CPA.CMPN_ID
