@@ -101,7 +101,8 @@ public interface CampaignDao {
 
 	int selectCampaignListCountByusrId(RequestSearchCampaignVO requestSearchCampaignVO);
 
-	List<ResponseCampaignVO> selectDenyListByCmpnId(RequestSearchCampaignVO requestSearchCampaignVO);
+	List<ResponseCampaignVO> selectDenyListByCmpnId(String cmpnId);
+	
 	int updatePostSubmit(RequestPostSubmitVO requestPostSubmitVO);
 
 	int updatePostSubmitStts(RequestPostSubmitVO requestPostSubmitVO);

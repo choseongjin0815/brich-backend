@@ -62,7 +62,7 @@ public interface CampaignService {
 
 	ResponseCampaignListVO readCampaignListByUsrId(RequestSearchCampaignVO requestSearchCampaignVO);
 
-	ResponseCampaignListVO readDenyHistoryByCmpnId(RequestSearchCampaignVO requestSearchCampaignVO);
+	ResponseCampaignListVO readDenyHistoryByCmpnId(String cmpnId);
 	int postSubmit(RequestPostSubmitVO requestPostSubmitVO);
 
 	int rePostSubmit(RequestPostSubmitVO requestPostSubmitVO);
