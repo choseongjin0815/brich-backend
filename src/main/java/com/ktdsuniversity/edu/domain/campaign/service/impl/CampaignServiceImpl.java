@@ -363,6 +363,7 @@ public class CampaignServiceImpl implements CampaignService {
 		param.put("campaignId",campaignId);
 		int count = 0;
 		//캠페인 모집중 여부 확인	
+		log.info(param.toString()+"신청하기");
 		ResponseCampaignVO detail = campaignDao.selectCampaignDetailById(param);
 		if(detail.getSttsCd().equals("2005")) {
 			// 캠페인 신청 이력 여부 확인
@@ -385,7 +386,6 @@ public class CampaignServiceImpl implements CampaignService {
 	
 	@Override
 	public int postSubmit(RequestPostSubmitVO requestPostSubmitVO) {
-		
 		int postSubmitCount = campaignDao.updatePostSubmit(requestPostSubmitVO);
 		
 		return postSubmitCount;
