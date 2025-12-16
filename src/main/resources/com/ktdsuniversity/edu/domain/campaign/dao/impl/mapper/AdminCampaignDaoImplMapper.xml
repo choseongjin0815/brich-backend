@@ -151,6 +151,7 @@
         <id column="CMPN_ID" property="cmpnId"/>
         <result column="STTS_CD" property="sttsCd"/>
         <result column="STTS_CD_NM" property="sttsCdNm"/>
+        <result column="CMPN_PRSNN_SELECT_DAY" property="cmpnPrsnnSelectDay"/>
         
         <collection property="area" javaType="list" ofType="java.lang.String">
             <result property="area" column="AREA"/>
@@ -182,6 +183,7 @@
              , TO_CHAR(CMPN.RCRT_END_DT, 'RR-MM-DD') AS RCRT_END_DT
              , TO_CHAR(CMPN.PST_END_DT,  'RR-MM-DD') AS PST_END_DT
              , TO_CHAR(CMPN.CMPN_END_DT, 'RR-MM-DD') AS CMPN_END_DT
+             , TO_CHAR(CMPN.RCRT_END_DT + 3, 'RR-MM-DD') AS CMPN_PRSNN_SELECT_DAY
              , CMPN.RTRN_RSN
              , CMPN.RD_ADRS || ' ' || CMPN.DTL_ADRS AS ADDRS
              , CMPN.ATTCH_GRP_ID

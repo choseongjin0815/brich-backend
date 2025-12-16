@@ -41,6 +41,10 @@ public class ResponseAdminCampaignVO extends CampaignVO {
 	// 포스팅 마감일 (포스팅 데드라인)
 	// 캠페인 종료일
 	
+	// 선정자 발표일
+	// rcrtEndDt + 3일
+	private String cmpnPrsnnSelectDay;
+	
 	public String getFlGrpId() {
 		return this.flGrpId;
 	}
@@ -144,6 +148,12 @@ public class ResponseAdminCampaignVO extends CampaignVO {
 	}
 	public void setCmpnDrtnPrc(String cmpnDrtnPrc) {
 		this.cmpnDrtnPrc = cmpnDrtnPrc;
+	}
+	public String getCmpnPrsnnSelectDay() {
+		return this.cmpnPrsnnSelectDay;
+	}
+	public void setCmpnPrsnnSelectDay(String cmpnPrsnnSelectDay) {
+		this.cmpnPrsnnSelectDay = cmpnPrsnnSelectDay;
 	}
 	
 	@Override
