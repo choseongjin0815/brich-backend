@@ -109,11 +109,10 @@ public class AdminCampaignApi {
 	 * @return
 	 */
 	@GetMapping("/campaign-applicant")
-	public AjaxResponse getCampaignApplicant(@PathVariable String cmpnId, 
-											RequestAdminCampaignApplicantVO requestAdminApplicantVO) {
+	public AjaxResponse getCampaignApplicant(RequestAdminCampaignApplicantVO requestAdminApplicantVO) {
 		requestAdminApplicantVO.setListSize(10);
 		requestAdminApplicantVO.setPageCountInGroup(10);
-		requestAdminApplicantVO.setCmpnId(cmpnId);
+		requestAdminApplicantVO.setCmpnId(requestAdminApplicantVO.getCmpnId());
     	
     	if (requestAdminApplicantVO.getOrder() != null) {
     		requestAdminApplicantVO.setOrder(requestAdminApplicantVO.getOrder().toUpperCase());
