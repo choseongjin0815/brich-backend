@@ -13,7 +13,7 @@ public class AuthenticationUtil {
 	public static UserVO getUserVO() {
 		Object authMember =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		if(authMember instanceof UserVO ) {
+		if(authMember instanceof UserVO) {
 			return (UserVO)authMember;
 		} else  {
 			return  null;
