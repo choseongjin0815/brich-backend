@@ -49,7 +49,6 @@ public class WidgetApi {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getBlgrPayInfo(@PathVariable String cdId) {
         UserVO loginUser = AuthenticationUtil.getUserVO();
-
         CommonCodeVO commonCodeVO = this.payService.payInfoService(cdId);
 
         Map<String, Object> res = new HashMap<>();
@@ -66,7 +65,6 @@ public class WidgetApi {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getAdvPayInfo(@PathVariable String cmpnId) {
         UserVO loginUser = AuthenticationUtil.getUserVO();
-
         String amount = this.payService.payInfoServiceCampaignAmount(cmpnId);
 
         Map<String, Object> res = new HashMap<>();
@@ -80,7 +78,7 @@ public class WidgetApi {
     }
 
     // =========================
-    // ✅ React/JSP 공용: prepay (orderId 기준 PKkey 저장)
+    // ✅ React/JSP 공용: prepay (orderId 기준 PKkey 저장 + JSON 응답)
     // =========================
 
     public static class PrepayRequest {
@@ -88,49 +86,88 @@ public class WidgetApi {
         public String orderName;
         public String price;
         public String cdId;
-        public String usrId;   // 프론트에서 넘어와도 신뢰 X
-        public String cmpnId;  // 캠페인 결제일 때만 사용
+        public String usrId;   // 신뢰 X
+        public String cmpnId;  // 캠페인 결제일 때만
     }
 
-    @PostMapping(value = "/orders/prepay", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value = "/orders/prepay",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseBody
-    public ResponseEntity<Void> prepay(@RequestBody PrepayRequest req, HttpSession session) {
-        UserVO loginUser = AuthenticationUtil.getUserVO();
+    public ResponseEntity<JSONObject> prepay(@RequestBody PrepayRequest req, HttpSession session) {
 
-        String safeUsrId = loginUser.getUsrId();
-        String clientOrderId = req.orderId;
-        String clientOrderName = req.orderName;
-        String clientCdId = req.cdId;
-        String clientPrice = String.valueOf(req.price);
+        JSONObject out = new JSONObject();
 
-        // subscription이면 usrId, 캠페인이면 cmpnId
-        String clientId = isBlank(req.cmpnId) ? safeUsrId : req.cmpnId;
+        try {
+            UserVO loginUser = AuthenticationUtil.getUserVO();
+            if (loginUser == null) {
+                out.put("ok", false);
+                out.put("message", "Unauthorized (loginUser is null)");
+                return ResponseEntity.status(401).body(out);
+            }
 
-        logger.info("----- prepay ----- sessionId={}, orderId={}, orderName={}, cdId={}, price={}, usrId(server)={}, cmpnId={}, clientId={}",
-                session.getId(), clientOrderId, clientOrderName, clientCdId, clientPrice, safeUsrId, req.cmpnId, clientId);
+            String safeUsrId = loginUser.getUsrId();
+            String clientOrderId = req.orderId;
+            String clientOrderName = req.orderName;
+            String clientCdId = req.cdId;
+            String clientPrice = String.valueOf(req.price);
 
-        RequestPaymentVO vo = new RequestPaymentVO();
-        vo.setClientOrderId(clientOrderId);
-        vo.setClientOrderName(clientOrderName);
-        vo.setClientId(clientId);
-        vo.setClientPrice(clientPrice);
-        vo.setClientCdId(clientCdId);
+            if (isBlank(clientOrderId) || isBlank(clientOrderName) || isBlank(clientPrice)) {
+                out.put("ok", false);
+                out.put("message", "필수값 누락(orderId/orderName/price)");
+                out.put("orderId", clientOrderId);
+                return ResponseEntity.status(400).body(out);
+            }
 
-        String pkKey = this.payService.beforePaymentInfoSave(vo);
+            // subscription이면 usrId, 캠페인이면 cmpnId
+            String clientId = isBlank(req.cmpnId) ? safeUsrId : req.cmpnId;
 
-        if ("1004".equals(loginUser.getAutr())) {
-            logger.info("autr=1004, beforeCampaigninfo clientId={}", vo.getClientId());
-            pkKey = this.payService.beforeCampaigninfo(vo.getClientId());
+            logger.info("----- prepay ----- sessionId={}, orderId={}, orderName={}, cdId={}, price={}, usrId(server)={}, cmpnId={}, clientId={}",
+                    session.getId(), clientOrderId, clientOrderName, clientCdId, clientPrice, safeUsrId, req.cmpnId, clientId);
+
+            RequestPaymentVO vo = new RequestPaymentVO();
+            vo.setClientOrderId(clientOrderId);
+            vo.setClientOrderName(clientOrderName);
+            vo.setClientId(clientId);
+            vo.setClientPrice(clientPrice);
+            vo.setClientCdId(clientCdId);
+
+            String pkKey = this.payService.beforePaymentInfoSave(vo);
+
+            if ("1004".equals(loginUser.getAutr())) {
+                logger.info("autr=1004, beforeCampaigninfo clientId={}", vo.getClientId());
+                pkKey = this.payService.beforeCampaigninfo(vo.getClientId());
+            }
+
+            if (isBlank(pkKey)) {
+                logger.error("[prepay] pkKey 생성 실패. sessionId={}, orderId={}", session.getId(), clientOrderId);
+                out.put("ok", false);
+                out.put("message", "prepay pkKey 생성 실패 (beforePaymentInfoSave/DB 저장 로직 확인)");
+                out.put("orderId", clientOrderId);
+                return ResponseEntity.status(500).body(out);
+            }
+
+            session.setAttribute("PREPAY_PKKEY_" + clientOrderId, pkKey);
+            logger.info("[prepay] saved sessionKey={}, pkKey={}", "PREPAY_PKKEY_" + clientOrderId, pkKey);
+
+            out.put("ok", true);
+            out.put("orderId", clientOrderId);
+            out.put("pkKey", pkKey); // ✅ 프론트가 여기서 pkKey 확인 가능
+            out.put("sessionId", session.getId()); // 디버깅용
+            return ResponseEntity.ok(out);
+
+        } catch (Exception e) {
+            logger.error("[prepay] 예외 발생", e);
+            out.put("ok", false);
+            out.put("message", "prepay 서버 예외: " + (e.getMessage() == null ? "unknown" : e.getMessage()));
+            return ResponseEntity.status(500).body(out);
         }
-
-        session.setAttribute("PREPAY_PKKEY_" + clientOrderId, pkKey);
-        logger.info("[prepay] saved sessionKey={}, pkKey={}", "PREPAY_PKKEY_" + clientOrderId, pkKey);
-
-        return ResponseEntity.ok().build();
     }
 
     // =========================
-    // ✅ React/JSP 공용: confirm (세션에서 pkkey 꺼내 검증)
+    // ✅ confirm (세션에서 pkKey 꺼내서 검증)
     // =========================
 
     public static class ConfirmRequest {
@@ -139,12 +176,17 @@ public class WidgetApi {
         public String amount;
     }
 
-    @PostMapping(value = "/confirm", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+        value = "/confirm",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseBody
-    public ResponseEntity<JSONObject> confirmPayment(@RequestBody ConfirmRequest req /*, HttpSession session*/) throws Exception {
-    	UserVO loginUser = AuthenticationUtil.getUserVO();
+    public ResponseEntity<JSONObject> confirmPayment(@RequestBody ConfirmRequest req, HttpSession session) throws Exception {
+
         logger.info("============= 결제 confirm 시작 =============");
-        logger.info("[confirm] sessionId={}, orderId={}, amount={}, paymentKey={}", req.orderId, req.amount, req.paymentKey);
+        logger.info("[confirm] sessionId={}, orderId={}, amount={}, paymentKey={}",
+                session.getId(), req.orderId, req.amount, req.paymentKey);
 
         String paymentKey = req.paymentKey;
         String orderId = req.orderId;
@@ -181,7 +223,6 @@ public class WidgetApi {
             jsonObject = (JSONObject) parser.parse(reader);
         }
 
-        // ✅ toss confirm 성공일 때만 우리 DB 업데이트 로직 들어감
         if (code == 200) {
             String orderName = (String) jsonObject.get("orderName");
 
@@ -195,7 +236,6 @@ public class WidgetApi {
             String pkKey = (String) session.getAttribute("PREPAY_PKKEY_" + orderId);
             logger.info("[confirm] pkKey(from session)={}", pkKey);
 
-            // ✅ pkKey 없으면 prepay 실패 / 세션 불일치 / 주문번호 불일치
             if (pkKey == null) {
                 jsonObject.put("status", "ABORTED");
                 jsonObject.put("message", "prepay pkKey가 없습니다. (prepay 호출/세션/주문번호 확인)");
@@ -213,11 +253,8 @@ public class WidgetApi {
             logger.info("[confirm] paymentValidationCheck={}", paymentValidationCheck);
 
             if (paymentValidationCheck) {
-                logger.info("[confirm] >>> paymentSuccessUpdate() 호출 직전 <<<");
                 try {
                     this.payService.paymentSuccessUpdate(vo);
-                    logger.info("[confirm] >>> paymentSuccessUpdate() 호출 완료 <<<");
-
                     session.removeAttribute("PREPAY_PKKEY_" + orderId);
                 } catch (Exception e) {
                     logger.error("[confirm] paymentSuccessUpdate() 내부 예외 발생", e);
