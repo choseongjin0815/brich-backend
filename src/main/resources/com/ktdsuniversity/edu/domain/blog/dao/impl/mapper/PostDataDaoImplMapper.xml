@@ -85,10 +85,23 @@ LEFT JOIN DLY_VSTR v
    AND v.USR_ID = #{_parameter}
 LEFT JOIN PST_DA p
     ON TRUNC(p.PSTD_DT) = d.STAT_DATE
-   AND p.USR_ID = #{_parameter}  -- ✅ 여기도 직접 사용자 ID로 조인
+   AND p.USR_ID = #{_parameter}  -- 
 GROUP BY d.STAT_DATE
 ORDER BY d.STAT_DATE
 
     </select>
+    
+    <select id="selectBlogInfo"
+    		parameterType="string"
+    		resultType="com.ktdsuniversity.edu.domain.blog.vo.RequestBlogInfoVO">
+    SELECT NM
+	     , TTL_VSTR_CNT 
+	     , BLG_NGHBR_CNT
+	     , BLG_ADDRS 
+	  FROM USR
+	 WHERE USR_ID = #{_parameter}
+    
+    </select>
+    
     
 </mapper>

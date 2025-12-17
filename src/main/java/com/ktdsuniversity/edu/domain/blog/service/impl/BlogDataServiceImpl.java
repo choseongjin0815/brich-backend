@@ -191,4 +191,9 @@ public class BlogDataServiceImpl implements BlogDataService{
 	public Double readRecentBlogIndex(String usrId) {
 		return this.postDataDao.selectRecentIndex(usrId);
 	}
+
+	@Override
+	public RequestBlogInfoVO getBlogInfo(String usrId) {
+		return this.postDataDao.selectBlogInfo(usrId);
+	}
 }

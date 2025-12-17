@@ -22,6 +22,7 @@ import com.ktdsuniversity.edu.domain.blog.vo.BlogDetailStatVO;
 import com.ktdsuniversity.edu.domain.blog.vo.BlogIndexVO;
 import com.ktdsuniversity.edu.domain.blog.vo.DailyVisitorVO;
 import com.ktdsuniversity.edu.domain.blog.vo.RequestBlogIndexListVO;
+import com.ktdsuniversity.edu.domain.blog.vo.RequestBlogInfoVO;
 import com.ktdsuniversity.edu.domain.blog.vo.RequestExpireSoonCampaignVO;
 import com.ktdsuniversity.edu.domain.blog.vo.ResponseDashboardVO;
 import com.ktdsuniversity.edu.domain.campaign.service.CampaignService;
@@ -130,4 +131,14 @@ public class BlogApi {
 	}
 	
 	
+	@PreAuthorize("isAuthenticated() or hasRole('ROLE_BLG')" )
+	@GetMapping("/info/{usrId}")
+	public AjaxResponse getBloggerInfo(@PathVariable String usrId) {
+		RequestBlogInfoVO info = blogDataService.getBlogInfo(usrId);
+		
+		
+		AjaxResponse response = new AjaxResponse();
+		response.setBody(info);
+		return response;
+	}
 }

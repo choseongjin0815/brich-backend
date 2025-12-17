@@ -5,6 +5,7 @@ import java.util.List;
 import com.ktdsuniversity.edu.domain.blog.vo.BlogDetailStatVO;
 import com.ktdsuniversity.edu.domain.blog.vo.BlogIndexVO;
 import com.ktdsuniversity.edu.domain.blog.vo.PostDataVO;
+import com.ktdsuniversity.edu.domain.blog.vo.RequestBlogInfoVO;
 
 public interface PostDataDao {
 
@@ -15,5 +16,7 @@ public interface PostDataDao {
 	double selectRecentIndex(String usrId);
 
 	List<BlogDetailStatVO> selectBlogDetailStat(String usrId);
+
+	RequestBlogInfoVO selectBlogInfo(String usrId);
 
 }
