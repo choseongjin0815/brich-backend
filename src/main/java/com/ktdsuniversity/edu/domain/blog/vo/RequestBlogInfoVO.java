@@ -7,7 +7,14 @@ public class RequestBlogInfoVO {
 	private String usrId;
 	private int blgNghbrCnt;
 	private String blgAddrs;
+	private String nm;
 	
+	public String getNm() {
+		return nm;
+	}
+	public void setNm(String nm) {
+		this.nm = nm;
+	}
 	public String getBlgAddrs() {
 		return blgAddrs;
 	}

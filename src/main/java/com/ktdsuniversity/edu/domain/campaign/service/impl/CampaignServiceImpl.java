@@ -740,7 +740,7 @@ public class CampaignServiceImpl implements CampaignService {
 
       // 참여자별 블로그 지수 DAO에서 직접 조회 (BlogDataService 의존 X)
       List<CampaignIndexStatVO> list = campaignDao.selectCampaignIndexStats(cmpnId);
-      result.put("list", list);
+//      result.put("list", list);
 
       // 통계 계산
       double sum = 0;

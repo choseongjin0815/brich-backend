@@ -12,6 +12,7 @@ import com.ktdsuniversity.edu.domain.blog.dao.PostDataDao;
 import com.ktdsuniversity.edu.domain.blog.vo.BlogDetailStatVO;
 import com.ktdsuniversity.edu.domain.blog.vo.BlogIndexVO;
 import com.ktdsuniversity.edu.domain.blog.vo.PostDataVO;
+import com.ktdsuniversity.edu.domain.blog.vo.RequestBlogInfoVO;
 
 
 @Repository
@@ -45,6 +46,11 @@ public class PostDataDaoImpl extends SqlSessionDaoSupport implements PostDataDao
 	@Override
 	public List<BlogDetailStatVO> selectBlogDetailStat(String usrId) {
 		return super.getSqlSession().selectList(this.NAME_SPACE + "selectBlogDetailStat", usrId);
+	}
+
+	@Override
+	public RequestBlogInfoVO selectBlogInfo(String usrId) {
+		return super.getSqlSession().selectOne(this.NAME_SPACE+ "selectBlogInfo", usrId);
 	}
 
 

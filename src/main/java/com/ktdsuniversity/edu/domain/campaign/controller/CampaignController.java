@@ -428,18 +428,18 @@ public class CampaignController {
 		return "campaign/list";
 	}
 	
-	@GetMapping("/adv/campaign/deny-history/{cmpnId}")
-	public String readDenyHistory(Model model, 
-								  RequestSearchCampaignVO requestSearchCampaignVO) {
-		
-		ResponseCampaignListVO denyList = this.campaignService.readDenyHistoryByCmpnId(requestSearchCampaignVO);
-		denyList.setIsDeny(true);
-		log.info("---denyList:" + denyList.toString());
-		model.addAttribute("campaignList", denyList);
-		model.addAttribute("search", requestSearchCampaignVO);
-		
-		return "campaign/list";
-	}
+//	@GetMapping("/adv/campaign/deny-history/{cmpnId}")
+//	public String readDenyHistory(Model model, 
+//								  RequestSearchCampaignVO requestSearchCampaignVO) {
+//		
+//		ResponseCampaignListVO denyList = this.campaignService.readDenyHistoryByCmpnId(requestSearchCampaignVO);
+//		denyList.setIsDeny(true);
+//		log.info("---denyList:" + denyList.toString());
+//		model.addAttribute("campaignList", denyList);
+//		model.addAttribute("search", requestSearchCampaignVO);
+//		
+//		return "campaign/list";
+//	}
 	
 	@PostMapping("/adv/campaign/temporary")
 	public String doCreateTemporaryCampaignAction(RequestCreateCmpnVO requestCreateCmpnVO

@@ -52,4 +52,6 @@ public interface BlogDataService {
 
 	Double readRecentBlogIndex(String usrId);
 
+	RequestBlogInfoVO getBlogInfo(String usrId);
+
 }
