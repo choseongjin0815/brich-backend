@@ -31,6 +31,7 @@ import com.ktdsuniversity.edu.domain.pay.service.PayService;
 import com.ktdsuniversity.edu.domain.pay.vo.request.RequestPaymentVO;
 import com.ktdsuniversity.edu.domain.user.vo.UserVO;
 import com.ktdsuniversity.edu.global.common.CommonCodeVO;
+import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -49,9 +50,10 @@ public class WidgetController {
     private PayService payService;
     
     @GetMapping("/blgr/pay/{cdId}")
-    public String PayBlgr(@PathVariable String cdId, Model model,
-			 @SessionAttribute(value = "__LOGIN_USER__", required = false) UserVO loginUser ) {
+    public String PayBlgr(@PathVariable String cdId, Model model) {
     	
+    	UserVO loginUser = AuthenticationUtil.getUserVO();
+
     	// 결제 cdId 로 클라이언트에서 전달할 정보 조회하기
     	CommonCodeVO commonCodeVO = this.payService.payInfoService(cdId);
     	
@@ -66,8 +68,10 @@ public class WidgetController {
     }
     
     @GetMapping("/adv/pay/{cmpnId}")
-    public String PayAdv(@PathVariable String cmpnId, Model model,
-    		@SessionAttribute(value = "__LOGIN_USER__", required = false) UserVO loginUser ) {
+    public String PayAdv(@PathVariable String cmpnId, Model model) {
+    	
+    	UserVO loginUser = AuthenticationUtil.getUserVO();
+
     	// cmpnId 로 결재내역 검색
     	String amount = this.payService.payInfoServiceCampaignAmount(cmpnId);
     	
@@ -80,8 +84,9 @@ public class WidgetController {
     }
     
     @PostMapping("/orders/prepay")
-    public ResponseEntity<Void> prepay(@RequestBody String jsonBody, 
-    		@SessionAttribute(value = "__LOGIN_USER__") UserVO loginUser) {
+    public ResponseEntity<Void> prepay(@RequestBody String jsonBody) {
+    	UserVO loginUser = AuthenticationUtil.getUserVO();
+
         // orderId, usrId, orderName, amount 를 DB나 세션에 저장
     	JSONParser parser = new JSONParser();
     	JSONObject requestData;

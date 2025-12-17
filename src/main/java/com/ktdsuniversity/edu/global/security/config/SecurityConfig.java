@@ -21,6 +21,8 @@ import com.ktdsuniversity.edu.global.security.jwt.filter.JwtAuthenticationFilter
 import com.ktdsuniversity.edu.global.security.oauth.SecurityOAtuhService;
 import com.ktdsuniversity.edu.global.security.oauth.handler.CustomOAuth2SuccessHandler;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity(debug=true)
 @EnableMethodSecurity
@@ -44,7 +46,7 @@ public class SecurityConfig {
 		
 		
 //		http.csrf(csrf -> csrf.disable());
-		http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth", "/api/**", "/oauth2/**"));
+		http.csrf(csrf -> csrf.ignoringRequestMatchers("/auth", "/api/**", "/oauth2/**","/confirm", "/orders/prepay"));
 		
 	    http.sessionManagement(session ->
         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -58,7 +60,7 @@ public class SecurityConfig {
 				corsConfig.setAllowCredentials(true);
 				corsConfig.setAllowedOrigins(List.of("http://localhost:5173")); // 누가 우리에게 요청할 것이
 				corsConfig.setAllowedHeaders(List.of("*")); // 요청할 때 어떤 Request Header를 보낼것이냐
-				corsConfig.setAllowedMethods(List.of("POST", "GET","PUT","FETCH", "OPTIONS","DELETE")); // 요청할 때 어떤 메소드로 요청할 것이냐.
+				corsConfig.setAllowedMethods(List.of("POST", "GET","PUT","FETCH", "OPTIONS","DELETE","PATCH")); // 요청할 때 어떤 메소드로 요청할 것이냐.
 				return corsConfig;
 			}; 
 			
@@ -73,19 +75,46 @@ public class SecurityConfig {
 	            oAuthLogin.successHandler(this.customOAuth2SuccessHandler);
 	        });
 		
-//	    http.authorizeHttpRequests(auth -> auth
-//	            // 캠페인 메인은 누구나 접근 가능
-//	            .requestMatchers("/api/v1/campaign/main").permitAll()
-//
-//	            // 로그인/회원가입, 정적 리소스 등도 보통 열어둔다 (있으면 추가)
-//	            .requestMatchers("/login", "/authenticate", "/css/**", "/js/**", "/img/**").permitAll()
-//
-//	            // (나중에 다른 API들을 인증 필요로 하고 싶으면 여기서 지정)
-//	            // .requestMatchers("/api/**").authenticated()
-//
-//	            // 그 외는 일단 다 허용
-//	            .anyRequest().permitAll()
-//	        );
+		// /////////////////////////////// 잘 모루겠음
+		http.authorizeHttpRequests(auth -> auth
+			    // ✅ CORS 프리플라이트(OPTIONS) 무조건 허용
+			    .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+
+			    // ✅ 결제 관련 엔드포인트는 인증 없이 통과(또는 필요하면 authenticated로 바꿔도 됨)
+			    .requestMatchers("/confirm").permitAll()
+			    .requestMatchers("/orders/prepay").permitAll()
+			    .requestMatchers("/api/pay/**").permitAll()
+
+			    // 로그인/정적자원
+			    .requestMatchers("/login", "/authenticate", "/css/**", "/js/**", "/img/**").permitAll()
+
+			    .anyRequest().permitAll()
+			);
+		
+		http.exceptionHandling(ex -> ex
+			    .authenticationEntryPoint((request, response, authException) -> {
+			        String uri = request.getRequestURI();
+			        if (uri.equals("/confirm") || uri.equals("/orders/prepay") || uri.startsWith("/api/")) {
+			            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			            response.setContentType("application/json;charset=UTF-8");
+			            response.getWriter().write("{\"message\":\"UNAUTHORIZED\"}");
+			            return;
+			        }
+			        response.sendRedirect("/login");
+			    })
+			    .accessDeniedHandler((request, response, accessDeniedException) -> {
+			        String uri = request.getRequestURI();
+			        if (uri.equals("/confirm") || uri.equals("/orders/prepay") || uri.startsWith("/api/")) {
+			            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			            response.setContentType("application/json;charset=UTF-8");
+			            response.getWriter().write("{\"message\":\"FORBIDDEN\"}");
+			            return;
+			        }
+			        response.sendRedirect("/login");
+			    })
+			);
+
+		// ///////////////////////////////
 		
 		// 인증과 관련된 필터에 대한 조건 명시.
 		http.formLogin((formLogin) -> {
