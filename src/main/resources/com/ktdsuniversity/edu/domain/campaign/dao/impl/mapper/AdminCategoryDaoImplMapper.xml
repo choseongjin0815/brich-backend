@@ -121,7 +121,7 @@
              , USE_YN = 'Y'
              , SRT = #{srt}
              , UPDT_DT = SYSDATE
-             , MTTR = #{adminId}
+             , MTTR = 'USR-20230813-000001'
          WHERE CD_ID = #{cdId}
     </update>
     
@@ -132,7 +132,7 @@
              , USE_YN = 'N'
              , SRT = 999
              , UPDT_DT = SYSDATE
-             , MTTR = #{adminId}
+             , MTTR = 'USR-20230813-000001'
          WHERE CD_ID = #{cdId}
     </update>
     
@@ -141,7 +141,7 @@
         UPDATE CM_CD
            SET SRT = SRT - 1
              , UPDT_DT = SYSDATE
-             , MTTR = #{adminId}
+             , MTTR = 'USR-20230813-000001'
          WHERE PRNT_CD_ID = '3000'
            AND SRT > #{srt}
     </update>
@@ -156,7 +156,7 @@
             </foreach>
                        END)
              , UPDT_DT = SYSDATE
-             , MTTR = #{adminId}
+             , MTTR ='USR-20230813-000001'
          WHERE CD_ID IN
          <foreach collection="orderedCdIdList" item="cdId" open="(" separator="," close=")">
              #{cdId}
