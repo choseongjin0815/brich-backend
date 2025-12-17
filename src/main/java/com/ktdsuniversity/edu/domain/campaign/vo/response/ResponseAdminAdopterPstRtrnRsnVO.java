@@ -9,8 +9,10 @@ public class ResponseAdminAdopterPstRtrnRsnVO {
 	private String postId;
 	private String postRtrnRsn;
 	private String crtDt;
-	private String flGrpId;
+	private String retnFlGrpId;
 	private List<FileVO> fileList;
+	
+	private String postRtrnHistId;
 	
 	public String getPostId() {
 		return this.postId;
@@ -30,11 +32,11 @@ public class ResponseAdminAdopterPstRtrnRsnVO {
 	public void setCrtDt(String crtDt) {
 		this.crtDt = crtDt;
 	}
-	public String getFlGrpId() {
-		return this.flGrpId;
+	public String getRetnFlGrpId() {
+		return this.retnFlGrpId;
 	}
-	public void setFlGrpId(String flGrpId) {
-		this.flGrpId = flGrpId;
+	public void setRetnFlGrpId(String retnFlGrpId) {
+		this.retnFlGrpId = retnFlGrpId;
 	}
 	public List<FileVO> getFileList() {
 		return this.fileList;
@@ -42,11 +44,18 @@ public class ResponseAdminAdopterPstRtrnRsnVO {
 	public void setFileList(List<FileVO> fileList) {
 		this.fileList = fileList;
 	}
+	public String getPostRtrnHistId() {
+		return postRtrnHistId;
+	}
+	public void setPostRtrnHistId(String postRtrnHistId) {
+		this.postRtrnHistId = postRtrnHistId;
+	}
 	
 	@Override
 	public String toString() {
 		return "ResponseAdminAdopterPstRtrnRsnVO [postId=" + postId + ", postRtrnRsn=" + postRtrnRsn + ", crtDt="
-				+ crtDt + ", flGrpId=" + flGrpId + ", fileList=" + fileList + "]";
+				+ crtDt + ", retnFlGrpId=" + retnFlGrpId + ", fileList=" + fileList + ", postRtrnHistId=" + postRtrnHistId
+				+ "]";
 	}
 	
 }

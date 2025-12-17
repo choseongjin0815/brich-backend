@@ -24,6 +24,8 @@ public class AdminBloggerDetailVO extends AdminUserBaseInfoVO {
     private List<String> checkedAreaIds;
     private List<String> checkedBlgCtg;
     
+//    private List<AdminBloggerAreaInfoVO> commonArea;
+    
 	public int getCmpnProgressCnt() {
 		return this.cmpnProgressCnt;
 	}
@@ -108,5 +110,11 @@ public class AdminBloggerDetailVO extends AdminUserBaseInfoVO {
 	public void setCheckedBlgCtg(List<String> checkedBlgCtg) {
 		this.checkedBlgCtg = checkedBlgCtg;
 	}
+//	public List<AdminBloggerAreaInfoVO> getCommonArea() {
+//		return this.commonArea;
+//	}
+//	public void setCommonArea(List<AdminBloggerAreaInfoVO> commonArea) {
+//		this.commonArea = commonArea;
+//	}
     
 }

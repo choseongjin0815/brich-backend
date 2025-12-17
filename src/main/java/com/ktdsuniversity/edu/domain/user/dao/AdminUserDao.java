@@ -73,4 +73,6 @@ public interface AdminUserDao {
 
 	String selectCurrentUpdtDt(String usrId);
 
+//	List<AdminBloggerAreaInfoVO> selectAreaList();
+
 }
