@@ -295,7 +295,7 @@ public class CampaignApi {
         int count = this.campaignService.rePostSubmit(requestPostSubmitVO);
 
         AjaxResponse ajaxResponse = new AjaxResponse();
-        ajaxResponse.setBody(count); // 보통 count 반환
+        ajaxResponse.setBody(count); 
         return ajaxResponse;
     }
 
