@@ -423,7 +423,7 @@ public class CampaignApi {
 	}
 	
 	@GetMapping("/write")
-	@PreAuthorize("isAuthenticated() and hasRole('ROLE_ADV')")
+//	@PreAuthorize("isAuthenticated() and hasRole('ROLE_ADV')")
 	public AjaxResponse createCampaign(Authentication authentication) {
 		ResponseCampaignwriteVO common = this.campaignService.createCampaign();
 		
