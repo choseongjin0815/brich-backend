@@ -33,6 +33,9 @@ public class MultipartFileHandler {
 
 	@Value("${app.multipart.base-dir.macos}")
 	private String macosBaseDirectory;
+	
+	@Value("${app.multipart.base-dir.linux")
+	private String linuxBaseDirectory;
 
 	@Value("${app.multipart.obfuscation.enable}")
 	private boolean obfuscationEnable;
@@ -73,7 +76,10 @@ public class MultipartFileHandler {
 		String directory = this.windowsBaseDirectory;
 		if (os.toLowerCase().startsWith("mac")) {
 			directory = userHome + this.macosBaseDirectory;
-		}
+		} else if(os.toLowerCase().contains("nux") || os.toLowerCase().contains("nix")) {
+			directory = this.linuxBaseDirectory;
+		};
+		
 		
 		return new File(directory, UUID.randomUUID().toString());
 	}
@@ -105,6 +111,8 @@ public class MultipartFileHandler {
 		String directory = this.windowsBaseDirectory;
 		if (os.toLowerCase().startsWith("mac")) {
 			directory = userHome + this.macosBaseDirectory;
+		} else if(os.toLowerCase().contains("nux") || os.toLowerCase().contains("nix")) {
+			directory = this.linuxBaseDirectory;
 		}
 		// 업로드한 파일이 저장될 경로
 		File storePath = new File(directory, filename);
