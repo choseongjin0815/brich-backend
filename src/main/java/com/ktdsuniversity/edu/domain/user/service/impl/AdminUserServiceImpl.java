@@ -217,10 +217,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 		    List<AdminBloggerAreaInfoVO> usrAr = this.adminUserDao.selectBloggerAreaList(usrId);
 		    List<AdminBloggerCategoryInfoVO> usrBlgCtg = this.adminUserDao.selectBloggerCategoryList(usrId);
 		    
+//		    AdminBloggerAreaInfoVO commonArea = this.adminUserDao.selectAreaList();
+		    
 		    info.setCmpnProgressList(progressList);
 		    info.setCmpnCompletedList(completedList);
 		    info.setUsrAr(usrAr);
 		    info.setUsrBlgCtg(usrBlgCtg);
+		    
+//		    info.setCommonArea(commonArea);
 		    
 	        if (usrAr != null) {
 	            List<String> checkedAreaIds = usrAr.stream()

@@ -164,4 +164,9 @@ public class AdminUserDaoImpl extends SqlSessionDaoSupport implements AdminUserD
 		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectCurrentUpdtDt", usrId);
 	}
 
+//	@Override
+//	public List<AdminBloggerAreaInfoVO> selectAreaList() {
+//		return super.getSqlSession().selectOne(this.NAME_SPACE + "selectAreaList");
+//	}
+
 }

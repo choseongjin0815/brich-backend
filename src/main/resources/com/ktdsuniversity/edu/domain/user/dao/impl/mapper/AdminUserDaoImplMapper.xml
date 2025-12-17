@@ -658,5 +658,22 @@
 	     FROM USR
 	    WHERE USR_ID = #{usrId}
 	</select>
+	
+	<!-- 
+    <resultMap type="com.ktdsuniversity.edu.domain.user.vo.AdminBloggerAreaInfoVO" id="AdminBloggerAreaInfoVOMap" autoMapping="true">
+        <id column="USR_AR_ID" property="usrArId" />
+        <result column="AR_ID" property="arId" />
+        <result column="CD_NM" property="cdNm" />
+    </resultMap>
+    <select id="selectAreaList" parameterType="string" resultMap="com.ktdsuniversity.edu.domain.user.vo.AdminBloggerAreaInfoVO">
+        SELECT U_AR.USR_AR_ID AS USR_AR_ID
+             , U_AR.AR_ID AS AR_ID
+             , A.CD_NM AS CD_NM
+          FROM USR_AR U_AR
+          LEFT OUTER JOIN AR_CD A
+            ON U_AR.AR_ID = A.CD_ID
+         WHERE U_AR.DLT_YN = 'N'
+    </select>
+     -->
     
 </mapper>

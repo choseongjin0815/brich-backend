@@ -55,6 +55,7 @@
         
         <collection javaType="list" ofType="com.ktdsuniversity.edu.domain.file.vo.FileVO" property="fileList" autoMapping="true">
             <result column="FL_ID" property="flId"/>
+            <result column="FL_GRP_ID" property="flGrpId"/>
             <result column="FL_NM" property="flNm"/>
             <result column="FL_PTH" property="flPth"/>
             <result column="FL_SZ" property="flSz"/>
@@ -75,7 +76,8 @@
              , R.RPT_CN
              , R.RPT_FL_GRP_ID
              , R.PRCN_YN
-             , F.FL_ID 
+             , F.FL_ID
+             , F.FL_GRP_ID
              , F.FL_NM 
              , F.FL_PTH 
              , F.FL_SZ 
