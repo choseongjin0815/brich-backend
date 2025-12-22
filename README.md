@@ -14,7 +14,7 @@
 - 💬 **실시간 1:1 채팅**: 블로거와 광고주 간 원활한 소통 지원
 
 🔗 **[Figma 디자인 보기](https://www.figma.com/design/N2J1QrbHshX2X0FL1Vnnoo/Brich?node-id=0-1&p=f&t=ASVuOO4T5JVYLbNz-0)**
-
+(유튜브 시연 링크 추가 예정...)
 ---
 
 ## 목차
