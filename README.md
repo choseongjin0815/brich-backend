@@ -28,7 +28,7 @@
 ---
 
 ## 기술 스택 (고칠 거 있으면 자유롭게 수정 좀)
-
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1766413899094?alt=media&token=1e0dcb56-60c7-450b-9bb2-6c3be11fee7c)](https://github.com/msdio/stackticon)
 ### Backend
 ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
