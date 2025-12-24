@@ -29,7 +29,7 @@
 ---
 
 ## 기술 스택
-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1766576688528?alt=media&token=9b468fc1-d3f3-444c-a26a-6367f41669d8)](https://github.com/msdio/stackticon)
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1766576814322?alt=media&token=7b7fc3ae-33d8-4e60-b089-aeb856880d2a)](https://github.com/msdio/stackticon)
 ---
 
 ## 주요 기능 (맡은 기능 추가 좀요...)
