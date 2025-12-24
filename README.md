@@ -118,10 +118,66 @@
 ---
 
 ## ERD
+<img width="2233" height="1160" alt="2차ERD" src="https://github.com/user-attachments/assets/7c60e939-41a1-4591-ad45-29765736864d" />
 
-명세서, erd cloud 수정 후 업로드 예정
 
-![ERD 다이어그램](ERD_이미지_경로)
+### 테이블 명세서
+
+<details>
+<summary><b>회원</b></summary>
+<img width="898" height="850" alt="회원1" src="https://github.com/user-attachments/assets/5e4a0e58-4bef-415c-8fe2-91ab7eafd788" />
+<img width="898" height="705" alt="회원2" src="https://github.com/user-attachments/assets/ddbf78d6-87b7-4995-81cd-28849586fe90" />
+
+
+</details>
+
+<details>
+<summary><b>캠페인</b></summary>
+<img width="1220" height="953" alt="캠페인1" src="https://github.com/user-attachments/assets/51c355f0-5381-492a-9397-a0a4eadeb628" />
+<img width="1219" height="562" alt="캠페인2" src="https://github.com/user-attachments/assets/52d75725-6543-4251-8ed2-ca2ac1f26fd1" />
+
+
+</details>
+
+<details>
+<summary><b>공통코드/지역</b></summary>
+<img width="766" height="535" alt="공통코드" src="https://github.com/user-attachments/assets/0d98f649-8aac-4074-b311-10cbe2d8ea61" />
+
+</details>
+
+<details>
+<summary><b>포스트 데이터</b></summary>
+<img width="850" height="617" alt="포스트데이터" src="https://github.com/user-attachments/assets/06f6eb05-917d-46cb-85d8-42bcd3864fab" />
+
+
+</details>
+
+<details>
+<summary><b>채팅</b></summary>
+<img width="952" height="592" alt="채팅" src="https://github.com/user-attachments/assets/dcb931c3-770b-4779-a661-5a03c1829a9a" />
+
+
+</details>
+
+<details>
+<summary><b>결제</b></summary>
+<img width="876" height="460" alt="결제" src="https://github.com/user-attachments/assets/49dcf744-bdbe-4de1-b506-66b13cad1d27" />
+
+
+</details>
+
+<details>
+<summary><b>문의/신고/도움말</b></summary>
+<img width="950" height="795" alt="문의신고도움말1" src="https://github.com/user-attachments/assets/bf595520-cdbb-4b19-9e1a-67d405ce6ec9" />
+<img width="1258" height="183" alt="ㅁㅜㄴㅇㅡㅣㅅㅣㄴㄱㅗㄷㅗㅇㅜㅁㅁㅏㄹ2" src="https://github.com/user-attachments/assets/5ea2a9d1-77fe-4fc4-aa77-73b85fd62642" />
+
+</details>
+
+<details>
+<summary><b>첨부파일</b></summary>
+<img width="1271" height="469" alt="첨부파일" src="https://github.com/user-attachments/assets/d7048761-afec-4375-81af-25a8701f68bb" />
+
+</details>
 
 ---
 
