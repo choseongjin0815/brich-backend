@@ -118,7 +118,7 @@
 ---
 
 ## ERD
-<img width="2225" height="1153" alt="ERD수정2차" src="https://github.com/user-attachments/assets/651eaf73-df1a-424a-834d-f57a9864f1e2" />
+<img width="2225" height="1153" alt="스크린샷 2025-12-24 오후 8 30 07" src="https://github.com/user-attachments/assets/63ad307b-25a7-4708-95d2-a2974766a6b8" />
 
 
 ### 테이블 명세서
