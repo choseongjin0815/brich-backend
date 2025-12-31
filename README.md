@@ -16,25 +16,31 @@ Brich를 통해 성장하는 블로거들은 자신에게 맞는 캠페인을 �
 - 🎯 **맞춤형 캠페인 추천**: 블로거 특성에 맞는 캠페인 매칭
 - 💬 **실시간 1:1 채팅**: 블로거와 광고주 간 원활한 소통 지원
 
-🔗 **[Figma 디자인 보기](https://www.figma.com/design/N2J1QrbHshX2X0FL1Vnnoo/Brich?node-id=0-1&p=f&t=ASVuOO4T5JVYLbNz-0)**
-(유튜브 시연 영상 추가 예정...)
+---
+
+## 🔗 링크
+
+🎥 **[시연 영상 보기](https://www.youtube.com/watch?v=qYUTPqjN7i0&t=848s)**
+
+🎨 **[Figma 디자인 보기](https://www.figma.com/design/N2J1QrbHshX2X0FL1Vnnoo/Brich?node-id=0-1&p=f&t=ASVuOO4T5JVYLbNz-0)**
 
 ---
 
 ## 목차
-- [기술 스택](#-기술-스택)
-- [주요 기능](#-주요-기능)
-- [프로젝트 아키텍처](#-프로젝트-아키텍처)
-- [ERD](#-erd)
-- [팀원](#-팀원)
+- [기술 스택](#기술-스택)
+- [주요 기능](#주요-기능)
+- [프로젝트 아키텍처](#프로젝트-아키텍처)
+- [ERD](#erd)
+- [팀원](#팀원)
 
 ---
 
 ## 기술 스택
 [![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1766576814322?alt=media&token=7b7fc3ae-33d8-4e60-b089-aeb856880d2a)](https://github.com/msdio/stackticon)
+
 ---
 
-## 주요 기능 (맡은 기능 추가 좀요...)
+## 주요 기능
 
 <details>
 <summary><b>👤 회원 기능</b></summary>
@@ -141,11 +147,11 @@ Brich를 통해 성장하는 블로거들은 자신에게 맞는 캠페인을 �
   - 질문에 대한 FAQ 데이터 기반 생성형AI 응답
 
 </details>
+
 ---
 
 ## 프로젝트 아키텍처
-추가 예정
-![Architecture](아키텍처_이미지_경로)
+<img width="871" height="332" alt="프로젝트아키텍처v2 drawio" src="https://github.com/user-attachments/assets/4f225c73-c8b6-40ad-8470-d126d71bff1f" />
 
 ---
 
