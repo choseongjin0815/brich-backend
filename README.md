@@ -156,7 +156,7 @@ Brich를 통해 성장하는 블로거들은 자신에게 맞는 캠페인을 �
 ---
 
 ## ERD
-<img width="2225" height="1153" alt="스크린샷 2025-12-24 오후 8 30 07" src="https://github.com/user-attachments/assets/63ad307b-25a7-4708-95d2-a2974766a6b8" />
+<img width="2231" height="1168" alt="ERD" src="https://github.com/user-attachments/assets/899269b2-9f1f-4a19-8ecc-b1cc3eb14ba1" />
 
 
 ### 테이블 명세서
