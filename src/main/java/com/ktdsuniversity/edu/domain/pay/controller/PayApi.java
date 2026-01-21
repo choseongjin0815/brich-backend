@@ -22,7 +22,7 @@ import com.ktdsuniversity.edu.global.util.AuthenticationUtil;
 @RequestMapping("/api/v1/pay")
 @RestController
 public class PayApi {
-	private static final Logger log = LoggerFactory.getLogger(PayController.class);
+	private static final Logger log = LoggerFactory.getLogger(PayApi.class);
 	
 	@Autowired
     private PayService payService;
