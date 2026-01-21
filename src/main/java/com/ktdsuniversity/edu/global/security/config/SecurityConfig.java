@@ -75,46 +75,6 @@ public class SecurityConfig {
 	            oAuthLogin.successHandler(this.customOAuth2SuccessHandler);
 	        });
 		
-		// /////////////////////////////// 잘 모루겠음
-//		http.authorizeHttpRequests(auth -> auth
-//			    // ✅ CORS 프리플라이트(OPTIONS) 무조건 허용
-//			    .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-//
-//			    // ✅ 결제 관련 엔드포인트는 인증 없이 통과(또는 필요하면 authenticated로 바꿔도 됨)
-//			    .requestMatchers("/confirm").permitAll()
-//			    .requestMatchers("/orders/prepay").permitAll()
-//			    .requestMatchers("/api/pay/**").permitAll()
-//
-//			    // 로그인/정적자원
-//			    .requestMatchers("/login", "/authenticate", "/css/**", "/js/**", "/img/**").permitAll()
-//
-//			    .anyRequest().permitAll()
-//			);
-//		
-//		http.exceptionHandling(ex -> ex
-//			    .authenticationEntryPoint((request, response, authException) -> {
-//			        String uri = request.getRequestURI();
-//			        if (uri.equals("/confirm") || uri.equals("/orders/prepay") || uri.startsWith("/api/")) {
-//			            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//			            response.setContentType("application/json;charset=UTF-8");
-//			            response.getWriter().write("{\"message\":\"UNAUTHORIZED\"}");
-//			            return;
-//			        }
-//			        response.sendRedirect("/login");
-//			    })
-//			    .accessDeniedHandler((request, response, accessDeniedException) -> {
-//			        String uri = request.getRequestURI();
-//			        if (uri.equals("/confirm") || uri.equals("/orders/prepay") || uri.startsWith("/api/")) {
-//			            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-//			            response.setContentType("application/json;charset=UTF-8");
-//			            response.getWriter().write("{\"message\":\"FORBIDDEN\"}");
-//			            return;
-//			        }
-//			        response.sendRedirect("/login");
-//			    })
-//			);
-		// ///////////////////////////////
-		
 		// 인증과 관련된 필터에 대한 조건 명시.
 		http.formLogin((formLogin) -> {
 		//formLogin.defaultSuccessUrl("/list"))
