@@ -400,31 +400,18 @@ public class ChatServiceImpl implements ChatService {
 	@Transactional
 	@Override
 	public void updateMessagesAsRead(String chtRmId, String usrId) {
-		log.info("USRID : {}", usrId);
-		if(usrId != null) {
-			log.info("USRID1 : {}", usrId);
-
-			// MongoDB에서 안읽은 메시지 조회
-			List<ChatMessageVO> unreadMessages = chatMessageRepository.findUnreadMessages(chtRmId, usrId);
-			String now = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-	
-			//Bulk operation으로 N+1해소
-			// 1번의 조회 - n개의 데이터 
-			// n번만큼 업데이트 - n번 
-			// 업데이트를 한번의 실행으로 끝냄
-			if (unreadMessages.isEmpty()) {
-				return;
-			}
-			BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, ChatMessageVO.class);
-	
-			for (ChatMessageVO msg : unreadMessages) {
-				Query query = new Query(Criteria.where("_id").is(msg.getChtMsgId()));
-				Update update = new Update().set("rdYn", "Y").set("updtDt", now);
-				bulkOps.updateOne(query, update);
-			}
-
-		bulkOps.execute();
-		}
+		 if (usrId == null) return;
+		    
+		    Query query = new Query()
+		        .addCriteria(Criteria.where("chtRmId").is(chtRmId))
+		        .addCriteria(Criteria.where("rdYn").is("N"))
+		        .addCriteria(Criteria.where("sndUsrId").ne(usrId));
+		    
+		    Update update = new Update()
+		        .set("rdYn", "Y")
+		        .set("updtDt", DateTimeFormatter.ISO_INSTANT.format(Instant.now()));
+		    
+		    mongoTemplate.updateMulti(query, update, ChatMessageVO.class);
 	}
 
 	@Override
